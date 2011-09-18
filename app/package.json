@@ -1,17 +1,17 @@
 {
-    "name": "windshaft",
-    "version": "0.0.8",
-    "main": "./lib/windshaft/index.js",
-    "description": "A Node.js based map tile server for PostGIS & Mapnik",
-    "url": "https://github.com/Vizzuality/Neemo",
+    "name": "NEEMO",
+    "version": "0.0.1",
+    "main": "./lib/neemo/index.js",
+    "description": "NEEMO Node.js App",
+    "url": "https://github.com/Vizzuality/NEEMO",
     "licenses": [{ "type": "MIT" }],
     "repositories": [{
         "type": "git",
-        "url": "git://github.com/Vizzuality/Neemo.git"
+        "url": "git://github.com/Vizzuality/NEEMO.git"
     }],
     "author": {
       "name": "Andrew W. Hill, Vizzuality",
-      "url": "http://vizzuality.com",
+      "url": "http://vizzuality.com/Vizzuality/NEEMO",
       "email": "andrew@vizzuality.com"
     },
     "dependencies": {
