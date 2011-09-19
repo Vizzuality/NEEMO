@@ -15,10 +15,11 @@
       "email": "andrew@vizzuality.com"
     },
     "dependencies": {
+		"socket.io"  : "0.8.4",
         "underscore"  : "1.1.x",
         "step": "0.0.x",
         "grainstore": "0.0.7",
-        "express": "2.4.3",
+        "express": "2.4.3"
     },
     "devDependencies": {
         "expresso": "0.8.x"

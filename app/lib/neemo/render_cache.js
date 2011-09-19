@@ -3,10 +3,8 @@
 
 var Step = require('step')
     , _ = require('underscore')
-    , grainstore = require('grainstore')
-    , tilelive   = require('tilelive');
+    , grainstore = require('grainstore');
 
-require('tilelive-mapnik').registerProtocols(tilelive);
 
 
 module.exports = function(timeout, mml_store){
