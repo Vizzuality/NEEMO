@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Socket test</title>
+    <meta charset="utf-8" />
+    <script src="/socket.io/socket.io.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+	<script src="/js/libs/backbone-min.js"></script>
+	<script src="/js/libs/class.js"></script>
+    <script>
+      $(document).ready(function() {
+		  var socket = io.connect();
+          var myregion; 
+          $('.canvas').click(function(ev){
+            $('.canvas').each(function(){$(this).text('')});
+             if (this.id != myregion){
+                socket.emit('join', {region: this.id} );
+             }
+            var lon = (360 * (ev.clientX - this.offsetLeft)/200) - 180;
+            var lat = 180 - (180 * (ev.clientY - this.offsetTop)/200) - 90;
+            socket.emit('poi', {lat: lat, 
+                                lon: lon, 
+                                region: this.id, 
+                                title: 'test click',
+                                category: 'tests',
+                                type: 'click',
+                                user: 'admin',
+                                notes: 'delete this row' } );
+          });
+          
+          
+          socket.on('update', function (data) {
+            var ctx = $('#'+data.region)[0].getContext("2d");
+            //draw a circle
+            ctx.beginPath();
+            var x = 200*(data.lon + 180)/360;
+            var y = 200*(180 - 90 - data.lat)/180;
+            ctx.arc(x, y, 10, 0, Math.PI*2, true); 
+            ctx.closePath();
+            ctx.fill();
+          }, this);
+          
+	  });
+	</script>
+</head>
+<body>
+<canvas id="region1" class="canvas" width="200px" height="200px" style="width: 200px; height: 200px; border: 1px solid grey;"></canvas>
+<canvas id="region2" class="canvas" width="200px" height="200px" style="width: 200px; height: 200px; border: 1px solid grey;"></canvas>
+</body>
+</html>
