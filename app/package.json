@@ -18,8 +18,12 @@
 		"socket.io"  : "0.8.4",
         "underscore"  : "1.1.x",
         "step": "0.0.x",
-        "grainstore": "0.0.7",
-        "express": "2.4.3"
+        "express": "2.4.3",
+        "generic-pool": "1.0.6",
+        "socket.io-client": "0.8.4",
+        "redis-client": "0.3.5",
+        "connect-redis": "1.0.7",
+        "node-oauth": "0.1.0"
     },
     "devDependencies": {
         "expresso": "0.8.x"
