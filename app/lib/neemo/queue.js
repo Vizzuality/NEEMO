@@ -11,9 +11,12 @@ var   express     = require('express')
     , sys         = require('sys')
     , rsub        = redis.createClient()
     , OAuth       = require('oauth').OAuth
-    , cartodb     = new Object();
+    , cartodb     = new Object(),
+    , fs          = require('fs');
     
 module.exports = function(opts){
+    
+    eval(fs.readFileSync('cartodb_settings.js', encoding="ascii"));
     
     var app = express.createServer();
     app.use(express.bodyParser());
@@ -29,10 +32,6 @@ module.exports = function(opts){
                        "http://68.175.5.167:4000/oauth/callback",
                        "HMAC-SHA1");
     
-    cartodb.username          = ''
-    cartodb.password          = ''
-    cartodb.consumer_key      = ''
-    cartodb.consumer_secret   = ''
     cartodb.private_query     = 'SELECT ST_SRID(the_geom) FROM fisheryclosure LIMIT 1'
     cartodb.request_url       = 'https://' + cartodb.username + '.cartodb.com/oauth/request_token'
     cartodb.access_url        = 'https://' + cartodb.username + '.cartodb.com/oauth/access_token'
