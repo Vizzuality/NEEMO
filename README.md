@@ -23,7 +23,7 @@ App.js features
 * Serves updates from the subscribed region to the client, real time annotations from other users
 * Puts all annotations into a Redis queue
 
-App.js features
+Queue.js features
 -------------
 * Reads the Redis queue 
 * Uses the Simple SQL API to send annotations for storage on CartoDB
