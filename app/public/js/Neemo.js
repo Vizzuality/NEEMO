@@ -40,8 +40,12 @@ Neemo.modules.app = function(neemo) {
                 neemo.log.enabled = config ? config.logging: false;
                 this._bus = new neemo.events.Bus();
                 neemo.config = config;
-                this.ui = new neemo.ui.Engine(config, this._bus);
-                this.socket = new neemo.socket.Engine(this._bus);
+                //this.ui = new neemo.ui.Engine(config, this._bus);
+                this._api = config.api || new neemo.ajax.Api(this._bus);
+                this.map = new neemo.ui.Map.Engine(config, this._bus, this._api, config.region);
+                this.map.start();
+                this.form = new neemo.ui.Form.Engine(this._bus, this._api);
+                this.socket = new neemo.socket.Engine(this._bus, config.region);
             },
  
             run: function() {
@@ -55,14 +59,37 @@ Neemo.modules.app = function(neemo) {
     );
 };
 
+
+Neemo.modules.ui = function(neemo) {
+    
+    neemo.ui = {};
+    
+    /**
+     * Interface for UI Engine classes.
+     */
+    neemo.ui.Engine = Class.extend(
+        {
+            /**
+             * Starts the engine and provides a container for its display.
+             * 
+             * @param container the container for the engine display 
+             */
+            start: function(container) {
+                throw neemo.exceptions.NotImplementedError;
+            },
+            
+        }
+    );
+};
+
 Neemo.modules.socket = function(neemo) {
     neemo.socket = {};
     neemo.socket.Engine = Class.extend(
         {
-            init: function(bus) {
+            init: function(bus, region) {
                 this._id = -1;
                 this._bus = bus;
-                this.region = 1;
+                this.region = region;
                 this.socket = io.connect();
                 this._setupSockets();
                 this._bindEvents();
@@ -82,72 +109,244 @@ Neemo.modules.socket = function(neemo) {
                         neemo.log.info('socket update received');
                       }, this);
                 //TODO allow for changine region id through event bus
-                this.socket.emit('join', {region: 1} );
+                this.socket.emit('join', {region: this.region} );
                 
             },
             _bindEvents: function(){
                 var that = this,
                     bus = this._bus;
+                /* send the new click data to server */
+                bus.addHandler(
+                    'FormSubmit',
+                    function(event){
+                        neemo.log.info('form recieved');
+                        var data = event.getData();
+                        data.id = that._id;
+                        data.region =that.region;
+                        that.socket.emit('poi', data);
+                    }
+                );
+                /* Change the socket 'room' we are listening to when the region changes
+                 * 
+                 */
+                bus.addHandler(
+                    'ChangeRegion',
+                    function(event){;
+                        that.region = event.getRegion();
+                        that.socket.emit('join', {region: that.region} );
+                    }
+                );
+                
+            },
+        }
+    );
+};
+/* Handles the form object for adding information to clicks
+ * Not filled in with any display elements yet, so it simply
+ * transforms the click event into a dummy form submit object (data)
+ * and triggers the FormSubmit event so it will be put on the map
+ * and transmitted
+ */
+Neemo.modules.Form = function(neemo) {
+    neemo.ui.Form = {};
+    neemo.ui.Form.Engine = Class.extend(
+        {
+            init: function(bus, api) {
+                var that = this;
+                this._bus = bus;
+                this._api = api;
+                
+                this._bindEvents();
+            },
+            
+            _bindEvents: function(){
+                var that = this
+                   , bus = this._bus;
+                
                 bus.addHandler(
                     'MapClick',
                     function(event){
                         neemo.log.info('map click recieved');
                         var data = {lat: event.getLat(), 
                                     lon: event.getLon(), 
-                                    region: 1, 
                                     title: 'test click',
                                     category: 'tests',
                                     type: 'click',
-                                    id: that._id,
                                     notes: 'delete this row' } 
                         that._bus.fireEvent(new Neemo.env.events.AddPoint(data));
-                        that.socket.emit('poi', data);
+                        that._bus.fireEvent(new Neemo.env.events.FormSubmit(data));
                     }
                 );
-                
-            },
+            }
         }
     );
-};
-
-Neemo.modules.ui = function(neemo) {
-    neemo.ui = {};
-    neemo.ui.Engine = Class.extend(
+}
+            
+            
+/* Handles the map object. Also listens for placemark add events and
+ * draws them to the map.
+ */
+Neemo.modules.Map = function(neemo) {
+    neemo.ui.Map = {};
+    neemo.ui.Map.Engine = Class.extend(
         {
-            init: function(config, bus) {
+            init: function(config, bus, api, region) {
                 var that = this;
                 this._bus = bus;
-                neemo.ui.markersArray = new Array();
-                neemo.ui.map = new google.maps.Map(document.getElementById(config.container), config.mapOptions);
-                google.maps.event.addListener(neemo.ui.map, 'click', function(event) {
+                this._api = api;
+                neemo.ui.Map.region = region;
+                neemo.ui.Map.map = new google.maps.Map(document.getElementById(config.container), config.mapOptions);
+                google.maps.event.addListener(neemo.ui.Map.map, 'click', function(event) {
                     neemo.log.info('map click');
                     that._bus.fireEvent(new Neemo.env.events.MapClick(event));
-                    //console.log(event);
                 });
                 
                 this._bindEvents();
             },
             _bindEvents: function(){
-                var bus = this._bus;
+                var that = this
+                   , bus = this._bus;
                 
                 bus.addHandler(
                     'AddPoint',
-                    function(event){
-                        neemo.log.info('map click recieved');
-                        marker = new google.maps.Marker({
-                            position: new google.maps.LatLng(event.getLat(),event.getLon()),
-                            map: neemo.ui.map
-                        });
-                        neemo.ui.markersArray.push(marker);
+                    function(event){;
+                        that._drawPlacemark({lat: event.getLat(), lng: event.getLon()})
+                    }
+                );
+                bus.addHandler(
+                    'ChangeRegion',
+                    function(event){;
+                        neemo.ui.Map.region = event.getRegion();
+                        //TODO, redraw map based on new region bbox. 
+                        //      release old points
+                        //      query new points
                     }
                 );
                 
+            },
+            
+            _drawPlacemark: function(data){
+                marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(data.lat, data.lng),
+                    map: neemo.ui.Map.map
+                });
+                neemo.ui.Map.markersArray.push(marker);
+            },
+            updateRegion: function() {
+                throw neemo.exceptions.NotImplementedError;
+            },
+            start: function() {
+                var  that = this
+                   , api = this._api
+                   , PointLayer = neemo.ajax.PointLayer
+                   , query
+                   , callback;
+                neemo.ui.Map.markersArray = new Array();
+                neemo.ui.Map.drawPlacemark = this._drawPlacemark;
+                /* Add existing points to the map
+                 * Based on the current region of the user
+                 */
+                query = 'SELECT * FROM neemo WHERE region='+neemo.ui.Map.region;
+                callback = new this._pointLayerCallback;
+                api.execute(query, callback);  
+            },
+            _pointLayerCallback: function() {
+                var  ActionCallback = neemo.ajax.ActionCallback
+                   , that = this;
+                return new ActionCallback(
+                    function(response) {
+                        for (r in response.features){
+                            neemo.ui.Map.drawPlacemark({
+                                lng: response.features[r]['geometry']['coordinates'][0],
+                                lat: response.features[r]['geometry']['coordinates'][1]
+                            })
+                        }
+                    }
+                );
             },
         }
     );
 };
 
+/**
+ * AJAX module for communicating with the server.
+ */
+Neemo.modules.ajax = function(neemo) {
+    neemo.ajax = {};
+    
+    /**
+     * Action.
+     */
+    neemo.ajax.Action = Class.extend(
+        {
+            init: function(name, type, params) {
+                this.name = name;
+                this.type = type;
+                this.params = params || {};
+            },
 
+            getName: function() {
+                return this.name;
+            },
+            
+            getType: function() {
+                return this.type;
+            },
+
+            getParams: function() {
+                return this.params;
+            }
+        }
+    );
+
+    /**
+     * ActionCallback.
+     */
+    neemo.ajax.ActionCallback = Class.extend(
+        {
+            init: function(success) {
+                this._success = success;
+            },
+            
+            /**
+             * @param actionResponse - the neemo.ajax.ActionResponse for the action
+             */
+            onSuccess: function(actionResponse) {
+                this._success(actionResponse);
+            }
+        }
+    );
+
+    /**
+     * The AJAX API.
+     */
+    neemo.ajax.Api = Class.extend(
+        {
+            /**
+             * Constructs a new Api object with an event bus.
+             * 
+             * @param bus neemo.events.Bus
+             * @constructor
+             */
+            init: function(bus) {
+                this._bus = bus;
+            },
+            
+            /**
+             * Executes an action asynchronously.
+             * 
+             * @param action the neemo.ajax.Action
+             * @param callback the neemo.ajax. ActionCallback
+             */
+            execute: function(query, callback ) {
+                var self = this
+                   , req;
+                req = $.getJSON('http://andrew.cartodb.com/api/v1/sql?format=geojson&q='+query+'&callback=?',
+                    function(res){callback.onSuccess(res)});
+            }
+        }
+    );    
+};
 
 /**
  * Events module for working with application events. Contains a Bus object that
@@ -222,6 +421,23 @@ Neemo.modules.events = function(neemo) {
     neemo.events.MapClick.TYPE = 'map_click';
     
     /**
+     * Change Region event.
+     */
+    neemo.events.ChangeRegion = neemo.events.Event.extend(
+        {
+            init: function(region, action) {
+                this._super('ChangeRegion', action);
+                this._region = region;
+            },
+ 
+            getRegion: function() {
+                return this._region;
+            }
+        }
+    );
+    neemo.events.MapClick.TYPE = 'change_region';
+    
+    /**
      * Add point event.
      */
     neemo.events.AddPoint = neemo.events.Event.extend(
@@ -229,7 +445,6 @@ Neemo.modules.events = function(neemo) {
             init: function(data, action) {
                 this._super('AddPoint', action);
                 this._data = data;
-                console.log(data);
             },
  
             getPoint: function() {
@@ -246,6 +461,22 @@ Neemo.modules.events = function(neemo) {
         }
     );
     neemo.events.AddPoint.TYPE = 'add_point';
+    /**
+     * Form submission event.
+     */
+    neemo.events.FormSubmit = neemo.events.Event.extend(
+        {
+            init: function(data, action) {
+                this._super('FormSubmit', action);
+                this._data = data;
+            },
+ 
+            getData: function() {
+                return this._data;
+            },
+        }
+    );
+    neemo.events.FormSubmit.TYPE = 'form_submit';
     /**
      * The event bus.
      */

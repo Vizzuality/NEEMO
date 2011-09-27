@@ -11,7 +11,6 @@ var   express     = require('express')
     , sys         = require('sys')
     , rsub        = redis.createClient()
     , OAuth       = require('oauth').OAuth
-    , cartodb     = new Object()
     , fs          = require('fs');
     
 module.exports = function(opts){
@@ -101,7 +100,6 @@ module.exports = function(opts){
       if (data == null) {
         setTimeout(function() { processQueue(); }, 100);
       } else {
-        console.log('here it is');
         data = JSON.parse(data);
         // Do a sample POST query
         var protected_request = cartodb.api_url;
@@ -109,7 +107,6 @@ module.exports = function(opts){
         var ordered_columns = ['userkey', 'region', 'category', 'objtype', 'title', 'notes', 'the_geom']
         
         var query = "INSERT INTO neemo (" + ordered_columns.join(', ') + ") VALUES ('"+data.id+"',"+data.region+",'"+data.category+"','"+data.type+"','"+data.title+"','"+data.notes+"',GeometryFromText('POINT('|| "+data.lon+" ||' '|| "+data.lat+" ||')', 4326))";
-        //console.log(query);
         var body = {q: query}
         cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function (error, data, response) {
             console.log('\n== CartoDB result for NEEMO put "' + query + '" ==');

@@ -28,7 +28,8 @@
         Neemo(function(env) {
             Neemo.app = new env.app.Instance({logging: true,
                                               container: "map_canvas",
-                                              mapOptions: myOptions});
+                                              mapOptions: myOptions,
+                                              region: 1});
             Neemo.app.run();
             Neemo.env = env;
         });
