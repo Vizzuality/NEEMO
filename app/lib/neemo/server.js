@@ -6,55 +6,33 @@ var   express     = require('express')
     , Step        = require('step')
     , fs          = require("fs")
     , path        = require("path")
-    , OAuth       = require('oauth').OAuth
-    , cartodb     = new Object()
+    , querystring = require('querystring')
     , RedisStore  = require('connect-redis')(express);
 
 module.exports = function(opts){
     var opts = opts || {};
-    cartodb.oa = new OAuth('http://andrew.cartodb.com/oauth/request_token',
-                       'http://andrew.cartodb.com/oauth/access_token',
-                       'key',
-                       'secret',
-                       "1.0",
-                       "http://68.175.5.167:4000/oauth/callback",
-                       "HMAC-SHA1");
-                       
-    cartodb.oa.getOAuthRequestToken(function(error, oauth_token, oauth_token_secret, results){
-      if (error) {
-          console.log('OAuth ERROR')
-      } else {
-        cartodb.oauth_token = oauth_token
-        cartodb.oauth_token_secret = oauth_token_secret
-        console.log('https://andrew.cartodb.com/oauth/authorize?oauth_token='+oauth_token)
-        //res.redirect('https://andrew.cartodb.com/oauth/authenticate?oauth_token='+oauth_token)
-       }
-    });
-    
     // initialize express server
     var app = express.createServer();
     console.log(pub);
         //app.enable('jsonp callback');
-        app.use(express.bodyParser());
-        //app.use(express.methodOverride());
-        app.use(express.cookieParser());
-        //app.use(express.session({ secret: "cartodb!", store: new RedisStore }));
-        app.use('/js', express.static('./public/js'));
-        app.use('/images', express.static('./public/images'));
-        app.use('/css', express.static('./public/css'));
-        app.use(express.static('./public'));
-        //app.use(express.static(pub));
-        app.use(express.logger({buffer:true, format:'[:remote-addr :date] \033[90m:method\033[0m \033[36m:url\033[0m \033[90m:status :response-time ms -> :res[Content-Type]\033[0m'}));
-   /*
+    app.use(express.bodyParser());
+    //app.use(express.methodOverride());
+    app.use(express.cookieParser());
+    //app.use(express.session({ secret: "cartodb!", store: new RedisStore }));
+    app.use('/js', express.static('./public/js'));
+    app.use('/images', express.static('./public/images'));
+    app.use('/css', express.static('./public/css'));
+    app.use(express.static('./public'));
+    //app.use(express.static(pub));
+    app.use(express.logger({buffer:true, format:'[:remote-addr :date] \033[90m:method\033[0m \033[36m:url\033[0m \033[90m:status :response-time ms -> :res[Content-Type]\033[0m'}));
+    
+    /*
     // canary route
     app.get('/', function(req, res){
         res.send('Hello World');
     });
     */
-    app.get('/oauth/callback', function(req, res){
-        console.log('holllllly crap');
-        res.send('hi');
-    });
+    
     //_.extend(app, opts);
     
     /*
@@ -160,7 +138,7 @@ module.exports = function(opts){
         );
     });
     */
-    require('./dirtsock').start(io.listen(app), cartodb);
+    require('./dirtsock').start(io.listen(app));
     return app;
 };
 
