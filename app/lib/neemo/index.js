@@ -1,4 +1,4 @@
 module.exports = {
   Server:  require('./server'),
-  Queue:  require('./queue'),
+  Queue:  require('./queue')
 };

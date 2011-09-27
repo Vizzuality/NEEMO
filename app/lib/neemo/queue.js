@@ -11,7 +11,7 @@ var   express     = require('express')
     , sys         = require('sys')
     , rsub        = redis.createClient()
     , OAuth       = require('oauth').OAuth
-    , cartodb     = new Object(),
+    , cartodb     = new Object()
     , fs          = require('fs');
     
 module.exports = function(opts){

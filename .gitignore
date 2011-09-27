@@ -1,4 +1,4 @@
 .DS_Store
 node_modules
-app/lib/neemo/cartodb_settings.js
+app/cartodb_settings.js
 
