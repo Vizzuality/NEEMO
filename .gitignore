@@ -1,4 +1,5 @@
 .DS_Store
 node_modules
 app/cartodb_settings.js
+app/node_modules
 
