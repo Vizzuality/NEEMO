@@ -9,9 +9,14 @@ exports.start = function(io) {
     io.sockets.on('connection', function (socket) {
         socket.send(socket.id);
         socket.on('join', function (data) {
-            socket.set('region', data.region );
+            //socket.set('region', data.region );
             socket.join(data.region);
 	    });
+        socket.on('leave', function (data) {
+            socket.leave('/'+data.region)
+            socket.leave('/'+data.region + 1);
+            socket.leave('/'+(data.region - 1));
+        });
 	    socket.on('poi', function (data) {
             rpub.publish( 'poi-emit', JSON.stringify( data ));
         });

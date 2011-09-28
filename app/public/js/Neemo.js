@@ -45,6 +45,9 @@ Neemo.modules.app = function(neemo) {
                 this.map = new neemo.ui.Map.Engine(config, this._bus, this._api, config.region);
                 this.map.start();
                 this.form = new neemo.ui.Form.Engine(this._bus, this._api);
+                this.form.start();
+                this.slideshow = new neemo.ui.Slideshow.Engine(this._bus, this._api);
+                this.slideshow.start();
                 this.socket = new neemo.socket.Engine(this._bus, config.region);
             },
  
@@ -80,6 +83,67 @@ Neemo.modules.ui = function(neemo) {
             
         }
     );
+    /**
+     * Base class for DOM elements.
+     */
+    neemo.ui.Element = Class.extend(
+        {
+            /**
+             * Constructs a new Element from an element.
+             */
+            init: function(element) {
+                if (!element) {
+                    element = '<div>';
+                }
+                this._element = $(element);
+            },
+            //TODO add all selector events etc here if we don't want
+            //to be hooked to jquery specific. this might be a bit much.
+            //if so we can just scope jquery and use it fully. what it is 
+            //nice for is swapping out jquery for another. used example,
+            append: function(widget) {
+                this._element.append(widget.getElement());
+            },
+            find: function(id) {
+                var res = new Array();
+                this._element.find(id).each(function(c,v){
+                    res.push(new neemo.ui.Element(v));
+                });
+                return res;
+            },
+            findChild: function(identfier){
+                return new neemo.ui.Element(this._element.find(identfier));
+            },
+            getElement: function() {
+                return this._element;
+            },
+            setInnerHtml: function(html) {
+                this._element.html(html);
+            },
+        }
+    );
+    /**
+     * Base class for Displays.
+     */
+    neemo.ui.Display = neemo.ui.Element.extend(
+        {
+            /**
+             * Constructs a new Display with the given DOM element.
+             */
+            init: function(element) {
+                this._super(element);
+            },
+            
+            /**
+             * Sets the engine for this display.
+             * 
+             * @param engine a mol.ui.Engine subclass
+             */
+            setEngine: function(engine) {
+                this._engine = engine;
+            }
+        }
+    );
 };
 
 Neemo.modules.socket = function(neemo) {
@@ -97,17 +161,17 @@ Neemo.modules.socket = function(neemo) {
             _setupSockets: function(){
                 var that = this;
                 this.socket.on('connect', function () {
-                                    neemo.log.info('soccket connected!');
-                                });
+                    neemo.log.info('soccket connected!');
+                });
                 this.socket.on('message',function(data){
                     that._id = data;
                 });
                 this.socket.on('update', function (data) {
-                        if(data.id != that._id){
-                            that._bus.fireEvent(new Neemo.env.events.AddPoint(data));
-                        }
-                        neemo.log.info('socket update received');
-                      }, this);
+                    if(data.id != that._id){
+                        that._bus.fireEvent(new Neemo.env.events.AddPoint(data));
+                    }
+                    neemo.log.info('socket update received');
+                  }, this);
                 //TODO allow for changine region id through event bus
                 this.socket.emit('join', {region: this.region} );
                 
@@ -131,7 +195,8 @@ Neemo.modules.socket = function(neemo) {
                  */
                 bus.addHandler(
                     'ChangeRegion',
-                    function(event){;
+                    function(event){
+                        that.socket.emit('leave', {region: that.region});
                         that.region = event.getRegion();
                         that.socket.emit('join', {region: that.region} );
                     }
@@ -177,6 +242,117 @@ Neemo.modules.Form = function(neemo) {
                         that._bus.fireEvent(new Neemo.env.events.FormSubmit(data));
                     }
                 );
+            },
+            
+            /**
+             * Binds the display.
+             */
+            _bindDisplay: function(display, text) {                
+                var self = this;
+                this._display = display;
+                display.setEngine(this);            
+            },
+            
+            start: function() {
+                this._bindDisplay(new neemo.ui.Form.Display());
+            },
+        }
+    );
+    /**
+     * The Form display.
+     */
+    neemo.ui.Form.Display = neemo.ui.Display.extend(
+        {
+            init: function(config) {
+                this._super();
+                this.setInnerHtml(this._html());
+            },  
+            _html: function(){
+                return "<div>hi, i'll grow up to be a form</div>";
+            }
+        }
+    );
+}
+            
+           
+/* Handles the Slideshow object. I just stubbed this here as a guide
+ * if this handled the logic of the slideshow, there should be a 
+ * neemo.ui.Slideshow.Display that would handle what came to the screen
+ * Also, it listens for ChangeRegion event to know when to flip images
+ */
+Neemo.modules.Slideshow = function(neemo) {
+    neemo.ui.Slideshow = {};
+    neemo.ui.Slideshow.Engine = Class.extend(
+        {
+            init: function(bus, api) {
+                var that = this;
+                this._bus = bus;
+                this._api = api;
+                this._base_image_url = '/regions/';
+                this._bindEvents();
+            },
+            
+            _bindEvents: function(){
+                var that = this
+                   , bus = this._bus;
+                
+                bus.addHandler(
+                    'ChangeRegion',
+                    function(event){
+                        neemo.log.info('Change Region happened, I should flip images');
+                    }
+                );
+            },
+            
+            _bindDisplay: function(display, text) {                
+                var self = this;
+                this._display = display;
+                display.setEngine(this);            
+            },
+            
+            start: function() {
+                this._bindDisplay(new neemo.ui.Slideshow.Display());
+            },
+        }
+    );
+    /* Since each image in our slideshow is a region
+     * I called this element a Region. As the user moves
+     * these could be created and unlinked.
+     * I would make a BackRegion and a ForeRegion for the surrounding
+     */
+    neemo.ui.Slideshow.FocusRegion = neemo.ui.Display.extend(
+
+        {
+            init: function(base_image_url, region) {
+                this._image_url = image_url;
+                this._super(this._html());
+            },
+            _html: function() {
+                return  '<div class="region-slideshow-image">' +
+                        '    <img src="' + this._image_url + '" />' +
+                        '</div>';
+            }
+        }
+    );
+    /**
+     * The slideshow display.
+     */
+    neemo.ui.Slideshow.Display = neemo.ui.Display.extend(
+        {
+            init: function(config) {
+                this._super();
+                this.setInnerHtml(this._html());
+            },  
+            setNewFocus: function(base_image_url, region){
+                var Focus = neemo.ui.Slideshow.FocusRegion,
+                    r = new Focus(base_image_url, region);
+                this.findChild('.focus').append(r);
+                return r;
+            },      
+            _html: function(){
+                return '<div>hi, i will grow up to be a slideshow' +
+                            '<div class="focus"></div>' +
+                        '</div>';
             }
         }
     );
