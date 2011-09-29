@@ -45,51 +45,21 @@ Neemo.modules.events = function(neemo) {
   );
 
   /**
-  * Region click event.
+  * Click event.
   */
   neemo.events.RegionClick = neemo.events.Event.extend(
     {
-    init: function(coordinates, action) {
+    init: function(click, action) {
       this._super('RegionClick', action);
-      this._coordinates = coordinates;
+      this._click = click;
     },
 
-    getX: function() {
-      return this._coordinates.x();
+    getClick: function() {
+      return this._click;
     },
-
-    getY: function() {
-      return this._coordinates.y();
-    }
   }
   );
   neemo.events.RegionClick.TYPE = 'region_click';
-
-  /**
-  * Click event.
-  */
-  neemo.events.MapClick = neemo.events.Event.extend(
-    {
-    init: function(location, action) {
-      this._super('MapClick', action);
-      this._location = location;
-      this._latLng = location.latLng;
-    },
-
-    getLocation: function() {
-      return this._location;
-    },
-
-    getLat: function() {
-      return this._latLng.lat();
-    },
-
-    getLon: function() {
-      return this._latLng.lng();
-    }
-  }
-  );
-  neemo.events.MapClick.TYPE = 'map_click';
 
   /**
      * Change Region event.
@@ -106,7 +76,7 @@ Neemo.modules.events = function(neemo) {
     }
   }
   );
-  neemo.events.MapClick.TYPE = 'change_region';
+  neemo.events.ChangeRegion.TYPE = 'change_region';
 
   /**
      * Add point event.

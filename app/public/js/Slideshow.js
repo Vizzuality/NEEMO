@@ -40,6 +40,7 @@ Neemo.modules.Slideshow = function(neemo) {
       var lat = -90 + (180.0 * event.column)/this._height;
       var lon = -360 + (360.0 * event.row)/this._width;
       var data = {lat: lat, lon: lon};
+      ///TODO method not implemented yet
       this._bus.fireEvent(new Neemo.env.events.RegionClick(data));
     },
 
