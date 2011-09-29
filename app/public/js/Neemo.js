@@ -42,8 +42,8 @@ Neemo.modules.app = function(neemo) {
                 neemo.config = config;
                 //this.ui = new neemo.ui.Engine(config, this._bus);
                 this._api = config.api || new neemo.ajax.Api(this._bus);
-                this.map = new neemo.ui.Map.Engine(config, this._bus, this._api, config.region);
-                this.map.start();
+                //this.map = new neemo.ui.Map.Engine(config, this._bus, this._api, config.region);
+                //this.map.start();
                 this.form = new neemo.ui.Form.Engine(this._bus, this._api);
                 this.form.start();
                 this.slideshow = new neemo.ui.Slideshow.Engine(this._bus, this._api);
@@ -62,6 +62,71 @@ Neemo.modules.app = function(neemo) {
     );
 };
 
+
+Neemo.modules.socket = function(neemo) {
+    neemo.socket = {};
+    neemo.socket.Engine = Class.extend(
+        {
+            init: function(bus, region) {
+                this._id = -1;
+                this._bus = bus;
+                this.region = null;
+                this.socket = io.connect();
+                this._bindEvents();
+                this._setupSockets();
+            },
+            _setupSockets: function(){
+                var that = this;
+                this.socket.on('connect', function () {
+                    neemo.log.info('soccket connected!');
+                    //TODO allow for changine region id through event bus
+                    if (that.region === null) {
+                        that.region = 1;
+                        //tell everyone that we are at a new region, 1
+                        that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that.region}));
+                    }
+                });
+                this.socket.on('message',function(data){
+                    that._id = data;
+                });
+                this.socket.on('update', function (data) {
+                    if(data.id != that._id){
+                        that._bus.fireEvent(new Neemo.env.events.AddPoint(data));
+                    }
+                    neemo.log.info('socket update received');
+                  }, this);
+            },
+            _bindEvents: function(){
+                var that = this,
+                    bus = this._bus;
+                /* send the new click data to server */
+                bus.addHandler(
+                    'FormSubmit',
+                    function(event){
+                        neemo.log.info('form recieved');
+                        var data = event.getData();
+                        data.id = that._id;
+                        data.region =that.region;
+                        that.socket.emit('poi', data);
+                    }
+                );
+                /* Change the socket 'room' we are listening to when the region changes
+                 * 
+                 */
+                bus.addHandler(
+                    'ChangeRegion',
+                    function(event){
+                        neemo.log.info('region changed from '+that.region+' to '+event.getRegion());
+                        that.socket.emit('leave', {region: that.region});
+                        that.region = event.getRegion();
+                        that.socket.emit('join', {region: that.region} );
+                    }
+                );
+                
+            },
+        }
+    );
+};
 
 Neemo.modules.ui = function(neemo) {
     
@@ -142,67 +207,6 @@ Neemo.modules.ui = function(neemo) {
             setEngine: function(engine) {
                 this._engine = engine;
             }
-        }
-    );
-};
-
-Neemo.modules.socket = function(neemo) {
-    neemo.socket = {};
-    neemo.socket.Engine = Class.extend(
-        {
-            init: function(bus, region) {
-                this._id = -1;
-                this._bus = bus;
-                this.region = region;
-                this.socket = io.connect();
-                this._setupSockets();
-                this._bindEvents();
-            },
-            _setupSockets: function(){
-                var that = this;
-                this.socket.on('connect', function () {
-                    neemo.log.info('soccket connected!');
-                });
-                this.socket.on('message',function(data){
-                    that._id = data;
-                });
-                this.socket.on('update', function (data) {
-                    if(data.id != that._id){
-                        that._bus.fireEvent(new Neemo.env.events.AddPoint(data));
-                    }
-                    neemo.log.info('socket update received');
-                  }, this);
-                //TODO allow for changine region id through event bus
-                this.socket.emit('join', {region: this.region} );
-                
-            },
-            _bindEvents: function(){
-                var that = this,
-                    bus = this._bus;
-                /* send the new click data to server */
-                bus.addHandler(
-                    'FormSubmit',
-                    function(event){
-                        neemo.log.info('form recieved');
-                        var data = event.getData();
-                        data.id = that._id;
-                        data.region =that.region;
-                        that.socket.emit('poi', data);
-                    }
-                );
-                /* Change the socket 'room' we are listening to when the region changes
-                 * 
-                 */
-                bus.addHandler(
-                    'ChangeRegion',
-                    function(event){
-                        that.socket.emit('leave', {region: that.region});
-                        that.region = event.getRegion();
-                        that.socket.emit('join', {region: that.region} );
-                    }
-                );
-                
-            },
         }
     );
 };
@@ -290,28 +294,40 @@ Neemo.modules.Slideshow = function(neemo) {
                 this._api = api;
                 this._base_image_url = '/regions/';
                 this._bindEvents();
+                this._width = 800;
+                this._height = 600;
             },
             
             _bindEvents: function(){
                 var that = this
                    , bus = this._bus;
-                
                 bus.addHandler(
                     'ChangeRegion',
                     function(event){
                         neemo.log.info('Change Region happened, I should flip images');
+                        that._display.setNewFocus(that._base_image_url, event.getRegion());
                     }
                 );
             },
+            _canvasClick: function(event){
+                console.log(event);
+                var lat = -90 + (180.0 * event.column)/this._height;
+                var lon = -360 + (360.0 * event.row)/this._width;
+                var data = {lat: lat, lon: lon};
+                ///TODO method not implemented yet
+                this._bus.fireEvent(new Neemo.env.events.FocusClick(data));
+            },
             
             _bindDisplay: function(display, text) {                
-                var self = this;
+                var that = this;
                 this._display = display;
-                display.setEngine(this);            
+                display.setEngine(this); 
+                $('#region-focus-image').click(function(e){that._canvasClick(e)});
             },
             
             start: function() {
-                this._bindDisplay(new neemo.ui.Slideshow.Display());
+                this._bindDisplay(new neemo.ui.Slideshow.Display({width: this._width, height: this._height}));
+                
             },
         }
     );
@@ -323,13 +339,28 @@ Neemo.modules.Slideshow = function(neemo) {
     neemo.ui.Slideshow.FocusRegion = neemo.ui.Display.extend(
 
         {
-            init: function(base_image_url, region) {
-                this._image_url = image_url;
+            init: function(config) {
+                this._id = 'region-slideshow-image';
+                this._image = new Image();
                 this._super(this._html());
+                this._width = config.width;
+                this._height = config.height;
+            },
+            start: function(){
+                this._cnvs = document.getElementById("region-focus-image");
+                this._ctx = this._cnvs.getContext("2d");
+            },
+            change: function(base_image_url, region){
+                var that = this;
+                this._image_url = base_image_url + region + '.jpg';
+                this._image.src = this._image_url;
+                this._image.onload = function() {
+                    that._ctx.drawImage(that._image, 0, 0);
+                }
             },
             _html: function() {
-                return  '<div class="region-slideshow-image">' +
-                        '    <img src="' + this._image_url + '" />' +
+                return  '<div id="'+this._id+'">' +
+                        '    <canvas id="region-focus-image" width="'+this._width+'" height="'+this._height+'"></canvas>' +
                         '</div>';
             }
         }
@@ -340,14 +371,16 @@ Neemo.modules.Slideshow = function(neemo) {
     neemo.ui.Slideshow.Display = neemo.ui.Display.extend(
         {
             init: function(config) {
-                this._super();
+                this._id = 'slideshow';
+                this._super($('<div>').attr({'id': this._id}));
+                $('body').append(this.getElement());
                 this.setInnerHtml(this._html());
+                this.Focus = new neemo.ui.Slideshow.FocusRegion(config);
+                this.findChild('.focus').append(this.Focus);
+                this.Focus.start();
             },  
             setNewFocus: function(base_image_url, region){
-                var Focus = neemo.ui.Slideshow.FocusRegion,
-                    r = new Focus(base_image_url, region);
-                this.findChild('.focus').append(r);
-                return r;
+                this.Focus.change(base_image_url, region);
             },      
             _html: function(){
                 return '<div>hi, i will grow up to be a slideshow' +
@@ -358,91 +391,6 @@ Neemo.modules.Slideshow = function(neemo) {
     );
 }
             
-            
-/* Handles the map object. Also listens for placemark add events and
- * draws them to the map.
- */
-Neemo.modules.Map = function(neemo) {
-    neemo.ui.Map = {};
-    neemo.ui.Map.Engine = Class.extend(
-        {
-            init: function(config, bus, api, region) {
-                var that = this;
-                this._bus = bus;
-                this._api = api;
-                neemo.ui.Map.region = region;
-                neemo.ui.Map.map = new google.maps.Map(document.getElementById(config.container), config.mapOptions);
-                google.maps.event.addListener(neemo.ui.Map.map, 'click', function(event) {
-                    neemo.log.info('map click');
-                    that._bus.fireEvent(new Neemo.env.events.MapClick(event));
-                });
-                
-                this._bindEvents();
-            },
-            _bindEvents: function(){
-                var that = this
-                   , bus = this._bus;
-                
-                bus.addHandler(
-                    'AddPoint',
-                    function(event){;
-                        that._drawPlacemark({lat: event.getLat(), lng: event.getLon()})
-                    }
-                );
-                bus.addHandler(
-                    'ChangeRegion',
-                    function(event){;
-                        neemo.ui.Map.region = event.getRegion();
-                        //TODO, redraw map based on new region bbox. 
-                        //      release old points
-                        //      query new points
-                    }
-                );
-                
-            },
-            
-            _drawPlacemark: function(data){
-                marker = new google.maps.Marker({
-                    position: new google.maps.LatLng(data.lat, data.lng),
-                    map: neemo.ui.Map.map
-                });
-                neemo.ui.Map.markersArray.push(marker);
-            },
-            updateRegion: function() {
-                throw neemo.exceptions.NotImplementedError;
-            },
-            start: function() {
-                var  that = this
-                   , api = this._api
-                   , PointLayer = neemo.ajax.PointLayer
-                   , query
-                   , callback;
-                neemo.ui.Map.markersArray = new Array();
-                neemo.ui.Map.drawPlacemark = this._drawPlacemark;
-                /* Add existing points to the map
-                 * Based on the current region of the user
-                 */
-                query = 'SELECT * FROM neemo WHERE region='+neemo.ui.Map.region;
-                callback = new this._pointLayerCallback;
-                api.execute(query, callback);  
-            },
-            _pointLayerCallback: function() {
-                var  ActionCallback = neemo.ajax.ActionCallback
-                   , that = this;
-                return new ActionCallback(
-                    function(response) {
-                        for (r in response.features){
-                            neemo.ui.Map.drawPlacemark({
-                                lng: response.features[r]['geometry']['coordinates'][0],
-                                lat: response.features[r]['geometry']['coordinates'][1]
-                            })
-                        }
-                    }
-                );
-            },
-        }
-    );
-};
 
 /**
  * AJAX module for communicating with the server.
@@ -601,9 +549,9 @@ Neemo.modules.events = function(neemo) {
      */
     neemo.events.ChangeRegion = neemo.events.Event.extend(
         {
-            init: function(region, action) {
+            init: function(data, action) {
                 this._super('ChangeRegion', action);
-                this._region = region;
+                this._region = data.region;
             },
  
             getRegion: function() {
