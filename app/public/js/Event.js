@@ -45,32 +45,6 @@ Neemo.modules.events = function(neemo) {
   );
 
   /**
-  * Focus click event.
-  */
-  neemo.events.FocusClick = neemo.events.Event.extend(
-    {
-    init: function(location, action) {
-      this._super('FocusClick', action);
-      this._location = location;
-      this._latLng = location.latLng;
-    },
-
-    getLocation: function() {
-      return this._location;
-    },
-
-    getLat: function() {
-      return this._latLng.lat();
-    },
-
-    getLon: function() {
-      return this._latLng.lng();
-    }
-  }
-  );
-  neemo.events.FocusClick.TYPE = 'focus_click';
-
-  /**
      * Click event.
 */
   neemo.events.RegionClick = neemo.events.Event.extend(
