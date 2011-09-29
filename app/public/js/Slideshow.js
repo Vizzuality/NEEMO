@@ -27,15 +27,19 @@ Neemo.modules.Slideshow = function(neemo) {
           that._display.setNewFocus(that._base_image_url, event.getRegion());
         }
       );
+      bus.addHandler(
+        'RegionClick',
+        function(event){
+          neemo.log.info('Click Region happened');
+        }
+      );
     },
 
     _canvasClick: function(event){
-      console.log(event);
       var lat = -90 + (180.0 * event.column)/this._height;
       var lon = -360 + (360.0 * event.row)/this._width;
       var data = {lat: lat, lon: lon};
-      ///TODO method not implemented yet
-      this._bus.fireEvent(new Neemo.env.events.FocusClick(data));
+      this._bus.fireEvent(new Neemo.env.events.RegionClick(data));
     },
 
     _bindDisplay: function(display, text) {

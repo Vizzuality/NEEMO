@@ -45,30 +45,25 @@ Neemo.modules.events = function(neemo) {
   );
 
   /**
-  * Focus click event.
+  * Region click event.
   */
-  neemo.events.FocusClick = neemo.events.Event.extend(
+  neemo.events.RegionClick = neemo.events.Event.extend(
     {
-    init: function(location, action) {
-      this._super('FocusClick', action);
-      this._location = location;
-      this._latLng = location.latLng;
+    init: function(coordinates, action) {
+      this._super('RegionClick', action);
+      this._coordinates = coordinates;
     },
 
-    getLocation: function() {
-      return this._location;
+    getX: function() {
+      return this._coordinates.x();
     },
 
-    getLat: function() {
-      return this._latLng.lat();
-    },
-
-    getLon: function() {
-      return this._latLng.lng();
+    getY: function() {
+      return this._coordinates.y();
     }
   }
   );
-  neemo.events.FocusClick.TYPE = 'focus_click';
+  neemo.events.RegionClick.TYPE = 'region_click';
 
   /**
      * Click event.
