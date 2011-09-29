@@ -73,28 +73,19 @@ Neemo.modules.events = function(neemo) {
   /**
      * Click event.
 */
-  neemo.events.MapClick = neemo.events.Event.extend(
+  neemo.events.RegionClick = neemo.events.Event.extend(
     {
-    init: function(location, action) {
-      this._super('MapClick', action);
-      this._location = location;
-      this._latLng = location.latLng;
+    init: function(click, action) {
+      this._super('RegionClick', action);
+      this._click = click;
     },
 
-    getLocation: function() {
-      return this._location;
+    getClick: function() {
+      return this._click;
     },
-
-    getLat: function() {
-      return this._latLng.lat();
-    },
-
-    getLon: function() {
-      return this._latLng.lng();
-    }
   }
   );
-  neemo.events.MapClick.TYPE = 'map_click';
+  neemo.events.RegionClick.TYPE = 'region_click';
 
   /**
      * Change Region event.
@@ -111,7 +102,7 @@ Neemo.modules.events = function(neemo) {
     }
   }
   );
-  neemo.events.MapClick.TYPE = 'change_region';
+  neemo.events.ChangeRegion.TYPE = 'change_region';
 
   /**
      * Add point event.

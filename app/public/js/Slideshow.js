@@ -35,7 +35,7 @@ Neemo.modules.Slideshow = function(neemo) {
       var lon = -360 + (360.0 * event.row)/this._width;
       var data = {lat: lat, lon: lon};
       ///TODO method not implemented yet
-      this._bus.fireEvent(new Neemo.env.events.FocusClick(data));
+      this._bus.fireEvent(new Neemo.env.events.RegionClick(data));
     },
 
     _bindDisplay: function(display, text) {
