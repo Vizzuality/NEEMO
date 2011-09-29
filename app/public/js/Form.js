@@ -21,7 +21,7 @@ Neemo.modules.Form = function(neemo) {
       , bus = this._bus;
 
       bus.addHandler(
-        'MapClick',
+        'RegionClick',
         function(event){
           neemo.log.info('map click recieved');
           var data = {lat: event.getLat(),

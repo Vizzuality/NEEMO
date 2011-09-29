@@ -49,13 +49,16 @@ Neemo.modules.events = function(neemo) {
 */
   neemo.events.RegionClick = neemo.events.Event.extend(
     {
-    init: function(click, action) {
+    init: function(data, action) {
       this._super('RegionClick', action);
-      this._click = click;
+      this._data = data;
     },
 
-    getClick: function() {
-      return this._click;
+    getLat: function() {
+      return this._data.lat;
+    },
+    getLon: function() {
+      return this._data.lon;
     },
   }
   );
