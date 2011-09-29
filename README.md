@@ -1,4 +1,4 @@
-Windshaft-CartoDB
+NEEMO
 ==================
 
 This is the Neemo web application server, client, and processing queue.
