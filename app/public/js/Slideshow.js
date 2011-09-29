@@ -16,6 +16,7 @@ Neemo.modules.Slideshow = function(neemo) {
       this._width  = 800;
       this._height = 600;
       this._speed  = 500;
+      this._canvasid = 'region-focus-image';
     },
 
     _bindEvents: function(){
@@ -46,7 +47,7 @@ Neemo.modules.Slideshow = function(neemo) {
           x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft; 
           y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop; 
         } 
-        var el = this._display.getElement('region-focus-image');
+        var el = this._display.getElement(this._canvasid);
         x -= el[0].offsetLeft;
         y -= el[0].offsetTop;
         
@@ -63,12 +64,12 @@ Neemo.modules.Slideshow = function(neemo) {
       ///TODO method not implemented yet
       this._bus.fireEvent(new Neemo.env.events.RegionClick(data));
     },
-
+    
     _bindDisplay: function(display, text) {
       var that = this;
       this._display = display;
       display.setEngine(this);
-      $('#region-focus-image').click(function(e){that._canvasClick(e)});
+      $('#' + this._canvasid).click(function(e){that._canvasClick(e)});
     },
 
     start: function() {
