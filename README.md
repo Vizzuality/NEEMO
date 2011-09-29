@@ -1,4 +1,4 @@
-Windshaft-CartoDB
+NEEMO
 ==================
 
 This is the Neemo web application server, client, and processing queue.
@@ -33,8 +33,10 @@ Run App Server
 -------------
 
 node app.js
+(redis must be started)
 
 Run Queue Server
 -------------
 
 node queue.js
+(redis must be started)
