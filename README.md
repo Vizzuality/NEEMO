@@ -32,9 +32,12 @@ Queue.js features
 Run App Server
 -------------
 
+#redis must be started
 node app.js
 
 Run Queue Server
 -------------
 
+#redis must be started
 node queue.js
+
