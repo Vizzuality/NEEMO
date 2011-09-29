@@ -12,11 +12,11 @@ Neemo.modules.Slideshow = function(neemo) {
       this._bus = bus;
       this._api = api;
       this._base_image_url = '/regions/';
-      this._bindEvents();
       this._width  = 800;
       this._height = 600;
       this._speed  = 500;
       this._canvasid = 'region-focus-image';
+      this._region = 1;
     },
 
     _bindEvents: function(){
@@ -26,6 +26,7 @@ Neemo.modules.Slideshow = function(neemo) {
         'ChangeRegion',
         function(event){
           neemo.log.info('Change Region happened, I should flip images');
+          that._region = event.getRegion();
           that._display.setNewFocus(that._base_image_url, event.getRegion());
         }
       );
@@ -60,9 +61,10 @@ Neemo.modules.Slideshow = function(neemo) {
       y = c[1]
       var lat = 90 - (180.0 * y)/this._height;
       var lon = -180 + (360.0 * x)/this._width;
-      var data = {lat: lat, lon: lon};
+      var data = {lat: lat, lon: lon, click_x: x, click_y: y};
       ///TODO method not implemented yet
       this._bus.fireEvent(new Neemo.env.events.RegionClick(data));
+      //testing here, fireEvent(new Neemo.env.events.RegionClick({region: 2}))
     },
     
     _bindDisplay: function(display, text) {
@@ -74,6 +76,7 @@ Neemo.modules.Slideshow = function(neemo) {
 
     start: function() {
       this._bindDisplay(new neemo.ui.Slideshow.Display({width: this._width, height: this._height, speed: this._speed}));
+      this._bindEvents();
     },
   }
   );
@@ -83,8 +86,6 @@ Neemo.modules.Slideshow = function(neemo) {
   * these could be created and unlinked.
   * I would make a BackRegion and a ForeRegion for the surrounding
   */
-
-
   neemo.ui.Slideshow.ForeRegion = neemo.ui.Display.extend(
     {
     init: function(config) {
@@ -99,12 +100,12 @@ Neemo.modules.Slideshow = function(neemo) {
       this._ctx = this._cnvs.getContext("2d");
     },
     change: function(base_image_url, region){
-      var that = this;
-      this._image_url = base_image_url + region + '.jpg';
-      this._image.src = this._image_url;
-      this._image.onload = function() {
-        that._ctx.drawImage(that._image, 0, 0);
-      }
+        var that = this;
+        this._image_url = base_image_url + region + '.jpg';
+        this._image.src = this._image_url;
+        this._image.onload = function() {
+            that._ctx.drawImage(that._image, 0, 0);
+        }
     },
     _html: function() {
       return  '<div id="'+this._id+'" style="margin-top:200px;">' +
@@ -128,7 +129,6 @@ Neemo.modules.Slideshow = function(neemo) {
     start: function(){
       this._cnvs = document.getElementById("region-focus-image");
       this._ctx = this._cnvs.getContext("2d");
-      console.log(this);
       $("#" + this._id).fadeIn(this._speed);
     },
     change: function(base_image_url, region){
@@ -161,11 +161,6 @@ Neemo.modules.Slideshow = function(neemo) {
       this.Focus = new neemo.ui.Slideshow.FocusRegion(config);
       this.findChild('.focus').append(this.Focus);
       this.Focus.start();
-
-
-      //this.ForeRegion = new neemo.ui.Slideshow.ForeRegion(config);
-      //this.findChild('.focus').append(this.ForeRegion);
-      //this.ForeRegion.start();
     },
     setNewFocus: function(base_image_url, region){
       this.Focus.change(base_image_url, region);

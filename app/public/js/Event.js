@@ -60,6 +60,15 @@ Neemo.modules.events = function(neemo) {
     getLon: function() {
       return this._data.lon;
     },
+    getX: function() {
+      return this._data.click_x;
+    },
+    getY: function() {
+      return this._data.click_y;
+    },
+    getRegion: function() {
+      return this._data.region;
+    }
   }
   );
   neemo.events.RegionClick.TYPE = 'region_click';

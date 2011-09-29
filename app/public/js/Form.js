@@ -23,9 +23,13 @@ Neemo.modules.Form = function(neemo) {
       bus.addHandler(
         'RegionClick',
         function(event){
-          neemo.log.info('map click recieved');
-          var data = {lat: event.getLat(),
+          neemo.log.info('image click recieved');
+          var data = {
+            lat: event.getLat(),
             lon: event.getLon(),
+            click_x: event.getX(),
+            click_y: event.getY(),
+            region: event.getRegion(),
             title: 'test click',
             category: 'tests',
             type: 'click',

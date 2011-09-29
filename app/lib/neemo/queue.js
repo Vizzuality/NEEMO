@@ -104,9 +104,9 @@ module.exports = function(opts){
         // Do a sample POST query
         var protected_request = cartodb.api_url;
         
-        var ordered_columns = ['userkey', 'region', 'category', 'objtype', 'title', 'notes', 'the_geom']
+        var ordered_columns = ['userkey', 'region', 'category', 'objtype', 'title', 'notes', 'the_geom', 'click_x', 'click_y']
         
-        var query = "INSERT INTO neemo (" + ordered_columns.join(', ') + ") VALUES ('"+data.id+"',"+data.region+",'"+data.category+"','"+data.type+"','"+data.title+"','"+data.notes+"',GeometryFromText('POINT('|| "+data.lon+" ||' '|| "+data.lat+" ||')', 4326))";
+        var query = "INSERT INTO neemo (" + ordered_columns.join(', ') + ") VALUES ('"+data.id+"',"+data.region+",'"+data.category+"','"+data.type+"','"+data.title+"','"+data.notes+"',GeometryFromText('POINT('|| "+data.lon+" ||' '|| "+data.lat+" ||')', 4326), "+data.click_x+", "+data.click_y+")";
         var body = {q: query}
         cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function (error, data, response) {
             console.log('\n== CartoDB result for NEEMO put "' + query + '" ==');
