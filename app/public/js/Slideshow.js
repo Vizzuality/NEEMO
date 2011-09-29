@@ -35,10 +35,30 @@ Neemo.modules.Slideshow = function(neemo) {
         }
       );
     },
-
+    _getClickOffset: function(e){
+        var x;
+        var y;
+        if (e.pageX || e.pageY) { 
+          x = e.pageX;
+          y = e.pageY;
+        }
+        else { 
+          x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft; 
+          y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop; 
+        } 
+        var el = this._display.getElement('region-focus-image');
+        x -= el[0].offsetLeft;
+        y -= el[0].offsetTop;
+        
+        return [x,y];
+    },
     _canvasClick: function(event){
-      var lat = -90 + (180.0 * event.offsetX)/this._height;
-      var lon = -180 + (360.0 * event.offsetY)/this._width;
+      var x, y, c;
+      c = this._getClickOffset(event);
+      x = c[0]
+      y = c[1]
+      var lat = 90 - (180.0 * y)/this._height;
+      var lon = -180 + (360.0 * x)/this._width;
       var data = {lat: lat, lon: lon};
       ///TODO method not implemented yet
       this._bus.fireEvent(new Neemo.env.events.RegionClick(data));

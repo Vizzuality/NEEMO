@@ -105,7 +105,6 @@ Neemo.modules.socket = function(neemo) {
           data.id = that._id;
           data.region = that.region;
           that.socket.emit('poi', data);
-          console.log(data);
         }
       );
 
