@@ -11,10 +11,10 @@ Neemo.modules.events = function(neemo) {
   neemo.events.Event = Class.extend(
     {
     /**
-             * Constructs a new event.
-             *
-             * @param type the type of event
-*/
+    * Constructs a new event.
+    *
+    * @param type the type of event
+    */
     init: function(type, action) {
       var IllegalArgumentException = neemo.exceptions.IllegalArgumentException;
       if (!type) {
@@ -25,19 +25,19 @@ Neemo.modules.events = function(neemo) {
     },
 
     /**
-             * Gets the event type.
-             *
-             * @return the event type string
-*/
+    * Gets the event type.
+    *
+    * @return the event type string
+    */
     getType: function() {
       return this._type;
     },
 
     /**
-             * Gets the action.
-             *
-             * @return action
-*/
+    * Gets the action.
+    *
+    * @return action
+    */
     getAction: function() {
       return this._action;
     }
@@ -45,8 +45,8 @@ Neemo.modules.events = function(neemo) {
   );
 
   /**
-     * Click event.
-*/
+  * Click event.
+  */
   neemo.events.RegionClick = neemo.events.Event.extend(
     {
     init: function(data, action) {
@@ -106,8 +106,8 @@ Neemo.modules.events = function(neemo) {
   );
   neemo.events.AddPoint.TYPE = 'add_point';
   /**
-     * Form submission event.
-*/
+  * Form submission event.
+  */
   neemo.events.FormSubmit = neemo.events.Event.extend(
     {
     init: function(data, action) {
@@ -122,8 +122,8 @@ Neemo.modules.events = function(neemo) {
   );
   neemo.events.FormSubmit.TYPE = 'form_submit';
   /**
-     * The event bus.
-*/
+  * The event bus.
+  */
   neemo.events.Bus = function() {
     if (!(this instanceof neemo.events.Bus)) {
       return new neemo.events.Bus();
@@ -131,20 +131,20 @@ Neemo.modules.events = function(neemo) {
     _.extend(this, Backbone.Events);
 
     /**
-         * Fires an event on the event bus.
-         *
-         * @param event the event to fire
-*/
+    * Fires an event on the event bus.
+    *
+    * @param event the event to fire
+    */
     this.fireEvent = function(event) {
       this.trigger(event.getType(), event);
     };
 
     /**
-         * Adds an event handler for an event type.
-         *
-         * @param type the event type
-         * @param handler the event handler callback function
-*/
+    * Adds an event handler for an event type.
+    *
+    * @param type the event type
+    * @param handler the event handler callback function
+    */
     this.addHandler = function(type, handler) {
       this.bind(
         type,

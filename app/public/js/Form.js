@@ -37,8 +37,8 @@ Neemo.modules.Form = function(neemo) {
     },
 
     /**
-             * Binds the display.
-*/
+    * Binds the display.
+    */
     _bindDisplay: function(display, text) {
       var self = this;
       this._display = display;
@@ -51,8 +51,8 @@ Neemo.modules.Form = function(neemo) {
   }
   );
   /**
-     * The Form display.
-*/
+  * The Form display.
+  */
   neemo.ui.Form.Display = neemo.ui.Display.extend(
     {
     init: function(config) {
