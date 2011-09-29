@@ -103,13 +103,15 @@ Neemo.modules.socket = function(neemo) {
           neemo.log.info('form recieved');
           var data = event.getData();
           data.id = that._id;
-          data.region =that.region;
+          data.region = that.region;
           that.socket.emit('poi', data);
+          console.log(data);
         }
       );
-      /* Change the socket 'room' we are listening to when the region changes
-      *
-*/
+
+      /*
+      * Change the socket 'room' we are listening to when the region changes
+      */
       bus.addHandler(
         'ChangeRegion',
         function(event){
@@ -119,7 +121,6 @@ Neemo.modules.socket = function(neemo) {
           that.socket.emit('join', {region: that.region} );
         }
       );
-
     },
   }
   );
@@ -130,29 +131,28 @@ Neemo.modules.ui = function(neemo) {
   neemo.ui = {};
 
   /**
-     * Interface for UI Engine classes.
-*/
+  * Interface for UI Engine classes.
+  */
   neemo.ui.Engine = Class.extend(
     {
     /**
-             * Starts the engine and provides a container for its display.
-             *
-             * @param container the container for the engine display
-*/
+    * Starts the engine and provides a container for its display.
+    *
+    * @param container the container for the engine display
+    */
     start: function(container) {
       throw neemo.exceptions.NotImplementedError;
     },
-
   }
   );
   /**
-     * Base class for DOM elements.
-*/
+  * Base class for DOM elements.
+  */
   neemo.ui.Element = Class.extend(
     {
     /**
-             * Constructs a new Element from an element.
-*/
+    * Constructs a new Element from an element.
+    */
     init: function(element) {
       if (!element) {
         element = '<div>';
@@ -200,7 +200,7 @@ Neemo.modules.ui = function(neemo) {
     * Sets the engine for this display.
     *
     * @param engine a mol.ui.Engine subclass
-*/
+    */
     setEngine: function(engine) {
       this._engine = engine;
     }
@@ -262,21 +262,21 @@ Neemo.modules.ajax = function(neemo) {
   neemo.ajax.Api = Class.extend(
     {
     /**
-             * Constructs a new Api object with an event bus.
-             *
-             * @param bus neemo.events.Bus
-             * @constructor
-*/
+    * Constructs a new Api object with an event bus.
+    *
+    * @param bus neemo.events.Bus
+    * @constructor
+    */
     init: function(bus) {
       this._bus = bus;
     },
 
     /**
-             * Executes an action asynchronously.
-             *
-             * @param action the neemo.ajax.Action
-             * @param callback the neemo.ajax. ActionCallback
-*/
+    * Executes an action asynchronously.
+    *
+    * @param action the neemo.ajax.Action
+    * @param callback the neemo.ajax. ActionCallback
+    */
     execute: function(query, callback ) {
       var self = this
       , req;
