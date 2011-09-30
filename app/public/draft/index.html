@@ -29,13 +29,19 @@
         numberOfRegions = 5;
 
         function hideAside(callback) {
-          $("#slideshow div.selected").find("aside").animate({opactiy:0, right:"100px"}, 250, function() {
+          $("#slideshow div.selected aside").animate({opactiy:0, right:"100px"}, 250, function() {
             $(this).animate({height:300}, 0, callback);
+            $(this).hide();
           });
         }
 
         function showAside() {
-          $("#slideshow div.selected").find("aside").animate({opacity:1, right:"-100px"}, 250);
+          $("#slideshow div.selected aside").css({height:"400px", right:"100px"});
+
+          $("#slideshow div.selected aside").show(0, function() {
+            $("#slideshow div.selected aside").delay(200).animate({opacity:1, right:"-100px"}, 250);
+          });
+
         }
 
         function selectBox(i) {
@@ -47,7 +53,7 @@
           if (!moving) {
             moving = true;
             selectBox(++i);
-            $("#container").scrollTo("+="+(width/2 + margin) +"px", {duration:100, easing:easingMethod, onAfter: function() {
+            $("#container").scrollTo("+="+(width/2 + margin) +"px", {duration:250, easing:easingMethod, onAfter: function() {
                 moving = false;
                 showAside();
             }});
@@ -58,7 +64,7 @@
           if (!moving) {
             moving = true;
             selectBox(--i);
-            $("#container").scrollTo("-="+(width/2 + margin) +"px", {duration:100, easing:easingMethod, onAfter: function() {
+            $("#container").scrollTo("-="+(width/2 + margin) +"px", {duration:250, easing:easingMethod, onAfter: function() {
                 moving = false;
                 showAside();
             }});
@@ -139,8 +145,9 @@
         -webkit-box-shadow: 0px 0px 15px #000;
       }
 
-      #slideshow .image.selected aside {height:300px; }
-      #slideshow .image aside { height:300px; width:100px; right:100px; float:right; position:relative; background:rgba(0,0,0,.3); }
+      #slideshow .image aside { opacity:0; top:50%; margin-top:-150px; height:300px; width:100px; right:100px; float:right; position:absolute; background:rgba(0,0,0,1); }
+      #slideshow .image.selected aside {margin-top:-200px; height:400px; }
+
       .rays {position:absolute; left:0px; top:0px; background:url('/images/rays.png') no-repeat; width:386px; height:570px;}
 
 
