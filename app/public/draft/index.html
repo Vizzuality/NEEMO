@@ -2,7 +2,10 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
     <link rel="stylesheet" href="/css/style.css" />
 
     <script src="http://www.google.com/jsapi"></script>
@@ -20,9 +23,10 @@
         i = 0,
         width = 800,
         height = 600,
-        margin = -100,
+        margin = -196,
         moving = false,
-        numberOfRegions = 10;
+        easingMethod = 'easeInExpo',
+        numberOfRegions = 5;
 
         function hideAside(callback) {
           $("#slideshow div.selected").find("aside").animate({opactiy:0, right:"100px"}, 250, function() {
@@ -43,7 +47,7 @@
           if (!moving) {
             moving = true;
             selectBox(++i);
-            $("#container").scrollTo("+="+(width/2 + margin) +"px", {duration:200, easing:'easeInExpo', onAfter: function() {
+            $("#container").scrollTo("+="+(width/2 + margin) +"px", {duration:100, easing:easingMethod, onAfter: function() {
                 moving = false;
                 showAside();
             }});
@@ -54,7 +58,7 @@
           if (!moving) {
             moving = true;
             selectBox(--i);
-            $("#container").scrollTo("-="+(width/2 + margin) +"px", {duration:200, easing:'easeInExpo', onAfter: function() {
+            $("#container").scrollTo("-="+(width/2 + margin) +"px", {duration:100, easing:easingMethod, onAfter: function() {
                 moving = false;
                 showAside();
             }});
@@ -83,7 +87,7 @@
 
       #slideshow {
         width:9999px;
-        margin: 0px 0 0 400px;
+        margin: 0 0 0 450px;
         height:610px;
         position:absolute;
         top:50%;
@@ -95,7 +99,8 @@
 
         width:400px;
         height:300px;
-        margin:150px -50px 10px -50px;
+        margin-top:150px;
+        margin: 150px -100px 0 -100px;
 
         -webkit-transition: all .5s ease-in-out;
         display: -moz-inline-stack; /* FF2*/
@@ -138,18 +143,62 @@
       #slideshow .image aside { height:300px; width:100px; right:100px; float:right; position:relative; background:rgba(0,0,0,.3); }
       .rays {position:absolute; left:0px; top:0px; background:url('/images/rays.png') no-repeat; width:386px; height:570px;}
 
+
+      .info {
+        position:absolute;
+        top:200px;
+        left:57px;
+        width:225px;
+        color:#fff;
+        z-index:1000;
+      }
+
+      .info ul {list-style:none; padding:0; margin:0;}
+      .info ul li { margin-bottom:10px; }
+      .info ul li:nth-child(1) { opacity:1; }
+      .info ul li:nth-child(2) { opacity:.6; }
+      .info ul li:nth-child(3) { opacity:.4; }
+      .info ul li:nth-child(4) { opacity:.2; }
+      .info ul li:nth-child(5) { opacity:.1; }
+
+      .info ul li .point {
+        float:left;
+        width:14px;
+        height:14px;
+        padding:8px;
+        border-radius:3px;
+        background:#fff;
+        color:#1F406A;
+        margin-right:6px;
+        line-height:normal;
+      }
+
+      .info h2.username {
+        font-size:21px;
+        margin-bottom:12px;
+      }
+
     </style>
   </head>
   <body>
-<div class="rays"></div>
+
+    <div class="rays"></div>
+
+    <div class="info">
+      <h2 class="username">DCANO_49</h2>
+      <div class="progress"></div>
+      <ul>
+        <li><div class="point">+5</div> you have found a new coral occurence</li>
+        <li><div class="point">+5</div> you have found a new coral occurence</li>
+        <li><div class="point">+1</div> you have confirmed a  coral occurence</li>
+        <li><div class="point">+5</div> you have found a new coral occurence</li>
+        <li><div class="point">+5</div> you have found a new coral occurence</li>
+      </ul>
+    </div>
+
     <div id="container">
       <div id="slideshow">
         <div class="image selected"><div class="photo"></div><aside></aside></div>
-        <div class="image"><div class="photo"></div><aside></aside></div>
-        <div class="image"><div class="photo"></div><aside></aside></div>
-        <div class="image"><div class="photo"></div><aside></aside></div>
-        <div class="image"><div class="photo"></div><aside></aside></div>
-        <div class="image"><div class="photo"></div><aside></aside></div>
         <div class="image"><div class="photo"></div><aside></aside></div>
         <div class="image"><div class="photo"></div><aside></aside></div>
         <div class="image"><div class="photo"></div><aside></aside></div>
@@ -158,7 +207,8 @@
     </div>
     <nav>
     <a href="#" id="previous">Previous</a> <a href="#" id="next">Next</a>
-  </nav>
+    </nav>
+
   </body>
 </html>
 
