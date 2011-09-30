@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script src="/js/libs/underscore-min.js"></script>
+    <script src="/js/libs/backbone-min.js"></script>
+    <script src="/js/libs/class.js"></script>
+    <script src="/js/libs/plugins.js"></script>
+    <script>
+      $(function() {
+         var p = 0;
+         var sector = 1;
+         $("#menu .sector").css("opacity", "0");
+          setInterval( function() {
+
+               $("#menu .sector:nth-child("+sector+")").css("opacity", ".3");
+               p+=5;
+
+               if (p >= 45*sector) {
+
+               var srotate = "rotate(" + p + "deg)";
+                 sector++;
+                 $("#menu .sector:nth-child("+sector+")").css({"-moz-transform" : srotate, "-webkit-transform" : srotate});
+                 } else {
+
+               var srotate = "rotate(" + p + "deg)";
+               $("#menu .sector:nth-child("+sector+")").css({"-moz-transform" : srotate, "-webkit-transform" : srotate});
+             }
+
+             }, 1e3 / 110 );
+
+        var i = 0;
+        $("#next").click(function() {
+          $("#container").scrollTo("+=800px", {duration:500, onAfter: function() {
+
+              $("#slideshow div.selected").removeClass("selected");
+              $("#slideshow div:eq("+i+")").addClass("selected");
+
+          }});
+        });
+        $("#previous").click(function() {
+          $("#container").scrollTo("-=800px", 500);
+        });
+      });
+    </script>
+    <style type="text/css">
+
+      a { color:#333; }
+
+      #container {
+        position:relative;
+        width:100%;
+        height:100%;
+        clear:both;
+        overflow:hidden;
+        _background:red;
+      }
+
+      #slideshow {
+        width:3000px;
+        margin:50px 0 0 300px;
+        _background:green;
+      }
+
+      #slideshow .image.selected {
+        border:10px solid #fff;
+
+      }
+
+      #slideshow .image {
+        display: -moz-inline-stack; /* FF2*/
+        display: inline-block;
+        vertical-align: top; /* BASELINE CORRECCIÓN*/
+        zoom: 1; /* IE7 (hasLayout)*/
+        *display: inline; /* IE */
+
+        width:800px;
+        height:600px;
+        margin:10px;
+        background:#333;
+      }
+
+      #menu { width:200px; height:200px; position:relative; overflow:hidden; clear:both}
+
+      #menu .circle_top {
+        width: 50px;
+        height: 50px;
+        -moz-border-radius: 100em;
+        -webkit-border-radius: 100em;
+        border-radius: 100em;
+        background:#333;
+        position:absolute;
+        z-index:100;
+        top:50%;
+        left:50%;
+        margin-top:-25px;
+        margin-left:-25px;
+        opacity:1;
+      }
+      #menu .circle {
+        width: 200px;
+        height: 200px;
+        -moz-border-radius: 100em;
+        -webkit-border-radius: 100em;
+        border-radius: 100em;
+        position:absolute;
+      }
+
+
+       .sector {
+        -webkit-transform-origin:50% 0;
+        width: 0; height: 0;
+        border-left: 65px solid transparent;
+        border-right: 65px solid transparent;
+        border-bottom: 157px solid #ccc;
+        border-radius:100em;
+        position:absolute;
+        z-index:50;
+        top:50%;
+        left:50%;
+        margin-left:-65px;
+      }
+    </style>
+  </script>
+</head>
+<body>
+
+  <div id="menu">
+      <div class="sector"></div>
+      <div class="sector"></div>
+      <div class="sector"></div>
+      <div class="sector"></div>
+      <div class="sector"></div>
+      <div class="sector"></div>
+      <div class="sector"></div>
+      <div class="sector"></div>
+    <div class="circle_top"></div>
+    <div class="circle"></div>
+  </div>
+
+
+  <!--
+  <div id="container">
+    <div id="slideshow">
+      <div class="image selected"></div>
+      <div class="image"></div>
+      <div class="image"></div>
+    </div>
+  </div>
+  <a href="#" id="previous">Previous</a> &middot; <a href="#" id="next">Next</a>
+  -->
+</body>
+  </html>

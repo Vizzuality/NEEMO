@@ -211,24 +211,13 @@ td { vertical-align: top; }
    Author:
    ========================================================================== */
 
-html { height: 100% }
-body { height: 100%; margin: 0; padding: 0 }
-#slideshow { height: 100% }
-
 
 body {
-  /*
-  background-color:rgb(2, 174, 232);
-  background-image: -moz-radial-gradient(50% 50%, circle farthest-corner, rgb(2, 174, 232), #097FA8 100%);
-  background-image: -webkit-radial-gradient(50% 50%, circle farthest-corner, rgb(2, 174, 232), #097FA8 100%);
-  background-image: -o-radial-gradient(50% 50%, circle farthest-corner, rgb(2, 174, 232), #097FA8 100%);
-  background-image: -ms-radial-gradient(50% 50%, circle farthest-corner, rgb(2, 174, 232), #097FA8 100%);
-  background-image: radial-gradient(50% 50%, circle farthest-corner, rgb(2, 174, 232), #097FA8 100%)
-  */
+   background: -webkit-radial-gradient(circle, #3EA99F, #29526E, #081331);
+
 }
+html, body {width:100%; height:100%;}
 
-
-.hidden { display: none; }
 /* ==|== non-semantic helper classes ========================================
    Please define your styles before this section.
    ========================================================================== */

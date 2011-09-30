@@ -1,0 +1,164 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="/css/style.css" />
+
+    <script src="http://www.google.com/jsapi"></script>
+    <script>google.load("jquery", "1.6.2");</script>
+    <script>google.load("jqueryui", "1.8.16");</script>
+
+    <script src="/js/libs/underscore-min.js"></script>
+    <script src="/js/libs/backbone-min.js"></script>
+    <script src="/js/libs/class.js"></script>
+    <script src="/js/libs/plugins.js"></script>
+    <script>
+      $(function() {
+
+        var
+        i = 0,
+        width = 800,
+        height = 600,
+        margin = -100,
+        moving = false,
+        numberOfRegions = 10;
+
+        function hideAside(callback) {
+          $("#slideshow div.selected").find("aside").animate({opactiy:0, right:"100px"}, 250, function() {
+            $(this).animate({height:300}, 0, callback);
+          });
+        }
+
+        function showAside() {
+          $("#slideshow div.selected").find("aside").animate({opacity:1, right:"-100px"}, 250);
+        }
+
+        function selectBox(i) {
+          $("#slideshow div.selected").removeClass("selected");
+          $("#slideshow .image:eq("+i+")").addClass("selected");
+        }
+
+        function fwd() {
+          if (!moving) {
+            moving = true;
+            selectBox(++i);
+            $("#container").scrollTo("+="+(width/2 + margin) +"px", {duration:200, easing:'easeInExpo', onAfter: function() {
+                moving = false;
+                showAside();
+            }});
+          }
+        }
+
+        function back() {
+          if (!moving) {
+            moving = true;
+            selectBox(--i);
+            $("#container").scrollTo("-="+(width/2 + margin) +"px", {duration:200, easing:'easeInExpo', onAfter: function() {
+                moving = false;
+                showAside();
+            }});
+          }
+        }
+
+        $("#next").click(function() {
+          if (i < numberOfRegions - 1) {
+            hideAside(fwd);
+          }
+        });
+
+        $("#previous").click(function() {
+          if (i >= 1) {
+            hideAside(back);
+          }
+        });
+      });
+    </script>
+    <style type="text/css">
+
+      nav {position:absolute; bottom: 10px; left:50%; margin-left:-110px; width:220px; text-align:center; z-index:2000;}
+      nav a, nav a:visited {display:block; float:left; background:black; width:80px; margin-right:10px; padding:10px; text-decoration:none; font-weight:bold; color:#fff;}
+
+      #container { position:absolute; width:100%; height:100%; clear:both; overflow:hidden; }
+
+      #slideshow {
+        width:9999px;
+        margin: 0px 0 0 400px;
+        height:610px;
+        position:absolute;
+        top:50%;
+        margin-top:-305px;
+      }
+
+      #slideshow .image {
+        position:relative;
+
+        width:400px;
+        height:300px;
+        margin:150px -50px 10px -50px;
+
+        -webkit-transition: all .5s ease-in-out;
+        display: -moz-inline-stack; /* FF2*/
+        display: inline-block;
+        vertical-align: top; /* BASELINE CORRECCIÓN*/
+        zoom: 1; /* IE7 (hasLayout)*/
+        *display: inline; /* IE */
+
+        background:rgba(0,0,0,.3);
+      }
+
+      #slideshow .image.selected {
+        background:red;
+        width:800px;
+        height:600px;
+        margin-top:0;
+        z-index:1500;
+      }
+
+      #slideshow .image .photo {
+        position:absolute;
+        width:400px;
+        height:300px;
+        background:darkgreen;
+
+        background:darkgreen;
+        -webkit-transition: all .5s ease-in-out;
+        -webkit-box-shadow: none;
+        z-index:100;
+      }
+
+      #slideshow .image.selected .photo {
+        width:800px;
+        height:600px;
+        background:lightgreen;
+        -webkit-box-shadow: 0px 0px 15px #000;
+      }
+
+      #slideshow .image.selected aside {height:300px; }
+      #slideshow .image aside { height:300px; width:100px; right:100px; float:right; position:relative; background:rgba(0,0,0,.3); }
+      .rays {position:absolute; left:0px; top:0px; background:url('/images/rays.png') no-repeat; width:386px; height:570px;}
+
+    </style>
+  </head>
+  <body>
+<div class="rays"></div>
+    <div id="container">
+      <div id="slideshow">
+        <div class="image selected"><div class="photo"></div><aside></aside></div>
+        <div class="image"><div class="photo"></div><aside></aside></div>
+        <div class="image"><div class="photo"></div><aside></aside></div>
+        <div class="image"><div class="photo"></div><aside></aside></div>
+        <div class="image"><div class="photo"></div><aside></aside></div>
+        <div class="image"><div class="photo"></div><aside></aside></div>
+        <div class="image"><div class="photo"></div><aside></aside></div>
+        <div class="image"><div class="photo"></div><aside></aside></div>
+        <div class="image"><div class="photo"></div><aside></aside></div>
+        <div class="image"><div class="photo"></div><aside></aside></div>
+      </div>
+    </div>
+    <nav>
+    <a href="#" id="previous">Previous</a> <a href="#" id="next">Next</a>
+  </nav>
+  </body>
+</html>
+
