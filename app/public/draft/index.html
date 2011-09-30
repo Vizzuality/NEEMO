@@ -156,8 +156,8 @@
         margin-top:-250px;
       }
 
-      .info ul {list-style:none; padding:0; margin:0;}
-      .info ul li { margin-bottom:10px; }
+      .info ul { clear:both; font-family:"EurostileLTStd"; list-style:none; padding:0; margin:0;}
+      .info ul li { margin-bottom:10px; font-size:13px; }
       .info ul li p { width:225px; }
 
       .info ul li:nth-child(1) { opacity:1; }
@@ -170,7 +170,7 @@
         float:left;
         width:14px;
         height:14px;
-        padding:8px;
+        padding:8px 9px 8px 7px;
         border-radius:3px;
         background:#fff;
         color:#1F406A;
@@ -179,7 +179,6 @@
       }
 
       .info ul {
-        clear:both;
       }
       .info .username {
         position:relative;
@@ -218,12 +217,19 @@
       }
       .level {
       font-size:11px;
+      font-family:"EurostileLTStd";
       color:rgba(255,255,255, .5);
       }
 
     </style>
   </head>
   <body>
+
+      <header>
+      <div class="logo">
+        <h1>NEEMO project</h1>
+      </div>
+      </header>
 
     <div class="rays"></div>
 
