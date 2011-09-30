@@ -173,9 +173,41 @@
         line-height:normal;
       }
 
-      .info h2.username {
+      .info ul {
+        clear:both;
+      }
+      .info .username {
+        position:relative;
+
+      }
+      .info .username h2 {
         font-size:21px;
         margin-bottom:12px;
+        color:#fff;
+      }
+      .info .username {
+        text-decoration: line-through;
+        color:#24405c;
+      }
+
+      .progress-bar {
+        position:relative;
+        border:1px solid #fff;
+        width:187px;
+        height:10px;
+        border-radius:30px;
+        margin-bottom:20px;
+
+      }
+      .progress-bar .progress {
+        background:#fff;
+        width:20%;
+        margin:1px;
+        height:8px;
+        border-radius:30px;
+        margin-bottom:20px;
+        box-shadow: 0px 0px 10px #fff;
+        -webkit-transition: width .3s ease-out;
       }
 
     </style>
@@ -185,8 +217,15 @@
     <div class="rays"></div>
 
     <div class="info">
-      <h2 class="username">DCANO_49</h2>
-      <div class="progress"></div>
+
+      <div class="username">
+        <h2>DCANO_49</h2>
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress"></div>
+      </div>
+
       <ul>
         <li><div class="point">+5</div> you have found a new coral occurence</li>
         <li><div class="point">+5</div> you have found a new coral occurence</li>
