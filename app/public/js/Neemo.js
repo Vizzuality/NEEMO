@@ -162,24 +162,9 @@ Neemo.modules.ui = function(neemo) {
     //to be hooked to jquery specific. this might be a bit much.
     //if so we can just scope jquery and use it fully. what it is
     //nice for is swapping out jquery for another. used example,
-    append: function(widget) {
-      this._element.append(widget.getElement());
-    },
-    find: function(id) {
-      var res = new Array();
-      this._element.find(id).each(function(c,v){
-        res.push(new neemo.ui.Element(v));
-      });
-      return res;
-    },
-    findChild: function(identfier){
-      return new neemo.ui.Element(this._element.find(identfier));
-    },
+    
     getElement: function() {
       return this._element;
-    },
-    setInnerHtml: function(html) {
-      this._element.html(html);
     },
   }
   );

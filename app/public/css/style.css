@@ -337,3 +337,149 @@ header .logo h1 {
   h2, h3 { page-break-after: avoid; }
 }
 
+
+/* ==|== styles left in draft/index.html ====================================
+   These styles were left in draft/index.html
+   I just pulled them out and stuck them here for use in next iteration
+   ========================================================================== */
+
+      nav {position:absolute; bottom: 10px; left:50%; margin-left:-110px; width:220px; text-align:center; z-index:2000;}
+      nav a, nav a:visited {display:block; float:left; background:black; width:80px; margin-right:10px; padding:10px; text-decoration:none; font-weight:bold; color:#fff;}
+
+      #container { position:absolute; width:100%; height:100%; clear:both; overflow:hidden; }
+
+      #slideshow {
+        width:9999px;
+        margin: 0 0 0 450px;
+        height:610px;
+        position:absolute;
+        top:50%;
+        margin-top:-305px;
+      }
+
+      #slideshow .image {
+        position:relative;
+
+        width:400px;
+        height:300px;
+        margin-top:150px;
+        margin: 150px -100px 0 -100px;
+
+        -webkit-transition: all .5s ease-in-out;
+        display: -moz-inline-stack; /* FF2*/
+        display: inline-block;
+        vertical-align: top; /* BASELINE CORRECCIÓN*/
+        zoom: 1; /* IE7 (hasLayout)*/
+        *display: inline; /* IE */
+
+        background:rgba(0,0,0,.3);
+      }
+
+      #slideshow .image.selected {
+        background:red;
+        width:800px;
+        height:600px;
+        margin-top:0;
+        z-index:1500;
+      }
+      #slideshow .image .photo {
+        position:absolute;
+        width:400px;
+        height:300px;
+        background:darkgreen;
+
+        background:darkgreen;
+        -webkit-transition: all .5s ease-in-out;
+        -webkit-box-shadow: none;
+        z-index:100;
+      }
+
+      #slideshow .image.selected .photo {
+        width:800px;
+        height:600px;
+        background:lightgreen;
+        -webkit-box-shadow: 0px 0px 15px #000;
+      }
+
+      #slideshow .image aside { opacity:0; top:50%; margin-top:-150px; height:300px; width:100px; right:100px; float:right; position:absolute; background:rgba(0,0,0,1); }
+      #slideshow .image.selected aside {margin-top:-200px; height:400px; }
+
+      .rays {position:absolute; left:0px; top:0px; background:url('/images/rays.png') no-repeat; width:386px; height:570px;}
+
+
+      .info {
+        position:absolute;
+        top:200px;
+        left:57px;
+        width:315px;
+        color:#fff;
+        z-index:1000;
+        height:500px;
+        top:50%;
+        margin-top:-250px;
+      }
+
+      .info ul { clear:both; font-family:"EurostileLTStd"; list-style:none; padding:0; margin:0;}
+      .info ul li { margin-bottom:10px; font-size:13px; }
+      .info ul li p { width:225px; }
+
+      .info ul li:nth-child(1) { opacity:1; }
+      .info ul li:nth-child(2) { opacity:.6; }
+      .info ul li:nth-child(3) { opacity:.4; }
+      .info ul li:nth-child(4) { opacity:.2; }
+      .info ul li:nth-child(5) { opacity:.1; }
+
+      .info ul li .point {
+        float:left;
+        width:14px;
+        height:14px;
+        padding:8px 9px 8px 7px;
+        border-radius:3px;
+        background:#fff;
+        color:#1F406A;
+        margin-right:6px;
+        line-height:normal;
+      }
+
+      .info ul {
+      }
+      .info .username {
+        position:relative;
+
+      }
+      .info .username h2 {
+        font-size:21px;
+        margin-bottom:12px;
+        color:#fff;
+      }
+      .info .username {
+        text-decoration: line-through;
+        color:#24405c;
+      }
+
+      .progress-bar {
+        position:relative;
+        margin-right:5px;
+        float:left;
+        border:1px solid #fff;
+        width:187px;
+        height:10px;
+        border-radius:30px;
+        margin-bottom:20px;
+      }
+
+      .progress-bar .progress {
+        background:#fff;
+        width:20%; /* from 0 to 99% */
+        margin:1px;
+        height:8px;
+        border-radius:30px;
+        margin-bottom:20px;
+        box-shadow: 0px 0px 10px #fff;
+        -webkit-transition: width .3s ease-out;
+      }
+      .level {
+      font-size:11px;
+      font-family:"EurostileLTStd";
+      color:rgba(255,255,255, .5);
+      }
