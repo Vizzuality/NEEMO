@@ -195,6 +195,7 @@ Neemo.modules.Slideshow = function(neemo) {
       $('#container').append(this.getElement());
       this._regions = {};
       this._first = true;
+      this._forwardBuffer = 6;
       //this.setInnerHtml(this._html());
     },
     addRegion: function(url, id){
@@ -205,17 +206,11 @@ Neemo.modules.Slideshow = function(neemo) {
           this._regions[id] = Region;
       }
     },
-    _hideAside: function(callback) {
-      $("#slideshow div.selected aside").animate({opactiy:0, right:"100px"}, 250, function() {
-        $(this).animate({height:300}, 0, callback);
-        $(this).hide();
-      });
-    },
     scrollForward: function(url, id){
       var that = this;
-      if (!(id in this._regions)){
-          this.addRegion(url, id);
-      }
+      
+      this.addRegion(url, id + this._forwardBuffer);
+      
       this._regions[id].focus();
       if(this._first === false){
           this._hideAside(this._forward);
@@ -223,6 +218,11 @@ Neemo.modules.Slideshow = function(neemo) {
           this._first = false;
       }
     },
+    scrollBack: function(url, id){
+        var that = this;
+        this._hideAside(this.back);
+      },
+      
     _forward: function(){
       var that = this;
       $("#container").scrollTo("+="+(this.config.width/2 + this.config.margin) +"px", {duration:250, easing:this.config.easingMethod, onAfter: function() {
@@ -231,10 +231,6 @@ Neemo.modules.Slideshow = function(neemo) {
         //showAside();
       }});
     },
-    scrollBack: function(url, id){
-        var that = this;
-        this._hideAside(this.back);
-      },
     _back: function(){
         var that = this;
         if (!this.config.moving) {
@@ -245,18 +241,16 @@ Neemo.modules.Slideshow = function(neemo) {
             }});
         }
     },
-     _showAside: function() {
-      $("#slideshow div.selected aside").css({height:"400px", right:"100px"});
-
-      $("#slideshow div.selected aside").show(0, function() {
-        $("#slideshow div.selected aside").delay(200).animate({opacity:1, right:"-100px"}, 250);
-      });
-    },
-
     _hideAside: function(callback) {
       $("#slideshow div.selected aside").animate({opactiy:0, right:"100px"}, 250, function() {
         $(this).animate({height:300}, 0, callback);
         $(this).hide();
+      });
+    },
+     _showAside: function() {
+      $("#slideshow div.selected aside").css({height:"400px", right:"100px"});
+      $("#slideshow div.selected aside").show(0, function() {
+        $("#slideshow div.selected aside").delay(200).animate({opacity:1, right:"-100px"}, 250);
       });
     },
     
