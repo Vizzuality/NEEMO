@@ -12,6 +12,14 @@ Neemo.modules.Slideshow = function(neemo) {
       this._bus = bus;
       this._api = api;
       this._base_image_url = '/regions/';
+      this._region = 0;
+      this._regions = {};
+      this._forwardBuffer = 4;
+      this._min = 1;
+      this._max = 8;
+      this._previousButton = 1; //used to enable (1) and disable (0) the nav buttons
+      this._nextButton = 1;
+      /* I think all elsewhere now
       this.width  = 800;
       this.height = 600;
       this.speed  = 500;
@@ -21,9 +29,7 @@ Neemo.modules.Slideshow = function(neemo) {
       this.easingMethod = null, // 'easeInExpo',
       this.numberOfRegions = 5;
       this._canvasid = 'region-focus-image';
-      this._region = 0;
-      this._regions = {};
-      this._forwardBuffer = 4;
+      */
     },
 
     _bindEvents: function(){
@@ -83,11 +89,15 @@ Neemo.modules.Slideshow = function(neemo) {
         }
       );
       this._nav.getNextButton().click(function(){
-          that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that._region + 1}));
+          if (that._nextButton == 1){
+              that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that._region + 1}));
+          }
         }
       );
       this._nav.getPreviousButton().click(function(){
-          that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that._region - 1}));
+          if (that._previousButton == 1){
+              that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that._region - 1}));
+          }
         }
       );
     },
@@ -147,28 +157,41 @@ Neemo.modules.Slideshow = function(neemo) {
         }));
       this._bindNav(new neemo.ui.Slideshow.Nav());
       this._bindEvents();
-      
-      this._bus.fireEvent(new neemo.events.ChangeRegion({region: 1}));
     },
     addRegion: function(url, id){
       var that = this;
       if (!(id in this._regions)) {
-          console.log(url);
           var Region = new neemo.ui.Slideshow.Region(url, id, this._bus);
           if (!(id in this._regions)) {
               this._display.addRegion(Region.getElement());
+              if (id < this._max){
+                  Region.enableNextButton();
+              }
           }
           Region.start();
           this._regions[id] = Region;
       }
     },
+    _toggleButtons: function(id){
+      if (id == this._min){
+          this._previousButton = 0;
+      } else if (id == this._min + 1) {
+          this._previousButton = 1;
+      } else if (id == this._max){
+          this._nextButton = 0;
+      } else if (id == this._max - 1) {
+          this._nextButton = 1;
+      }
+    },
     queueRegion: function(id){
       /* sets the focus on a new region*/
       this._regions[id].queue();
+      this._toggleButtons(id);
     },
     selectRegion: function(id){
       /* sets the focus on a new region*/
       this._regions[id].focus();
+      this._toggleButtons(id);
     },
     bufferForward: function(url, id){
       /* should buffer the images forward so they will be in place when scroll 
@@ -177,7 +200,7 @@ Neemo.modules.Slideshow = function(neemo) {
        * n -> x-v would then be displayed
        */
        var i = id + 1;
-       while (i < id + this._forwardBuffer){
+       while (i < id + this._forwardBuffer & i < this._max){
            this.addRegion(url, i);
            i++;
        }
@@ -211,7 +234,7 @@ Neemo.modules.Slideshow = function(neemo) {
         //cache here
         return $(this.getElement()[0]).find('.next');
     },
-    _bindEvents: function(){
+    enableNextButton: function(){
         var that = this;
         $(this.getNextButton()).click(function(){
             that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that.id + 1}));
@@ -220,7 +243,6 @@ Neemo.modules.Slideshow = function(neemo) {
     start: function(url){
       this._image.onload = function() {
       }
-      this._bindEvents();
     },
     _getCategory: function(id){
         var x = $(this.getElement()).find('.' + id);
@@ -299,6 +321,13 @@ Neemo.modules.Slideshow = function(neemo) {
             this._previous = $(this.getElement()).find('.previous');
         }
         return this._previous;
+    },
+    disable: function(id){
+          console.log('disabled');
+        $(this.getElement()).find('.'+id).attr("disabled", "disabled");
+    },
+    enable: function(id){
+        $(this.getElement()).find('.'+id).removeAttr("disabled");
     },
     _html: function() {
       return  '<a href="#" class="previous">Previous</a>' +

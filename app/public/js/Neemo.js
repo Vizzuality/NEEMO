@@ -77,6 +77,7 @@ Neemo.modules.socket = function(neemo) {
       var that = this;
       this.socket.on('connect', function () {
         neemo.log.info('soccket connected!');
+        that._bus.fireEvent(new neemo.events.ChangeRegion({region: that._id}));
       });
       this.socket.on('message',function(data){
         that._id = data;
