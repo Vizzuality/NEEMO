@@ -122,19 +122,31 @@ Neemo.modules.Slideshow = function(neemo) {
   );
   neemo.ui.Slideshow.Region = neemo.ui.Display.extend(
     {
-    init: function(url) {
+    init: function(url, id, bus) {
+      this.id = id;
+      this._bus = bus;
       this._image = new Image();
       this._image.src = url;
       this._super(this._html());
       $(this.getElement()).find('.photo').append(this._image);
     },
+    _bindEvents: function(){
+        var that = this;
+      this._nextButton.click(function(){
+          console.log('next button click');
+          that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that.id + 1}));
+        }
+      );
+    },
     start: function(url){
       var that = this;
+      this._nextButton = $(this.getElement()[0]).find('.next');
       this._image.onload = function() {
       }
       //this._cnvs = document.getElementById("region-focus-image");
       //this._ctx = this._cnvs.getContext("2d");
       //$("#" + this._id).fadeIn(this._speed);
+      this._bindEvents();
     },
     focus: function(){
         $("#slideshow div.selected").removeClass("selected");
@@ -143,7 +155,6 @@ Neemo.modules.Slideshow = function(neemo) {
     queue: function(){
         $("#slideshow div.queued").removeClass("queued");
         $(this.getElement()).addClass('queued');
-        console.log('added queue class');
     },
 
     _html: function() {
@@ -207,7 +218,7 @@ Neemo.modules.Slideshow = function(neemo) {
     addRegion: function(url, id){
       if (!(id in this._regions)) {
           console.log('added: ' + id)
-          var Region = new neemo.ui.Slideshow.Region(url);
+          var Region = new neemo.ui.Slideshow.Region(url, id);
           $(this.getElement()).append($(Region.getElement()));
           Region.start();
           this._regions[id] = Region;
