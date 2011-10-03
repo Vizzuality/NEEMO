@@ -46,7 +46,7 @@ Neemo.modules.app = function(neemo) {
       this.form.start();
       this.slideshow = new neemo.ui.Slideshow.Engine(this._bus, this._api, config.region);
       this.slideshow.start();
-      this.socket = new neemo.socket.Engine(this._bus, config.region);
+      this.socket = new neemo.socket.Engine(this._bus);
       this.moving = false;
     },
 

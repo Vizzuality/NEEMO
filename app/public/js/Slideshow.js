@@ -21,7 +21,7 @@ Neemo.modules.Slideshow = function(neemo) {
       this.easingMethod = null, // 'easeInExpo',
       this.numberOfRegions = 5;
       this._canvasid = 'region-focus-image';
-      this._region = region;
+      this._region = 0;
     },
 
     _bindEvents: function(){
@@ -38,10 +38,8 @@ Neemo.modules.Slideshow = function(neemo) {
 
           var url = [that._base_image_url, event.getRegion(), '.jpg'].join('');
           if (old_region < that._region){
-              console.log('forward');
               that._display.scrollForward(url, event.getRegion());
           }else{
-              console.log('back');
               that._display.scrollBack(url, event.getRegion());
           }
         }
@@ -136,9 +134,11 @@ Neemo.modules.Slideshow = function(neemo) {
       this._display.addRegion(url, 4);
       var url = [this._base_image_url, 5, '.jpg'].join('');
       this._display.addRegion(url, 5);
-      this._display.selectRegion(1);
+      //this._display.selectRegion(1);
       this._bindNav(new neemo.ui.Slideshow.Nav());
       this._bindEvents();
+      
+      this._bus.fireEvent(new neemo.events.ChangeRegion({region: 1}));
     },
   }
   );
@@ -161,6 +161,11 @@ Neemo.modules.Slideshow = function(neemo) {
     focus: function(){
         $("#slideshow div.selected").removeClass("selected");
         $(this.getElement()).addClass('selected');
+    },
+    queue: function(){
+        $("#slideshow div.queued").removeClass("queued");
+        $(this.getElement()).addClass('queued');
+        console.log('added queue class');
     },
 
     _html: function() {
@@ -224,6 +229,10 @@ Neemo.modules.Slideshow = function(neemo) {
           this._regions[id] = Region;
       }
     },
+    queueRegion: function(id){
+      /* sets the focus on a new region*/
+      this._regions[id].queue();
+    },
     selectRegion: function(id){
       /* sets the focus on a new region*/
       this._regions[id].focus();
@@ -239,19 +248,13 @@ Neemo.modules.Slideshow = function(neemo) {
     scrollForward: function(url, id){
       var that = this;
       this.addRegion(url,id);
+      this.queueRegion(id);
       this.bufferForward(url, id);
-      this.selectRegion(id);
-      
-      if(this._first === false){
-          //this._hideAsideForward();
-          neemo.slideshowUtil.hideAside(neemo.slideshowUtil.forwardSlideEffect);
-      } else {
-          this._first = false;
-      }
+      neemo.slideshowUtil.hideAside(neemo.slideshowUtil.forwardSlideEffect);
     },
     scrollBack: function(url, id){
         this.addRegion(url,id);
-        this.selectRegion(id);
+        this.queueRegion(id);
         neemo.slideshowUtil.hideAside(neemo.slideshowUtil.backSlideEffect);
         this.bufferForward(url, id);
       },
@@ -274,6 +277,11 @@ Neemo.modules.slideshowUtil = function(neemo) {
     
     neemo.slideshowUtil.forwardSlideEffect = function() {
         var that = neemo.slideshowUtil.config;
+        console.log('forward effect');
+        $("#slideshow div.selected").removeClass("selected");
+        $("#slideshow div.queued").addClass('selected');
+        $("#slideshow div.selected").removeClass("queued");
+        
         $("#container").scrollTo("+="+(that.width/2 + that.margin) +"px", {duration:250, easing: that.easingMethod, onAfter: function() {
             moving = false;
             neemo.slideshowUtil.showAside();
@@ -282,6 +290,9 @@ Neemo.modules.slideshowUtil = function(neemo) {
     };
     neemo.slideshowUtil.backSlideEffect = function(){
         var that = neemo.slideshowUtil.config;
+        $("#slideshow div.selected").removeClass("selected");
+        $("#slideshow div.queued").addClass('selected');
+        $("#slideshow div.selected").removeClass("queued");
         if (!neemo.slideshowUtil.config.moving) {
             neemo.slideshowUtil.config.moving = true;
             $("#container").scrollTo("-="+(that.width/2 + that.margin) +"px", {duration:250, easing: that.easingMethod, onAfter: function() {
@@ -293,14 +304,19 @@ Neemo.modules.slideshowUtil = function(neemo) {
     neemo.slideshowUtil.showAside = function() {
         $("#slideshow div.selected aside").css({height:"400px", right:"59px"});
         $("#slideshow div.selected aside").show(0, function() {
-            $("#slideshow div.selected aside").delay(200).animate({opacity:1, right:"-59px"}, 250);
+            $(this).delay(200).animate({opacity:1, right:"-59px"}, 250);
         });
     };
     neemo.slideshowUtil.hideAside = function(callback) {
-        $("#slideshow div.selected aside").animate({opactiy:0, right:"100px"}, 250, function() {
-            $(this).animate({height:300}, 0, callback);
-            $(this).hide();
-        });
+        /* Slideshow inits without a selected div, so add the check here to just fire callback in that case */
+        if ($("#slideshow div.selected aside").length > 0){
+            $("#slideshow div.selected aside").animate({opactiy:0, right:"100px"}, 250, function() {
+                $(this).animate({height:300}, 0, callback);
+                $(this).hide();
+            });
+        } else {
+            callback();
+        }
     };
 
 };
