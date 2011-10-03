@@ -61,7 +61,7 @@ Neemo.modules.Form = function(neemo) {
     {
     init: function(config) {
       this._super();
-      this.setInnerHtml(this._html());
+      $(this).html(this._html());
     },
     _html: function(){
       return "<div>hi, i'll grow up to be a form</div>";

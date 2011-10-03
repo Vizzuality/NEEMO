@@ -12,9 +12,14 @@ Neemo.modules.Slideshow = function(neemo) {
       this._bus = bus;
       this._api = api;
       this._base_image_url = '/regions/';
-      this._width  = 800;
-      this._height = 600;
-      this._speed  = 500;
+      this.width  = 800;
+      this.height = 600;
+      this.speed  = 500;
+      this.i = 0;
+      this.margin = -196;
+      this.moving = false;
+      this.easingMethod = 'easeInExpo';
+      this.numberOfRegions = 5;
       this._canvasid = 'region-focus-image';
       this._region = 1;
     },
@@ -26,14 +31,31 @@ Neemo.modules.Slideshow = function(neemo) {
         'ChangeRegion',
         function(event){
           neemo.log.info('Change Region happened, I should flip images');
+          var old_region = that._region;
           that._region = event.getRegion();
-          that._display.setNewFocus(that._base_image_url, event.getRegion());
+          
+          $("#slideshow div.selected").removeClass("selected");
+        
+          var url = [that._base_image_url, event.getRegion(), '.jpg'].join('');
+          if (old_region < that._region){
+              that._display.scrollForward(url, event.getRegion());
+          }else{
+              that._display.scrollBack(url, event.getRegion());
+          }
         }
       );
       bus.addHandler(
         'RegionClick',
         function(event){
           neemo.log.info('Click Region happened');
+        }
+      );
+      this._nav.getNextButton().click(function(){
+          that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that._region + 1}));
+        }
+      );
+      this._nav.getPreviousButton().click(function(){
+          that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that._region - 1}));
         }
       );
     },
@@ -71,105 +93,173 @@ Neemo.modules.Slideshow = function(neemo) {
       var that = this;
       this._display = display;
       display.setEngine(this);
-      $('#' + this._canvasid).click(function(e){that._canvasClick(e)});
+      //$('#' + this._canvasid).click(function(e){that._canvasClick(e)});
+    },
+    _bindNav: function(nav) {
+      var that = this;
+      this._nav = nav;
+      nav.setEngine(this);
+      //$('#' + this._canvasid).click(function(e){that._canvasClick(e)});
     },
 
     start: function() {
-      this._bindDisplay(new neemo.ui.Slideshow.Display({width: this._width, height: this._height, speed: this._speed}));
+      this._bindDisplay(new neemo.ui.Slideshow.Display({
+            width: this.width, 
+            height: this.height, 
+            speed: this.speed,
+            i: this.i,
+            margin: this.margin,
+            moving: this.moving,
+            easingMethod: this.easingMethod,
+            numberOfRegions: this.numberOfRegions,
+        }));
+      ///NEXT 3 ADDS ARE FOR TESTING
+      var url = [this._base_image_url, 1, '.jpg'].join('');
+      this._display.addRegion(url, 1);
+      var url = [this._base_image_url, 2, '.jpg'].join('');
+      this._display.addRegion(url, 2);
+      var url = [this._base_image_url, 3, '.jpg'].join('');
+      this._display.addRegion(url, 3);
+      
+      this._bindNav(new neemo.ui.Slideshow.Nav());
       this._bindEvents();
     },
   }
   );
-
-  /* Since each image in our slideshow is a region
-  * I called this element a Region. As the user moves
-  * these could be created and unlinked.
-  * I would make a BackRegion and a ForeRegion for the surrounding
-  */
-  neemo.ui.Slideshow.ForeRegion = neemo.ui.Display.extend(
+  neemo.ui.Slideshow.Region = neemo.ui.Display.extend(
     {
-    init: function(config) {
-      this._id = 'region-slideshow-image';
+    init: function(url) {
       this._image = new Image();
+      this._image.src = url;
       this._super(this._html());
-      this._width  = config.width;
-      this._height = config.height;
+      $(this.getElement()).find('.photo').append(this._image);
     },
-    start: function(){
-      this._cnvs = document.getElementById("region-focus-image");
-      this._ctx = this._cnvs.getContext("2d");
-    },
-    change: function(base_image_url, region){
-        var that = this;
-        this._image_url = base_image_url + region + '.jpg';
-        this._image.src = this._image_url;
-        this._image.onload = function() {
-            that._ctx.drawImage(that._image, 0, 0);
-        }
-    },
-    _html: function() {
-      return  '<div id="'+this._id+'" style="margin-top:200px;">' +
-        '<canvas id="region-focus-image" width="'+this._width+'" height="'+this._height+'"></canvas>' +
-          '</div>';
-    }
-  }
-  );
-
-
-  neemo.ui.Slideshow.FocusRegion = neemo.ui.Display.extend(
-    {
-    init: function(config) {
-      this._id = 'region-slideshow-image';
-      this._image = new Image();
-      this._super(this._html());
-      this._width  = config.width;
-      this._height = config.height;
-      this._speed  = config.speed;
-    },
-    start: function(){
-      this._cnvs = document.getElementById("region-focus-image");
-      this._ctx = this._cnvs.getContext("2d");
-      $("#" + this._id).fadeIn(this._speed);
-    },
-    change: function(base_image_url, region){
+    start: function(url){
       var that = this;
-      this._image_url = base_image_url + region + '.jpg';
-      this._image.src = this._image_url;
       this._image.onload = function() {
-        that._ctx.drawImage(that._image, 0, 0);
       }
+      //this._cnvs = document.getElementById("region-focus-image");
+      //this._ctx = this._cnvs.getContext("2d");
+      //$("#" + this._id).fadeIn(this._speed);
     },
+    focus: function(){
+        $(this.getElement()).addClass('selected');
+    },
+
     _html: function() {
-      return  '<div id="'+this._id+'" style="display:none">' +
-        '<canvas id="region-focus-image" width="'+this._width+'" height="'+this._height+'"></canvas>' +
-          '</div>';
+      return  '<div class="image">' +
+                '<div class="photo"></div>' +
+                '<aside></aside>' +
+               '</div>';
     }
   }
   );
 
+  neemo.ui.Slideshow.Nav = neemo.ui.Display.extend(
+    {
+    init: function() {
+      this._super($('<nav>'));
+      this.getElement().html(this._html());
+      $('body').append(this.getElement());
+      this._next;
+      this._previous;
+    },
+    getNextButton: function(){
+        if (! this._next){
+            this._next = $(this.getElement()[0]).find('#next');
+        }
+        return this._next;
+    },
+    getPreviousButton: function(){
+        if(! this._previous){
+            this._previous = $(this.getElement()).find('#previous');
+        }
+        return this._previous;
+    },
+    _html: function() {
+      return  '<a href="#" id="previous">Previous</a>' +
+                    '<a href="#" id="next">Next</a>';
+    }
+  }
+  );
+      
   /**
   * The slideshow display.
   */
   neemo.ui.Slideshow.Display = neemo.ui.Display.extend(
     {
     init: function(config) {
+      this.config = config;
       this._id = 'slideshow';
       this._super($('<div>').attr({'id': this._id}));
-      $('body').append(this.getElement());
-      this.setInnerHtml(this._html());
+      $('#container').append(this.getElement());
+      this._regions = {};
+      this._first = true;
+      //this.setInnerHtml(this._html());
+    },
+    addRegion: function(url, id){
+      if (!(id in this._regions)) {
+          var Region = new neemo.ui.Slideshow.Region(url);
+          $(this.getElement()).append($(Region.getElement()));
+          Region.start();
+          this._regions[id] = Region;
+      }
+    },
+    _hideAside: function(callback) {
+      $("#slideshow div.selected aside").animate({opactiy:0, right:"100px"}, 250, function() {
+        $(this).animate({height:300}, 0, callback);
+        $(this).hide();
+      });
+    },
+    scrollForward: function(url, id){
+      var that = this;
+      if (!(id in this._regions)){
+          this.addRegion(url, id);
+      }
+      this._regions[id].focus();
+      if(this._first === false){
+          this._hideAside(this._forward);
+      } else {
+          this._first = false;
+      }
+    },
+    _forward: function(){
+      var that = this;
+      $("#container").scrollTo("+="+(this.config.width/2 + this.config.margin) +"px", {duration:250, easing:this.config.easingMethod, onAfter: function() {
+        moving = false;
+        that._showAside();
+        //showAside();
+      }});
+    },
+    scrollBack: function(url, id){
+        var that = this;
+        this._hideAside(this.back);
+      },
+    _back: function(){
+        var that = this;
+        if (!this.config.moving) {
+            this.config.moving = true;
+            $("#container").scrollTo("-="+(this.config.width/2 + this.config.margin) +"px", {duration:250, easing:this.config.easingMethod, onAfter: function() {
+                moving = false;
+                that._showAside();
+            }});
+        }
+    },
+     _showAside: function() {
+      $("#slideshow div.selected aside").css({height:"400px", right:"100px"});
 
-      this.Focus = new neemo.ui.Slideshow.FocusRegion(config);
-      this.findChild('.focus').append(this.Focus);
-      this.Focus.start();
+      $("#slideshow div.selected aside").show(0, function() {
+        $("#slideshow div.selected aside").delay(200).animate({opacity:1, right:"-100px"}, 250);
+      });
     },
-    setNewFocus: function(base_image_url, region){
-      this.Focus.change(base_image_url, region);
+
+    _hideAside: function(callback) {
+      $("#slideshow div.selected aside").animate({opactiy:0, right:"100px"}, 250, function() {
+        $(this).animate({height:300}, 0, callback);
+        $(this).hide();
+      });
     },
-    _html: function(){
-      return '<div>hi, i will grow up to be a slideshow' +
-        '<div class="focus"></div>' +
-          '</div>';
-    }
+    
   }
   );
 }
