@@ -7,7 +7,7 @@ Neemo.modules.Slideshow = function(neemo) {
   neemo.ui.Slideshow = {};
   neemo.ui.Slideshow.Engine = Class.extend(
     {
-    init: function(bus, api) {
+    init: function(bus, api, region) {
       var that = this;
       this._bus = bus;
       this._api = api;
@@ -18,10 +18,10 @@ Neemo.modules.Slideshow = function(neemo) {
       this.i = 0;
       this.margin = -196;
       this.moving = false;
-      this.easingMethod = 'easeInExpo';
+      this.easingMethod = null, // 'easeInExpo',
       this.numberOfRegions = 5;
       this._canvasid = 'region-focus-image';
-      this._region = 1;
+      this._region = region;
     },
 
     _bindEvents: function(){
@@ -33,9 +33,9 @@ Neemo.modules.Slideshow = function(neemo) {
           neemo.log.info('Change Region happened, I should flip images');
           var old_region = that._region;
           that._region = event.getRegion();
-          
+
           $("#slideshow div.selected").removeClass("selected");
-        
+
           var url = [that._base_image_url, event.getRegion(), '.jpg'].join('');
           if (old_region < that._region){
               that._display.scrollForward(url, event.getRegion());
@@ -59,21 +59,21 @@ Neemo.modules.Slideshow = function(neemo) {
         }
       );
     },
-    _getClickOffset: function(e){
+    _getClickOffset: function(event){
         var x;
         var y;
-        if (e.pageX || e.pageY) { 
-          x = e.pageX;
-          y = e.pageY;
+        if (event.pageX || event.pageY) {
+          x = event.pageX;
+          y = event.pageY;
         }
-        else { 
-          x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft; 
-          y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop; 
-        } 
+        else {
+          x = event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+          y = event.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+        }
         var el = this._display.getElement(this._canvasid);
         x -= el[0].offsetLeft;
         y -= el[0].offsetTop;
-        
+
         return [x,y];
     },
     _canvasClick: function(event){
@@ -88,7 +88,7 @@ Neemo.modules.Slideshow = function(neemo) {
       this._bus.fireEvent(new Neemo.env.events.RegionClick(data));
       //testing here, fireEvent(new Neemo.env.events.RegionClick({region: 2}))
     },
-    
+
     _bindDisplay: function(display, text) {
       var that = this;
       this._display = display;
@@ -104,8 +104,8 @@ Neemo.modules.Slideshow = function(neemo) {
 
     start: function() {
       this._bindDisplay(new neemo.ui.Slideshow.Display({
-            width: this.width, 
-            height: this.height, 
+            width: this.width,
+            height: this.height,
             speed: this.speed,
             i: this.i,
             margin: this.margin,
@@ -114,13 +114,23 @@ Neemo.modules.Slideshow = function(neemo) {
             numberOfRegions: this.numberOfRegions,
         }));
       ///NEXT 3 ADDS ARE FOR TESTING
+          /*
+          $("#slideshow div.selected").removeClass("selected");
+
+          var url = [that._base_image_url, event.getRegion(), '.jpg'].join('');
+          if (old_region < that._region){
+              that._display.scrollForward(url, event.getRegion());
+          }else{
+              that._display.scrollBack(url, event.getRegion());
+          }
+          */
       var url = [this._base_image_url, 1, '.jpg'].join('');
       this._display.addRegion(url, 1);
       var url = [this._base_image_url, 2, '.jpg'].join('');
       this._display.addRegion(url, 2);
       var url = [this._base_image_url, 3, '.jpg'].join('');
       this._display.addRegion(url, 3);
-      
+      this._display.selectRegion(1);
       this._bindNav(new neemo.ui.Slideshow.Nav());
       this._bindEvents();
     },
@@ -166,23 +176,23 @@ Neemo.modules.Slideshow = function(neemo) {
     },
     getNextButton: function(){
         if (! this._next){
-            this._next = $(this.getElement()[0]).find('#next');
+            this._next = $(this.getElement()[0]).find('.next');
         }
         return this._next;
     },
     getPreviousButton: function(){
         if(! this._previous){
-            this._previous = $(this.getElement()).find('#previous');
+            this._previous = $(this.getElement()).find('.previous');
         }
         return this._previous;
     },
     _html: function() {
-      return  '<a href="#" id="previous">Previous</a>' +
-                    '<a href="#" id="next">Next</a>';
+      return  '<a href="#" class="previous">Previous</a>' +
+                    '<a href="#" class="next">Next</a>';
     }
   }
   );
-      
+
   /**
   * The slideshow display.
   */
@@ -206,54 +216,90 @@ Neemo.modules.Slideshow = function(neemo) {
           this._regions[id] = Region;
       }
     },
+    selectRegion: function(id){
+      /* sets the focus on a new region*/
+      this._regions[id].focus();
+    },
+    bufferForward: function(url, id){
+      /* should buffer the images forward so they will be in place when scroll 
+       * probably a step process 
+       * n -> x would all be loaded and queued
+       * n -> x-v would then be displayed
+       */
+       this.addRegion(url, id + this._forwardBuffer);
+    },
     scrollForward: function(url, id){
       var that = this;
+      this.bufferForward(url, id);
+      this.selectRegion(id);
       
-      this.addRegion(url, id + this._forwardBuffer);
-      
-      this._regions[id].focus();
       if(this._first === false){
-          this._hideAside(this._forward);
+          this._hideAsideForward();
       } else {
           this._first = false;
       }
     },
     scrollBack: function(url, id){
         var that = this;
-        this._hideAside(this.back);
+        this._hideAsideBack();
       },
-      
-    _forward: function(){
-      var that = this;
-      $("#container").scrollTo("+="+(this.config.width/2 + this.config.margin) +"px", {duration:250, easing:this.config.easingMethod, onAfter: function() {
-        moving = false;
-        that._showAside();
-        //showAside();
-      }});
-    },
-    _back: function(){
+    _hideAsideForward: function() {
+        /* needed to split hideAside into a Forward and a Back specific functions to ensure namespace */
         var that = this;
-        if (!this.config.moving) {
-            this.config.moving = true;
-            $("#container").scrollTo("-="+(this.config.width/2 + this.config.margin) +"px", {duration:250, easing:this.config.easingMethod, onAfter: function() {
-                moving = false;
-                that._showAside();
-            }});
-        }
+        $("#slideshow div.selected aside").animate({opactiy:0, right:"100px"}, 250, function() {
+            $(this).animate({height:300}, 0, function(){
+                neemo.slideshowUtil.forwardSlideEffect();
+            });
+            $(this).hide();
+        });
     },
-    _hideAside: function(callback) {
-      $("#slideshow div.selected aside").animate({opactiy:0, right:"100px"}, 250, function() {
-        $(this).animate({height:300}, 0, callback);
-        $(this).hide();
-      });
+    _hideAsideBack: function() {
+        var that = this;
+        $("#slideshow div.selected aside").animate({opactiy:0, right:"100px"}, 250, function() {
+            $(this).animate({height:300}, 0, function(){
+                neemo.slideshowUtil.backSlideEffect();
+            });
+            $(this).hide();
+        });
     },
-     _showAside: function() {
-      $("#slideshow div.selected aside").css({height:"400px", right:"100px"});
-      $("#slideshow div.selected aside").show(0, function() {
-        $("#slideshow div.selected aside").delay(200).animate({opacity:1, right:"-100px"}, 250);
-      });
-    },
-    
   }
   );
 }
+
+Neemo.modules.slideshowUtil = function(neemo) {
+    /* contain DOM specific functions that don't effect the JS organization of the Display.
+     * All used by globally directing functions
+     */
+    neemo.slideshowUtil = {};
+    neemo.slideshowUtil.config = function() {
+        return {
+            width: 800,
+            margin: -196,
+            easingMethod: null }; // 'easeInExpo'
+    };
+    neemo.slideshowUtil.forwardSlideEffect = function() {
+        var that = neemo.slideshowUtil.config();
+        $("#container").scrollTo("+="+(that.width/2 + that.margin) +"px", {duration:250, easing: that.easingMethod, onAfter: function() {
+            moving = false;
+            neemo.slideshowUtil.showAside();
+            //showAside();
+        }});
+    };
+    neemo.slideshowUtil.backSlideEffect = function(){
+        console.log(neemo.moving);
+        if (!neemo.moving) {
+            neemo.moving = true;
+            $("#container").scrollTo("-="+(width/2 + margin) +"px", {duration:250, easing:easingMethod, onAfter: function() {
+                moving = false;
+                neemo.slideshowUtil.showAside();
+            }});
+        }
+    };
+    neemo.slideshowUtil.showAside = function() {
+        $("#slideshow div.selected aside").css({height:"400px", right:"59px"});
+        $("#slideshow div.selected aside").show(0, function() {
+            $("#slideshow div.selected aside").delay(200).animate({opacity:1, right:"-59px"}, 250);
+        });
+    };
+
+};

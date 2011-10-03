@@ -25,8 +25,9 @@
         height = 600,
         margin = -196,
         moving = false,
-        easingMethod = 'easeInExpo',
+        easingMethod = null, // 'easeInExpo',
         numberOfRegions = 5;
+
 
         function hideAside(callback) {
           $("#slideshow div.selected aside").animate({opactiy:0, right:"100px"}, 250, function() {
@@ -36,10 +37,10 @@
         }
 
         function showAside() {
-          $("#slideshow div.selected aside").css({height:"400px", right:"100px"});
+          $("#slideshow div.selected aside").css({height:"400px", right:"59px"});
 
           $("#slideshow div.selected aside").show(0, function() {
-            $("#slideshow div.selected aside").delay(200).animate({opacity:1, right:"-100px"}, 250);
+            $("#slideshow div.selected aside").delay(200).animate({opacity:1, right:"-59px"}, 250);
           });
 
         }
@@ -71,17 +72,19 @@
           }
         }
 
-        $("#next").click(function() {
+        $(".next").click(function() {
           if (i < numberOfRegions - 1) {
             hideAside(fwd);
           }
         });
 
-        $("#previous").click(function() {
+        $(".previous").click(function() {
           if (i >= 1) {
             hideAside(back);
           }
         });
+
+        showAside();
       });
     </script>
   </head>
@@ -117,15 +120,71 @@
 
     <div id="container">
       <div id="slideshow">
-        <div class="image selected"><div class="photo"><img src="/regions/1.jpg"></div><aside></aside></div>
-        <div class="image"><div class="photo"><img src="/regions/1.jpg"></div><aside></aside></div>
-        <div class="image"><div class="photo"><img src="/regions/1.jpg"></div><aside></aside></div>
-        <div class="image"><div class="photo"><img src="/regions/1.jpg"></div><aside></aside></div>
-        <div class="image"><div class="photo"><img src="/regions/1.jpg"></div><aside></aside></div>
+
+        <div class="image selected">
+          <div class="photo"><img src="/regions/1.jpg" /></div>
+          <aside>
+          <ul>
+            <li><span class="count">12</span> fish</li>
+            <li><span class="count">03</span> coral</li>
+            <li><span class="count">07</span> other</li>
+          </ul>
+          <a href="#" class="next"><div class="icon"></div>Next</a>
+          </aside>
+        </div>
+
+        <div class="image">
+          <div class="photo"><img src="/regions/1.jpg" /></div>
+          <aside>
+          <ul>
+            <li><span class="count">12</span> fish</li>
+            <li><span class="count">03</span> coral</li>
+            <li><span class="count">07</span> other</li>
+          </ul>
+          <a href="#" class="next"><div class="icon"></div>Next</a>
+          </aside>
+        </div>
+
+        <div class="image">
+          <div class="photo"><img src="/regions/1.jpg" /></div>
+          <aside>
+          <ul>
+            <li><span class="count">12</span> fish</li>
+            <li><span class="count">03</span> coral</li>
+            <li><span class="count">07</span> other</li>
+          </ul>
+          <a href="#" class="next"><div class="icon"></div>Next</a>
+          </aside>
+        </div>
+
+        <div class="image">
+          <div class="photo"><img src="/regions/1.jpg" /></div>
+          <aside>
+          <ul>
+            <li><span class="count">12</span> fish</li>
+            <li><span class="count">03</span> coral</li>
+            <li><span class="count">07</span> other</li>
+          </ul>
+          <a href="#" class="next"><div class="icon"></div>Next</a>
+          </aside>
+        </div>
+
+        <div class="image">
+          <div class="photo"><img src="/regions/1.jpg" /></div>
+          <aside>
+          <ul>
+            <li><span class="count">12</span> fish</li>
+            <li><span class="count">03</span> coral</li>
+            <li><span class="count">07</span> other</li>
+          </ul>
+          <a href="#" class="next"><div class="icon"></div>Next</a>
+          </aside>
+        </div>
+
       </div>
     </div>
     <nav>
-    <a href="#" id="previous">Previous</a> <a href="#" id="next">Next</a>
+    <a href="#" class="previous">Previous</a> <a href="#" class="next">Next</a>
     </nav>
 
   </body>
