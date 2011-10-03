@@ -86,8 +86,8 @@ Neemo.modules.socket = function(neemo) {
       });
       this.socket.on('update', function (data) {
         if(data.id != that._id){
-            if (data.eventType == 'point'){
-                that._bus.fireEvent(new Neemo.env.events.AddPoint(data));
+            if (data.eventType == 'points'){
+                that._bus.fireEvent(new Neemo.env.events.AddPoints(data));
             }
         }
         neemo.log.info('socket update received');

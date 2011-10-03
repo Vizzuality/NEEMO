@@ -436,7 +436,9 @@ nav a, nav a:visited {display:block; float:left; background:black; width:80px; m
   font-size:15px;
   display:block;
 }
-
+#slideshow .image aside ul li .count.highlight{
+  color: red;
+}
 #slideshow .image aside .next {
   display:block;
   background: url(/images/border.png) repeat-x left top;

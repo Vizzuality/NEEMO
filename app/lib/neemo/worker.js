@@ -22,6 +22,36 @@ exports.start = function(io) {
             }
         );
     });
+    
+    var fakeEmit = function(){
+        var id = Math.floor(Math.random()*11);
+        io.sockets.in(id).emit('update', {
+            region_id: id,
+            eventType: 'points',
+            categories: [
+                    {
+                        id: 'fish',
+                        name: 'fish',
+                        count: Math.floor(Math.random()*2),
+                        items: []
+                    },
+                    {
+                        id: 'coral',
+                        name: 'coral',
+                        count: Math.floor(Math.random()*2),
+                        items: []
+                    },
+                    {
+                        id: 'other',
+                        name: 'other',
+                        count: Math.floor(Math.random()*2),
+                        items: []
+                    }
+            ]
+        });
+        setTimeout(function(){fakeEmit()}, 500);
+    }
+    fakeEmit();
     /*
     function popFromQueue() {
       rsub.lpop('emit-queue', handleEmit);

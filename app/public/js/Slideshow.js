@@ -53,11 +53,25 @@ Neemo.modules.Slideshow = function(neemo) {
             if (that._regions[data.region_id]){
                 var Region = that._regions[data.region_id];
                 for (i in data.categories){
-                    Region.setCategoryValue(data.categories[i].id, data.categories[i].name, data.categories[i].count);
-                    //var li = Region._getCategory(data.categories[i].id);
-                    //li.html('<span class="count">'+data.categories[i].count+'</span>'+data.categories[i].name+'');
-                    
-                    Region.incrCategoryValue(data.categories[i].id, data.categories[i].name, 1)
+                    if (data.categories[i].count > 0){
+                        Region.setCategoryValue(data.categories[i].id, data.categories[i].name, data.categories[i].count);
+                        //Region.incrCategoryValue(data.categories[i].id, data.categories[i].name, 1)
+                    }
+                }
+            }
+        }
+      );
+      bus.addHandler(
+        'AddPoints',
+        function(data){
+            data = data.getData();
+            if (that._regions[data.region_id]){
+                var Region = that._regions[data.region_id];
+                for (i in data.categories){
+                    if (data.categories[i].count > 0){
+                        //Region.setCategoryValue(data.categories[i].id, data.categories[i].name, data.categories[i].count);
+                        Region.incrCategoryValue(data.categories[i].id, data.categories[i].name, data.categories[i].count);
+                    }
                 }
             }
         }
@@ -146,28 +160,6 @@ Neemo.modules.Slideshow = function(neemo) {
           }
           Region.start();
           this._regions[id] = Region;
-          /*
-          this._bus.fireEvent(new neemo.events.RegionOverview({
-              region_id: id,
-              categories: [
-                {
-                    id: 'fish',
-                    name: 'fish',
-                    count: 22
-                },
-                {
-                    id: 'coral',
-                    name: 'coral',
-                    count: 12
-                },
-                {
-                    id: 'other',
-                    name: 'other',
-                    count: 32
-                }
-              ]
-          }));*/
-      
       }
     },
     queueRegion: function(id){
@@ -247,14 +239,23 @@ Neemo.modules.Slideshow = function(neemo) {
         c.html('<span class="count">'+value+'</span>'+name+'');
     },
     incrCategoryValue: function(id, name, value){
-        var c = this._getCategory(id);
-        var v = c.find('.count');
+        var c = this._getCategory(id),
+            v = c.find('.count');
         if (v.length > 0){
             var new_value = value + parseInt(v.text());
             c.html('<span class="count">'+new_value+'</span>'+name+'');
         } else {
             c.html('<span class="count">'+value+'</span>'+name+'');
         }
+        /* Just a highlighting function I tossed in for now, will remove */
+        v = c.find('.count');
+        $(v).addClass('highlight');
+        $(v).animate({
+            opacity: 0.95,
+        }, 2000, function() {
+            $(this).removeClass('highlight');
+        });
+  
     },
     focus: function(){
         $("#slideshow div.selected").removeClass("selected");
@@ -335,7 +336,6 @@ Neemo.modules.slideshowUtil = function(neemo) {
         easingMethod: null,  // 'easeInExpo'
         moving: false
     };
-    
     neemo.slideshowUtil.forwardSlideEffect = function() {
         var that = neemo.slideshowUtil.config;
         $("#slideshow div.selected").removeClass("selected");
