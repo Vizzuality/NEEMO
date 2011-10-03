@@ -113,28 +113,6 @@ Neemo.modules.Slideshow = function(neemo) {
             easingMethod: this.easingMethod,
             numberOfRegions: this.numberOfRegions,
         }));
-      ///NEXT 3 ADDS ARE FOR TESTING
-          /*
-          $("#slideshow div.selected").removeClass("selected");
-
-          var url = [that._base_image_url, event.getRegion(), '.jpg'].join('');
-          if (old_region < that._region){
-              that._display.scrollForward(url, event.getRegion());
-          }else{
-              that._display.scrollBack(url, event.getRegion());
-          }
-          */
-      var url = [this._base_image_url, 1, '.jpg'].join('');
-      this._display.addRegion(url, 1);
-      var url = [this._base_image_url, 2, '.jpg'].join('');
-      this._display.addRegion(url, 2);
-      var url = [this._base_image_url, 3, '.jpg'].join('');
-      this._display.addRegion(url, 3);
-      var url = [this._base_image_url, 4, '.jpg'].join('');
-      this._display.addRegion(url, 4);
-      var url = [this._base_image_url, 5, '.jpg'].join('');
-      this._display.addRegion(url, 5);
-      //this._display.selectRegion(1);
       this._bindNav(new neemo.ui.Slideshow.Nav());
       this._bindEvents();
       
@@ -171,7 +149,14 @@ Neemo.modules.Slideshow = function(neemo) {
     _html: function() {
       return  '<div class="image">' +
                 '<div class="photo"></div>' +
-                '<aside></aside>' +
+                '<aside> '+
+                    '<ul> '+
+                    '    <li><span class="count">12</span> fish</li> '+
+                    '    <li><span class="count">03</span> coral</li> '+
+                    '    <li><span class="count">07</span> other</li> '+
+                    '</ul> '+
+                    '<a href="#" class="next"><div class="icon"></div>Next</a> '+
+               '</aside>' +
                '</div>';
     }
   }
@@ -213,8 +198,7 @@ Neemo.modules.Slideshow = function(neemo) {
     init: function(config) {
       this.config = config;
       this._id = 'slideshow';
-      this._super($('<div>').attr({'id': this._id}));
-      $('#container').append(this.getElement());
+      this._super($("#slideshow"));
       this._regions = {};
       this._first = true;
       this._forwardBuffer = 4;
@@ -243,7 +227,11 @@ Neemo.modules.Slideshow = function(neemo) {
        * n -> x would all be loaded and queued
        * n -> x-v would then be displayed
        */
-       this.addRegion(url, id + this._forwardBuffer);
+       var i = id + 1;
+       while (i < id + this._forwardBuffer){
+           this.addRegion(url, i);
+           i++;
+       }
     },
     scrollForward: function(url, id){
       var that = this;
@@ -256,7 +244,6 @@ Neemo.modules.Slideshow = function(neemo) {
         this.addRegion(url,id);
         this.queueRegion(id);
         neemo.slideshowUtil.hideAside(neemo.slideshowUtil.backSlideEffect);
-        this.bufferForward(url, id);
       },
   }
   );
@@ -293,10 +280,10 @@ Neemo.modules.slideshowUtil = function(neemo) {
         $("#slideshow div.selected").removeClass("selected");
         $("#slideshow div.queued").addClass('selected');
         $("#slideshow div.selected").removeClass("queued");
-        if (!neemo.slideshowUtil.config.moving) {
+        if (neemo.slideshowUtil.config.moving === false) {
             neemo.slideshowUtil.config.moving = true;
             $("#container").scrollTo("-="+(that.width/2 + that.margin) +"px", {duration:250, easing: that.easingMethod, onAfter: function() {
-                moving = false;
+                neemo.slideshowUtil.config.moving = false;
                 neemo.slideshowUtil.showAside();
             }});
         }
