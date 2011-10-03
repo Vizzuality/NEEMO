@@ -33,9 +33,9 @@ Neemo.modules.Slideshow = function(neemo) {
           neemo.log.info('Change Region happened, I should flip images');
           var old_region = that._region;
           that._region = event.getRegion();
-          
+
           $("#slideshow div.selected").removeClass("selected");
-        
+
           var url = [that._base_image_url, event.getRegion(), '.jpg'].join('');
           if (old_region < that._region){
               that._display.scrollForward(url, event.getRegion());
@@ -62,18 +62,18 @@ Neemo.modules.Slideshow = function(neemo) {
     _getClickOffset: function(e){
         var x;
         var y;
-        if (e.pageX || e.pageY) { 
+        if (e.pageX || e.pageY) {
           x = e.pageX;
           y = e.pageY;
         }
-        else { 
-          x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft; 
-          y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop; 
-        } 
+        else {
+          x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+          y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+        }
         var el = this._display.getElement(this._canvasid);
         x -= el[0].offsetLeft;
         y -= el[0].offsetTop;
-        
+
         return [x,y];
     },
     _canvasClick: function(event){
@@ -88,7 +88,7 @@ Neemo.modules.Slideshow = function(neemo) {
       this._bus.fireEvent(new Neemo.env.events.RegionClick(data));
       //testing here, fireEvent(new Neemo.env.events.RegionClick({region: 2}))
     },
-    
+
     _bindDisplay: function(display, text) {
       var that = this;
       this._display = display;
@@ -104,8 +104,8 @@ Neemo.modules.Slideshow = function(neemo) {
 
     start: function() {
       this._bindDisplay(new neemo.ui.Slideshow.Display({
-            width: this.width, 
-            height: this.height, 
+            width: this.width,
+            height: this.height,
             speed: this.speed,
             i: this.i,
             margin: this.margin,
@@ -120,7 +120,7 @@ Neemo.modules.Slideshow = function(neemo) {
       this._display.addRegion(url, 2);
       var url = [this._base_image_url, 3, '.jpg'].join('');
       this._display.addRegion(url, 3);
-      
+
       this._bindNav(new neemo.ui.Slideshow.Nav());
       this._bindEvents();
     },
@@ -182,7 +182,7 @@ Neemo.modules.Slideshow = function(neemo) {
     }
   }
   );
-      
+
   /**
   * The slideshow display.
   */
@@ -259,7 +259,7 @@ Neemo.modules.Slideshow = function(neemo) {
         $(this).hide();
       });
     },
-    
+
   }
   );
 }
