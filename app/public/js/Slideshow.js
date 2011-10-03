@@ -34,12 +34,14 @@ Neemo.modules.Slideshow = function(neemo) {
           var old_region = that._region;
           that._region = event.getRegion();
 
-          $("#slideshow div.selected").removeClass("selected");
+          //$("#slideshow div.selected").removeClass("selected");
 
           var url = [that._base_image_url, event.getRegion(), '.jpg'].join('');
           if (old_region < that._region){
+              console.log('forward');
               that._display.scrollForward(url, event.getRegion());
           }else{
+              console.log('back');
               that._display.scrollBack(url, event.getRegion());
           }
         }
@@ -130,6 +132,10 @@ Neemo.modules.Slideshow = function(neemo) {
       this._display.addRegion(url, 2);
       var url = [this._base_image_url, 3, '.jpg'].join('');
       this._display.addRegion(url, 3);
+      var url = [this._base_image_url, 4, '.jpg'].join('');
+      this._display.addRegion(url, 4);
+      var url = [this._base_image_url, 5, '.jpg'].join('');
+      this._display.addRegion(url, 5);
       this._display.selectRegion(1);
       this._bindNav(new neemo.ui.Slideshow.Nav());
       this._bindEvents();
@@ -153,6 +159,7 @@ Neemo.modules.Slideshow = function(neemo) {
       //$("#" + this._id).fadeIn(this._speed);
     },
     focus: function(){
+        $("#slideshow div.selected").removeClass("selected");
         $(this.getElement()).addClass('selected');
     },
 
@@ -205,11 +212,12 @@ Neemo.modules.Slideshow = function(neemo) {
       $('#container').append(this.getElement());
       this._regions = {};
       this._first = true;
-      this._forwardBuffer = 6;
+      this._forwardBuffer = 4;
       //this.setInnerHtml(this._html());
     },
     addRegion: function(url, id){
       if (!(id in this._regions)) {
+          console.log('added: ' + id)
           var Region = new neemo.ui.Slideshow.Region(url);
           $(this.getElement()).append($(Region.getElement()));
           Region.start();
@@ -230,38 +238,23 @@ Neemo.modules.Slideshow = function(neemo) {
     },
     scrollForward: function(url, id){
       var that = this;
+      this.addRegion(url,id);
       this.bufferForward(url, id);
       this.selectRegion(id);
       
       if(this._first === false){
-          this._hideAsideForward();
+          //this._hideAsideForward();
+          neemo.slideshowUtil.hideAside(neemo.slideshowUtil.forwardSlideEffect);
       } else {
           this._first = false;
       }
     },
     scrollBack: function(url, id){
-        var that = this;
-        this._hideAsideBack();
+        this.addRegion(url,id);
+        this.selectRegion(id);
+        neemo.slideshowUtil.hideAside(neemo.slideshowUtil.backSlideEffect);
+        this.bufferForward(url, id);
       },
-    _hideAsideForward: function() {
-        /* needed to split hideAside into a Forward and a Back specific functions to ensure namespace */
-        var that = this;
-        $("#slideshow div.selected aside").animate({opactiy:0, right:"100px"}, 250, function() {
-            $(this).animate({height:300}, 0, function(){
-                neemo.slideshowUtil.forwardSlideEffect();
-            });
-            $(this).hide();
-        });
-    },
-    _hideAsideBack: function() {
-        var that = this;
-        $("#slideshow div.selected aside").animate({opactiy:0, right:"100px"}, 250, function() {
-            $(this).animate({height:300}, 0, function(){
-                neemo.slideshowUtil.backSlideEffect();
-            });
-            $(this).hide();
-        });
-    },
   }
   );
 }
@@ -270,15 +263,17 @@ Neemo.modules.slideshowUtil = function(neemo) {
     /* contain DOM specific functions that don't effect the JS organization of the Display.
      * All used by globally directing functions
      */
-    neemo.slideshowUtil = {};
-    neemo.slideshowUtil.config = function() {
-        return {
-            width: 800,
-            margin: -196,
-            easingMethod: null }; // 'easeInExpo'
+    neemo.slideshowUtil = {}
+    
+    neemo.slideshowUtil.config = {
+        width: 800,
+        margin: -196,
+        easingMethod: null,  // 'easeInExpo'
+        moving: false
     };
+    
     neemo.slideshowUtil.forwardSlideEffect = function() {
-        var that = neemo.slideshowUtil.config();
+        var that = neemo.slideshowUtil.config;
         $("#container").scrollTo("+="+(that.width/2 + that.margin) +"px", {duration:250, easing: that.easingMethod, onAfter: function() {
             moving = false;
             neemo.slideshowUtil.showAside();
@@ -286,10 +281,10 @@ Neemo.modules.slideshowUtil = function(neemo) {
         }});
     };
     neemo.slideshowUtil.backSlideEffect = function(){
-        console.log(neemo.moving);
-        if (!neemo.moving) {
-            neemo.moving = true;
-            $("#container").scrollTo("-="+(width/2 + margin) +"px", {duration:250, easing:easingMethod, onAfter: function() {
+        var that = neemo.slideshowUtil.config;
+        if (!neemo.slideshowUtil.config.moving) {
+            neemo.slideshowUtil.config.moving = true;
+            $("#container").scrollTo("-="+(that.width/2 + that.margin) +"px", {duration:250, easing: that.easingMethod, onAfter: function() {
                 moving = false;
                 neemo.slideshowUtil.showAside();
             }});
@@ -299,6 +294,12 @@ Neemo.modules.slideshowUtil = function(neemo) {
         $("#slideshow div.selected aside").css({height:"400px", right:"59px"});
         $("#slideshow div.selected aside").show(0, function() {
             $("#slideshow div.selected aside").delay(200).animate({opacity:1, right:"-59px"}, 250);
+        });
+    };
+    neemo.slideshowUtil.hideAside = function(callback) {
+        $("#slideshow div.selected aside").animate({opactiy:0, right:"100px"}, 250, function() {
+            $(this).animate({height:300}, 0, callback);
+            $(this).hide();
         });
     };
 
