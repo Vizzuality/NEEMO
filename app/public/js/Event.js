@@ -90,6 +90,21 @@ Neemo.modules.events = function(neemo) {
   );
   neemo.events.ChangeRegion.TYPE = 'change_region';
 
+
+  neemo.events.RegionOverview = neemo.events.Event.extend(
+    {
+    init: function(data, action) {
+      this._super('RegionOverview', action);
+      this._data = data;
+    },
+
+    getData: function() {
+      return this._data;
+    }
+  }
+  );
+  neemo.events.RegionOverview.TYPE = 'region_overview';
+
   /**
      * Add point event.
 */

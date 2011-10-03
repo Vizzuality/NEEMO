@@ -46,8 +46,8 @@ Neemo.modules.app = function(neemo) {
       this.form.start();
       this.slideshow = new neemo.ui.Slideshow.Engine(this._bus, this._api, config.region);
       this.slideshow.start();
-      this.socket = new neemo.socket.Engine(this._bus);
-      this.moving = false;
+      this.socket = new neemo.socket.Engine(this._bus, config.region);
+      
     },
 
     run: function() {
@@ -66,7 +66,7 @@ Neemo.modules.socket = function(neemo) {
   neemo.socket.Engine = Class.extend(
     {
     init: function(bus, region) {
-      this._id = -1;
+      this._id = region;
       this._bus = bus;
       this.region = region;
       this.socket = io.connect();
@@ -77,22 +77,22 @@ Neemo.modules.socket = function(neemo) {
       var that = this;
       this.socket.on('connect', function () {
         neemo.log.info('soccket connected!');
-        //TODO allow for changine region id through event bus
-        if (that.region === null) {
-          that.region = 1;
-          //tell everyone that we are at a new region, 1
-          //that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that.region}));
-        }
       });
       this.socket.on('message',function(data){
         that._id = data;
       });
+      this.socket.on('regionOverview', function (data) {
+         that._bus.fireEvent(new Neemo.env.events.RegionOverview(data));
+      });
       this.socket.on('update', function (data) {
         if(data.id != that._id){
-          that._bus.fireEvent(new Neemo.env.events.AddPoint(data));
+            if (data.eventType == 'point'){
+                that._bus.fireEvent(new Neemo.env.events.AddPoint(data));
+            }
         }
         neemo.log.info('socket update received');
       }, this);
+       this.socket.emit('join', {region: this._id} );
     },
     _bindEvents: function(){
       var that = this,

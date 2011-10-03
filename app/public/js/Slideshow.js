@@ -22,6 +22,8 @@ Neemo.modules.Slideshow = function(neemo) {
       this.numberOfRegions = 5;
       this._canvasid = 'region-focus-image';
       this._region = 0;
+      this._regions = {};
+      this._forwardBuffer = 4;
     },
 
     _bindEvents: function(){
@@ -36,12 +38,28 @@ Neemo.modules.Slideshow = function(neemo) {
 
           //$("#slideshow div.selected").removeClass("selected");
 
-          var url = [that._base_image_url, event.getRegion(), '.jpg'].join('');
+          var url = that._base_image_url;
           if (old_region < that._region){
-              that._display.scrollForward(url, event.getRegion());
+              that.scrollForward(url, event.getRegion());
           }else{
-              that._display.scrollBack(url, event.getRegion());
+              that.scrollBack(url, event.getRegion());
           }
+        }
+      );
+      bus.addHandler(
+        'RegionOverview',
+        function(data){
+            data = data.getData();
+            if (that._regions[data.region_id]){
+                var Region = that._regions[data.region_id];
+                for (i in data.categories){
+                    Region.setCategoryValue(data.categories[i].id, data.categories[i].name, data.categories[i].count);
+                    //var li = Region._getCategory(data.categories[i].id);
+                    //li.html('<span class="count">'+data.categories[i].count+'</span>'+data.categories[i].name+'');
+                    
+                    Region.incrCategoryValue(data.categories[i].id, data.categories[i].name, 1)
+                }
+            }
         }
       );
       bus.addHandler(
@@ -118,110 +136,38 @@ Neemo.modules.Slideshow = function(neemo) {
       
       this._bus.fireEvent(new neemo.events.ChangeRegion({region: 1}));
     },
-  }
-  );
-  neemo.ui.Slideshow.Region = neemo.ui.Display.extend(
-    {
-    init: function(url, id, bus) {
-      this.id = id;
-      this._bus = bus;
-      this._image = new Image();
-      this._image.src = url;
-      this._super(this._html());
-      $(this.getElement()).find('.photo').append(this._image);
-    },
-    _bindEvents: function(){
-        var that = this;
-      this._nextButton.click(function(){
-          console.log('next button click');
-          that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that.id + 1}));
-        }
-      );
-    },
-    start: function(url){
-      var that = this;
-      this._nextButton = $(this.getElement()[0]).find('.next');
-      this._image.onload = function() {
-      }
-      //this._cnvs = document.getElementById("region-focus-image");
-      //this._ctx = this._cnvs.getContext("2d");
-      //$("#" + this._id).fadeIn(this._speed);
-      this._bindEvents();
-    },
-    focus: function(){
-        $("#slideshow div.selected").removeClass("selected");
-        $(this.getElement()).addClass('selected');
-    },
-    queue: function(){
-        $("#slideshow div.queued").removeClass("queued");
-        $(this.getElement()).addClass('queued');
-    },
-
-    _html: function() {
-      return  '<div class="image">' +
-                '<div class="photo"></div>' +
-                '<aside> '+
-                    '<ul> '+
-                    '    <li><span class="count">12</span> fish</li> '+
-                    '    <li><span class="count">03</span> coral</li> '+
-                    '    <li><span class="count">07</span> other</li> '+
-                    '</ul> '+
-                    '<a href="#" class="next"><div class="icon"></div>Next</a> '+
-               '</aside>' +
-               '</div>';
-    }
-  }
-  );
-
-  neemo.ui.Slideshow.Nav = neemo.ui.Display.extend(
-    {
-    init: function() {
-      this._super($('<nav>'));
-      this.getElement().html(this._html());
-      $('body').append(this.getElement());
-      this._next;
-      this._previous;
-    },
-    getNextButton: function(){
-        if (! this._next){
-            this._next = $(this.getElement()[0]).find('.next');
-        }
-        return this._next;
-    },
-    getPreviousButton: function(){
-        if(! this._previous){
-            this._previous = $(this.getElement()).find('.previous');
-        }
-        return this._previous;
-    },
-    _html: function() {
-      return  '<a href="#" class="previous">Previous</a>' +
-                    '<a href="#" class="next">Next</a>';
-    }
-  }
-  );
-
-  /**
-  * The slideshow display.
-  */
-  neemo.ui.Slideshow.Display = neemo.ui.Display.extend(
-    {
-    init: function(config) {
-      this.config = config;
-      this._id = 'slideshow';
-      this._super($("#slideshow"));
-      this._regions = {};
-      this._first = true;
-      this._forwardBuffer = 4;
-      //this.setInnerHtml(this._html());
-    },
     addRegion: function(url, id){
+      var that = this;
       if (!(id in this._regions)) {
-          console.log('added: ' + id)
-          var Region = new neemo.ui.Slideshow.Region(url, id);
-          $(this.getElement()).append($(Region.getElement()));
+          console.log(url);
+          var Region = new neemo.ui.Slideshow.Region(url, id, this._bus);
+          if (!(id in this._regions)) {
+              this._display.addRegion(Region.getElement());
+          }
           Region.start();
           this._regions[id] = Region;
+          /*
+          this._bus.fireEvent(new neemo.events.RegionOverview({
+              region_id: id,
+              categories: [
+                {
+                    id: 'fish',
+                    name: 'fish',
+                    count: 22
+                },
+                {
+                    id: 'coral',
+                    name: 'coral',
+                    count: 12
+                },
+                {
+                    id: 'other',
+                    name: 'other',
+                    count: 32
+                }
+              ]
+          }));*/
+      
       }
     },
     queueRegion: function(id){
@@ -255,7 +201,124 @@ Neemo.modules.Slideshow = function(neemo) {
         this.addRegion(url,id);
         this.queueRegion(id);
         neemo.slideshowUtil.hideAside(neemo.slideshowUtil.backSlideEffect);
-      },
+    }, 
+  }
+  );
+  neemo.ui.Slideshow.Region = neemo.ui.Display.extend(
+    {
+    init: function(url, id, bus) {
+      this.id = id;
+      this._bus = bus;
+      this._image = new Image();
+      this._image.src = [url, id, '.jpg'].join('');
+      this._super(this._html());
+      $(this.getElement()).find('.photo').append(this._image);
+      this._categories = {};
+    },
+    getNextButton: function(){
+        //cache here
+        return $(this.getElement()[0]).find('.next');
+    },
+    _bindEvents: function(){
+        var that = this;
+        $(this.getNextButton()).click(function(){
+            that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that.id + 1}));
+        });
+    },
+    start: function(url){
+      this._image.onload = function() {
+      }
+      this._bindEvents();
+    },
+    _getCategory: function(id){
+        var x = $(this.getElement()).find('.' + id);
+        if (x.length == 0){
+            x = this._addCategory(id);
+        }
+        return x;
+    },
+    _addCategory: function(id){
+        var newCategory = $('<li class="'+id+'"></li>');
+        $(this.getElement()).find('ul').append(newCategory);
+        return newCategory
+    },
+    setCategoryValue: function(id, name, value){
+        var c = this._getCategory(id);
+        c.html('<span class="count">'+value+'</span>'+name+'');
+    },
+    incrCategoryValue: function(id, name, value){
+        var c = this._getCategory(id);
+        var v = c.find('.count');
+        if (v.length > 0){
+            var new_value = value + parseInt(v.text());
+            c.html('<span class="count">'+new_value+'</span>'+name+'');
+        } else {
+            c.html('<span class="count">'+value+'</span>'+name+'');
+        }
+    },
+    focus: function(){
+        $("#slideshow div.selected").removeClass("selected");
+        $(this.getElement()).addClass('selected');
+    },
+    queue: function(){
+        $("#slideshow div.queued").removeClass("queued");
+        $(this.getElement()).addClass('queued');
+    },
+    _html: function() {
+      return  '<div class="image">' +
+                '<div class="photo"></div>' +
+                '<aside> '+
+                    '<ul> '+
+                    '</ul> '+
+                    '<a href="#" class="next"><div class="icon"></div>Next</a> '+
+               '</aside>' +
+               '</div>';
+    }
+  }
+  );
+
+  neemo.ui.Slideshow.Nav = neemo.ui.Display.extend(
+      /* Define the 'Previous' and 'Next' button UI elements */
+    {
+    init: function() {
+      this._super($('<nav>'));
+      this.getElement().html(this._html());
+      $('body').append(this.getElement());
+      this._next;
+      this._previous;
+    },
+    getNextButton: function(){
+        if (! this._next){
+            this._next = $(this.getElement()[0]).find('.next');
+        }
+        return this._next;
+    },
+    getPreviousButton: function(){
+        if(! this._previous){
+            this._previous = $(this.getElement()).find('.previous');
+        }
+        return this._previous;
+    },
+    _html: function() {
+      return  '<a href="#" class="previous">Previous</a>' +
+                    '<a href="#" class="next">Next</a>';
+    }
+  }
+  );
+
+  /**
+  * The slideshow display.
+  */
+  neemo.ui.Slideshow.Display = neemo.ui.Display.extend(
+      /* Provides the slideshow wrapper, append, prepend, and remove options */
+    {
+    init: function(config) {
+      this.config = config;
+      this._super($("#slideshow"));
+    },
+    addRegion: function(region){
+        $(this.getElement()).append($(region));
+    },
   }
   );
 }
@@ -275,7 +338,6 @@ Neemo.modules.slideshowUtil = function(neemo) {
     
     neemo.slideshowUtil.forwardSlideEffect = function() {
         var that = neemo.slideshowUtil.config;
-        console.log('forward effect');
         $("#slideshow div.selected").removeClass("selected");
         $("#slideshow div.queued").addClass('selected');
         $("#slideshow div.selected").removeClass("queued");

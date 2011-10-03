@@ -19,7 +19,8 @@ exports.start = function(io) {
                 data = JSON.parse(data);
                 io.sockets.in(data.region).emit('update', data);
                 rsto.rpush( 'poi-store', JSON.stringify( data ), function(){ console.log('pussssssshhhed')});
-        });
+            }
+        );
     });
     /*
     function popFromQueue() {
