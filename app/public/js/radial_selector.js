@@ -17,6 +17,7 @@
   sectorOpacityActive = .5,
   selectedOption,
   selectedSector;
+  var coordinates = {};
 
   var _mode;
 
@@ -49,12 +50,10 @@ $(function() {
 
   function selectOption(name) {
     selectedOption = name;
-    _mode = "select";
 
-    // TODO: add click event
+    addSelectWindow(coordinates.x, coordinates.y);
 
-    _mode = "selecting";
-    addSelectWindow();
+
   }
 
   function highlightSector(sector) {
@@ -153,22 +152,23 @@ $(function() {
         }, 1000, '<>');
       }
       $radial_selector.addClass("open");
+
     } else {
       closeRadialSelector(e);
     }
   }
 
-  function addSelectWindow() {
-    var $element = $(".image.selected img");
-    var x = $element.offset().left;
-    var y = $element.offset().top;
-
+  function addSelectWindow(x, y) {
     var $selection = $('<div class="selection_window"></div>');
-    $element.parent().append($selection);
+    var $element = $(".image.selected");
+    $element.append($selection);
+    $selection.css({left:0, top:0});
 
-    console.log(($element.height() / 2), $selection.height());
-    $selection.css("left", ($element.width() / 2) - $selection.width() / 2);
-    $selection.css("top",  ($element.height() / 2) - $selection.height() / 2 );
+    var left = x - ($selection.width() / 2);
+    var top  = y - ($selection.height() / 2);
+
+    $selection.animate({opacity:1, left:left, top:top}, 500);
+
     closeRadialSelector();
   }
 
@@ -183,5 +183,13 @@ $(function() {
   //}
 
   $radial_selector.click(toggleRadialSelector);
-  $(".image.selected img").click(toggleRadialSelector);
+  $(".image.selected img").click(function(e) {
+
+    coordinates.x = e.offsetX;
+    coordinates.y = e.offsetY;
+    toggleRadialSelector(e);
+  });
+
+
+
 });
