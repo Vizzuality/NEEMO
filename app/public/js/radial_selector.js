@@ -20,6 +20,26 @@ selectedSector;
 var coordinates = {};
 
 
+/* Object to store a selection window */
+function SelectionWindow(coordinates){
+  this.x = coordinates.x;
+  this.y = coordinates.y;
+}
+
+SelectionWindow.prototype.draw = function($region){
+  // We create the selection window and place it over the image
+  var $selectionWindow = $('<div class="selection_window"></div>');
+  $region.append($selectionWindow);
+
+  var left = this.x - ($selectionWindow.width() / 2);
+  var top  = this.y - ($selectionWindow.height() / 2);
+
+  $selectionWindow.css({left:0, top:0, height:0, width:0});
+
+  // Now we just move the window to its place
+  $selectionWindow.animate({width:200, height:200, opacity:1, left:left, top:top}, 200);
+};
+
 $(function() {
 
   var selectorID = "radial_selector";
@@ -131,17 +151,8 @@ $(function() {
   function addSelectWindow(x, y) {
     var $selectedRegion = $(".image.selected");
 
-    // We create the selection window and place it over the image
-    var $selectionWindow = $('<div class="selection_window"></div>');
-    $selectedRegion.append($selectionWindow);
-
-    var left = x - ($selectionWindow.width() / 2);
-    var top  = y - ($selectionWindow.height() / 2);
-
-    $selectionWindow.css({left:0, top:0, height:0, width:0});
-
-    // Now we just move the window to its place
-    $selectionWindow.animate({width:200, height:200, opacity:1, left:left, top:top}, 200);
+    var selection = new SelectionWindow({x:x, y:y});
+    selection.draw($selectedRegion);
 
     closeRadialSelector();
   }
