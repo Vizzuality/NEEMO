@@ -1,0 +1,173 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>Ranking</title>
+    <link rel="stylesheet" href="/css/style.css" />
+
+    <script src="http://www.google.com/jsapi"></script>
+    <script>google.load("jquery", "1.6.2");</script>
+    <script>google.load("jqueryui", "1.8.16");</script>
+
+    <script src="/js/libs/raphael-min.js"></script>
+    <script src="/js/libs/underscore-min.js"></script>
+    <script src="/js/libs/backbone-min.js"></script>
+    <script src="/js/libs/class.js"></script>
+    <script src="/js/libs/plugins.js"></script>
+
+    <!-- <script src="/js/draft.js"></script>-->
+
+    <style type="text/css">
+      #sector {
+        position:absolute;
+        left:900px;
+        top:300px;
+        z-index:9000;
+      }
+    </style>
+    <script type="text/javascript">
+      $(function() {
+
+          jQuery.fn.selectOption = function(opt) {
+
+          var speed  = (opt && opt.delay) || 100;
+          var easingMethod = (opt && opt.easingMethod) || "easeOutExpo";
+
+          function select($option) {
+
+          var l = $option.position().left;
+          var w = $option.width();
+
+          $option.parent().siblings("li.selected").removeClass("selected");
+          $option.parent().addClass("selected");
+          $(".bar").animate({opacity:1, width:w, left:l}, speed, easingMethod);
+          }
+
+          this.each(function() {
+            if (opt.select) {
+            var $option = $(this).find("li." + opt.select + " a");
+            var sel = function() { select($option);}
+            setTimeout(sel, 200);
+            }
+
+            $(this).mouseleave(function(e){
+              var $option = $(this).find("li."+opt.select+" a");
+              select($option);
+              });
+
+            $(this).find("a").hover(function(e){
+              select($(this));
+              });
+            });
+
+          }
+
+
+          $("nav").selectOption({ select: "about" });
+
+
+      });
+    </script>
+  </head>
+  <body>
+
+    <header>
+    <a href="#"><h1 class="logo">NEEMO project</h1></a>
+    <nav>
+
+    <ul>
+      <li class="about"><a href="#">ABOUT THE PROJECT</a></li>
+      <li class="ranking selected"><a href="#">RANKING</a></li>
+      <li class="mission"><a href="#">CONTINUE YOUR MISSION</a></li>
+    </ul>
+    <div class="bar"></div>
+
+    </nav>
+    </header>
+
+    <div class="rays"></div>
+    <div class="info">
+      <div class="username">
+        <h2>RANKING</h2>
+      </div>
+    </div>
+
+    <div id="your-rank">
+
+      YOUR RANK
+      #0013
+      <a href="#">VIEW YOUR POSITION</a>
+    </div>
+
+    <div id="ranking">
+      <ul>
+        <li>
+        <h2>1#. STUART_LYNN</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:99.7%"></div>
+        </div>
+        </li>
+        <li>
+        <h2>2#. XAVIJAM</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:10%"></div>
+        </div>
+        </li>
+
+        <li>
+        <h2>3#. STUART_LYNN</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:20%"></div>
+        </div>
+        <div class="icon-container">
+          <div class="icon trophee"></div>
+        </div>
+        </li>
+
+
+        <li class="selected">
+        <h2>3#. STUART_LYNN</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:20%"></div>
+        </div>
+        <div class="icon-container">
+          <div class="icon trophee"></div>
+        </div>
+        </li>
+
+        <li>
+        <h2>3#. STUART_LYNN</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:20%"></div>
+        </div>
+        <div class="icon-container">
+          <div class="icon trophee"></div>
+        </div>
+        </li>
+
+        <li>
+        <h2>4#. XAVIJAM</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:60%"></div>
+        </div>
+        </li>
+        <li>
+        <h2>5#. STUART_LYNN</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:30%"></div>
+        </div>
+        </li>
+        <li>
+        <h2>6#. XAVIJAM</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:20%"></div>
+        </div>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

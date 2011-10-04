@@ -12,89 +12,29 @@
     <script>google.load("jquery", "1.6.2");</script>
     <script>google.load("jqueryui", "1.8.16");</script>
 
+    <script src="/js/libs/raphael-min.js"></script>
     <script src="/js/libs/underscore-min.js"></script>
     <script src="/js/libs/backbone-min.js"></script>
     <script src="/js/libs/class.js"></script>
     <script src="/js/libs/plugins.js"></script>
-    <script>
-      $(function() {
 
-        var
-        i = 0,
-        width = 800,
-        height = 600,
-        margin = -196,
-        moving = false,
-        easingMethod = null, // 'easeInExpo',
-        numberOfRegions = 5;
+    <script src="/js/draft.js"></script>
 
+    <style type="text/css">
+      #sector {
 
-        function hideAside(callback) {
-          $("#slideshow div.selected aside").animate({opactiy:0, right:"100px"}, 250, function() {
-            $(this).animate({height:300}, 0, callback);
-            $(this).hide();
-          });
-        }
-
-        function showAside() {
-          $("#slideshow div.selected aside").css({height:"400px", right:"59px"});
-
-          $("#slideshow div.selected aside").show(0, function() {
-            $("#slideshow div.selected aside").delay(200).animate({opacity:1, right:"-59px"}, 250);
-          });
-
-        }
-
-        function selectBox(i) {
-          $("#slideshow div.selected").removeClass("selected");
-          $("#slideshow .image:eq("+i+")").addClass("selected");
-        }
-
-        function fwd() {
-          if (!moving) {
-            moving = true;
-            selectBox(++i);
-            $("#container").scrollTo("+="+(width/2 + margin) +"px", {duration:250, easing:easingMethod, onAfter: function() {
-                moving = false;
-                showAside();
-            }});
-          }
-        }
-
-        function back() {
-          if (!moving) {
-            moving = true;
-            selectBox(--i);
-            $("#container").scrollTo("-="+(width/2 + margin) +"px", {duration:250, easing:easingMethod, onAfter: function() {
-                moving = false;
-                showAside();
-            }});
-          }
-        }
-
-        $(".next").click(function() {
-          if (i < numberOfRegions - 1) {
-            hideAside(fwd);
-          }
-        });
-
-        $(".previous").click(function() {
-          if (i >= 1) {
-            hideAside(back);
-          }
-        });
-
-        showAside();
-      });
-    </script>
+        position:absolute;
+        left:900px;
+        top:300px;
+        z-index:9000;
+      }
+    </style>
   </head>
   <body>
 
-      <header>
-      <div class="logo">
-        <h1>NEEMO project</h1>
-      </div>
-      </header>
+    <header>
+    <a href="#"><h1 class="logo">NEEMO project</h1></a>
+    </header>
 
     <div class="rays"></div>
 
@@ -105,9 +45,9 @@
       </div>
 
       <div class="progress-bar">
-        <div class="progress"></div>
+        <div class="progress" style="width:0"></div>
       </div>
-        <span class="level"> Lvl. 2</span>
+      <span class="level"> Lvl. 2</span>
 
       <ul>
         <li><div class="point">+5</div> <p>you have found a new coral occurence</p></li>
@@ -186,7 +126,7 @@
     <nav>
     <a href="#" class="previous">Previous</a> <a href="#" class="next">Next</a>
     </nav>
-
+    <div id="pie"></div>
   </body>
 </html>
 
