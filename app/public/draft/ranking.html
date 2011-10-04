@@ -1,0 +1,207 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>Ranking</title>
+    <link rel="stylesheet" href="/css/style.css" />
+
+    <script src="http://www.google.com/jsapi"></script>
+    <script>google.load("jquery", "1.6.2");</script>
+    <script>google.load("jqueryui", "1.8.16");</script>
+
+    <script src="/js/libs/raphael-min.js"></script>
+    <script src="/js/libs/underscore-min.js"></script>
+    <script src="/js/libs/backbone-min.js"></script>
+    <script src="/js/libs/class.js"></script>
+
+    <script src="/js/libs/plugins.js"></script>
+    <script src="/js/helpers.js"></script>
+    <script src="/js/draft.js"></script>
+
+    <style type="text/css">
+      #sector {
+        position:absolute;
+        left:900px;
+        top:300px;
+        z-index:9000;
+      }
+    </style>
+    <script type="text/javascript">
+      $(function() {
+          $("nav").navigationHover({ select: "ranking" });
+      });
+
+    </script>
+  </head>
+  <body>
+
+    <header>
+    <a href="#"><h1 class="logo">NEEMO project</h1></a>
+    <nav>
+
+    <ul>
+      <li class="about"><a href="#">ABOUT THE PROJECT</a></li>
+      <li class="ranking selected"><a href="#">RANKING</a></li>
+      <li class="mission"><a href="index.html">CONTINUE YOUR MISSION</a></li>
+    </ul>
+    <div class="bar"></div>
+
+    </nav>
+    </header>
+
+    <div class="info">
+      <div class="line-through">
+        <h2>RANKING</h2>
+        <div class="line"></div>
+      </div>
+    </div>
+
+    <div id="rank-box">
+      <div class="header">
+        <div class="icon trophee"></div>
+        <span class="title">Your rank</span>
+
+        <div class="line-through">
+          <div class="score">#0013</div>
+          <div class="line"></div>
+        </div>
+      </div>
+      <div class="footer">
+        <a href="#">VIEW YOUR POSITION</a>
+      </div>
+    </div>
+
+    <div id="ranking">
+      <ul>
+        <li>
+        <h2>1#. STUART_LYNN</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:99.7%"></div>
+        </div>
+        </li>
+        <li>
+        <h2>2#. XAVIJAM</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:10%"></div>
+        </div>
+        </li>
+
+        <li>
+        <h2>3#. STUART_LYNN</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:20%"></div>
+        </div>
+        <div class="icon-container">
+          <div class="icon trophee"></div>
+        </div>
+        </li>
+
+
+        <li class="selected">
+        <h2>3#. STUART_LYNN</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:20%"></div>
+        </div>
+        <div class="icon-container">
+          <div class="icon trophee"></div>
+        </div>
+        </li>
+
+        <li>
+        <h2>3#. STUART_LYNN</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:20%"></div>
+        </div>
+        <div class="icon-container">
+          <div class="icon trophee"></div>
+        </div>
+        </li>
+
+        <li>
+        <h2>3#. STUART_LYNN</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:20%"></div>
+        </div>
+        <div class="icon-container">
+          <div class="icon trophee"></div>
+        </div>
+        </li>
+
+        <li>
+        <h2>3#. STUART_LYNN</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:20%"></div>
+        </div>
+        <div class="icon-container">
+          <div class="icon trophee"></div>
+        </div>
+        </li>
+
+        <li>
+        <h2>3#. STUART_LYNN</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:20%"></div>
+        </div>
+        <div class="icon-container">
+          <div class="icon trophee"></div>
+        </div>
+        </li>
+
+        <li>
+        <h2>3#. STUART_LYNN</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:20%"></div>
+        </div>
+        <div class="icon-container">
+          <div class="icon trophee"></div>
+        </div>
+        </li>
+
+        <li>
+        <h2>3#. STUART_LYNN</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:20%"></div>
+        </div>
+        <div class="icon-container">
+          <div class="icon trophee"></div>
+        </div>
+        </li>
+
+        <li>
+        <h2>3#. STUART_LYNN</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:20%"></div>
+        </div>
+        <div class="icon-container">
+          <div class="icon trophee"></div>
+        </div>
+        </li>
+
+        <li>
+        <h2>4#. XAVIJAM</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:60%"></div>
+        </div>
+        </li>
+        <li>
+        <h2>5#. STUART_LYNN</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:30%"></div>
+        </div>
+        </li>
+        <li>
+        <h2>6#. XAVIJAM</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:20%"></div>
+        </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="rays"></div>
+  </body>
+</html>

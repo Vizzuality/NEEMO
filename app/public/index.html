@@ -20,6 +20,8 @@
     <script src="/js/Event.js"></script>
     <script src="/js/Slideshow.js"></script>
     <script src="/js/Form.js"></script>
+
+    <script src="/js/helpers.js"></script>
   </script>
   <script type="text/javascript">
     var map;
@@ -30,42 +32,53 @@
           Neemo.app.run();
           Neemo.env = env;
           });
+
+          $("nav").navigationHover();
         });
 
       </script>
     </head>
     <body>
-      <header>
-      <div class="logo">
-        <h1>NEEMO project</h1>
-      </div>
-      </header>
+    <header>
+    <a href="#"><h1 class="logo">NEEMO project</h1></a>
+    <nav>
 
-    <div class="rays"></div>
+    <ul>
+      <li class="about"><a href="#">ABOUT THE PROJECT</a></li>
+      <li class="ranking"><a href="draft/ranking.html">RANKING</a></li>
+      <li class="selected mission"><a href="index.html">YOUR MISSION</a></li>
+    </ul>
+    <div class="bar"></div>
 
-    <div class="info">
+    </nav>
+    </header>
 
-      <div class="username">
-        <h2>DCANO_49</h2>
-      </div>
 
-      <div class="progress-bar">
-        <div class="progress"></div>
-      </div>
+      <div class="rays"></div>
+
+      <div class="info">
+
+        <div class="username">
+          <h2>DCANO_49</h2>
+        </div>
+
+        <div class="progress-bar">
+          <div class="progress"></div>
+        </div>
         <span class="level"> Lvl. 2</span>
 
-      <ul>
-        <li><div class="point">+5</div> <p>you have found a new coral occurence</p></li>
-        <li><div class="point">+5</div> <p>you have found a new coral occurence</p></li>
-        <li><div class="point">+1</div> <p>you have confirmed a  coral occurence<p></li>
-        <li><div class="point">+5</div> <p>you have found a new coral occurence</p></li>
-        <li><div class="point">+5</div> <p>you have found a new coral occurence</p></li>
-      </ul>
-    </div>
+        <ul>
+          <li><div class="point">+5</div> <p>you have found a new coral occurence</p></li>
+          <li><div class="point">+5</div> <p>you have found a new coral occurence</p></li>
+          <li><div class="point">+1</div> <p>you have confirmed a  coral occurence<p></li>
+          <li><div class="point">+5</div> <p>you have found a new coral occurence</p></li>
+          <li><div class="point">+5</div> <p>you have found a new coral occurence</p></li>
+        </ul>
+      </div>
 
-    <div id="container">
-		<div id="slideshow"></div>
-    </div>
+      <div id="container">
+        <div id="slideshow"></div>
+      </div>
 
     </body>
   </html>
