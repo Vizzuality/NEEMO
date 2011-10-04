@@ -21,23 +21,27 @@ var coordinates = {};
 
 
 /* Object to store a selection window */
-function SelectionWindow(coordinates){
-  this.x = coordinates.x;
-  this.y = coordinates.y;
+function SelectionWindow(opt){
+  this.x = opt.x;
+  this.y = opt.y;
+  this.name = opt.name;
+  this.$el = $('<div class="selection_window"></div>');
 }
 
 SelectionWindow.prototype.draw = function($region){
+  console.log("Drawing a selection for a " + this.name);
   // We create the selection window and place it over the image
-  var $selectionWindow = $('<div class="selection_window"></div>');
-  $region.append($selectionWindow);
+  $region.append(this.$el);
 
-  var left = this.x - ($selectionWindow.width() / 2);
-  var top  = this.y - ($selectionWindow.height() / 2);
+  var left = this.x - (this.$el.width() / 2);
+  var top  = this.y - (this.$el.height() / 2);
 
-  $selectionWindow.css({left:0, top:0, height:0, width:0});
+  this.$el.css({left:0, top:0, height:0, width:0});
 
   // Now we just move the window to its place
-  $selectionWindow.animate({width:200, height:200, opacity:1, left:left, top:top}, 200);
+  this.$el.animate({width:200, height:200, opacity:1, left:left, top:top}, 200);
+  this.$el.draggable();
+
 };
 
 $(function() {
@@ -71,7 +75,7 @@ $(function() {
     e.stopPropagation();
 
     selectedOption = name;
-    addSelectWindow(coordinates.x, coordinates.y);
+    addSelectWindow({x: coordinates.x, y: coordinates.y, name:name});
   }
 
   /* This function should be called on changing the region */
@@ -119,7 +123,7 @@ $(function() {
     }
 
     $radial_selector.removeClass("open");
-    $radial_selector.delay(500).animate({ opacity: 0 });
+    $radial_selector.delay(500).animate({ opacity: 0 }).fadeOut();;
     circle.animate({r:0}, 1000, '<>');
 
     // We hide each of the sectors
@@ -131,6 +135,7 @@ $(function() {
   function toggleRadialSelector(e) {
     if (!$radial_selector.hasClass("open")) {
 
+      $radial_selector.fadeIn();
       $radial_selector.css({ left: e.clientX - 133, top: e.clientY - 133 }).animate({ opacity: 1 });
 
       circle.animate({opacity:.7, r:30}, 1000, '<>');
@@ -148,10 +153,10 @@ $(function() {
     }
   }
 
-  function addSelectWindow(x, y) {
+  function addSelectWindow(opt) {
     var $selectedRegion = $(".image.selected");
 
-    var selection = new SelectionWindow({x:x, y:y});
+    var selection = new SelectionWindow({x:opt.x, y:opt.y, name:opt.name});
     selection.draw($selectedRegion);
 
     closeRadialSelector();

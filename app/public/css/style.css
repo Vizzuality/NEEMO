@@ -506,12 +506,15 @@ header nav ul li a {
 }
 
 .selection_window {
+  opacity:0;
   width:200px;
   height:200px;
   border:1px solid #c00;
+  border-top:10px solid #c00;
   position:absolute;
   z-index:2000;
   opacity:.9;
+  cursor:hand;
 }
 
 /* SLIDESHOW ---------------------------------------------- */
