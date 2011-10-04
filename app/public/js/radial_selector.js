@@ -73,26 +73,23 @@ $(function() {
       var attr = { cursor:"hand", fill: "#000", stroke: "none", opacity: sectorOpacity };
 
       var sectorSVG = svg.path(sectorPath);
-      sectorSVG.attr(attr);
-      sectorSVG.hover(onFocusSector, onBlurSector);
 
+      // Event binding
+      sectorSVG.hover(onFocusSector, onBlurSector);
       sectorSVG.click(options[i].action);
 
     } else {
       var attr = { fill: "#000", stroke: "none", opacity: sectorOpacityDisabled };
       var sectorSVG = svg.path(sectorPath);
-      sectorSVG.attr(attr);
 
-      sectorSVG.click(function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-      });
+      // If there's no option, there's no action
+      sectorSVG.click(function(e) { e.preventDefault(); e.stopPropagation(); });
     }
 
+    sectorSVG.attr(attr);
     sectorSVG.translate(cx, cy);
-    sectorSVG.rotate(0 * i, centerX, centerY);
-    var sector = { sector:sectorSVG, option:option};
-    sectors.push(sector);
+    sectorSVG.rotate(0, centerX, centerY);
+    sectors.push({ sector:sectorSVG, option:option});
   }
 
   function closeRadialSelector(e) {
@@ -102,10 +99,10 @@ $(function() {
     }
 
     $radial_selector.removeClass("open");
-
     $radial_selector.delay(500).animate({ opacity: 0 });
-
     circle.animate({r:0}, 1000, '<>');
+
+    // We hide each of the sectors
     for (i = 0; i <= sectorNum - 1; i++) {
       sectors[i].sector.animate({ rotation: (0) + " " + centerX + " " + centerY }, 1000, '<>');
     }
