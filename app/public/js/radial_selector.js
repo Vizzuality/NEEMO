@@ -17,6 +17,8 @@
   sectorOpacityActive = .5,
   selectedOption;
 
+  var _mode;
+
 
 $(function() {
 
@@ -49,6 +51,7 @@ $(function() {
     e.stopPropagation();
 
     selectedOption = name;
+    _mode = "select";
 
     // TODO: add click event
   }
@@ -86,8 +89,10 @@ $(function() {
 
 
   function closeRadialSelector(e) {
-    e.preventDefault();
-    e.stopPropagation();
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
 
     $radial_selector.removeClass("open");
 
@@ -97,6 +102,7 @@ $(function() {
     for (i = 0; i <= sectorNum - 1; i++) {
       sectors[i].sector.animate({ rotation: (0) + " " + centerX + " " + centerY }, 1000, '<>');
     }
+    _mode = null;
   }
 
   function toggleRadialSelector(e) {
@@ -119,7 +125,28 @@ $(function() {
     }
   }
 
+  function selectSomething($element, e) {
+    var x = e.offsetX;
+    var y = e.offsetY;
+
+    var $selection = $('<div class="selection_window"></div>');
+    $element.append($selection);
+    $selection.css({left: x - $selection.width() / 2 , top:y - $selection.height() / 2});;
+    closeRadialSelector();
+  }
+
   $radial_selector.click(toggleRadialSelector);
-  $(".photo").click(toggleRadialSelector);
+  //$(".photo").click(toggleRadialSelector);
+
+  $(".photo").click(function(e) {
+
+    if (_mode == "select") {
+      _mode = "selecting";
+      selectSomething($(this), e);
+    } else if (!_mode) {
+      toggleRadialSelector(e);
+    }
+
+  });
 
 });
