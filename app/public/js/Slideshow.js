@@ -18,7 +18,7 @@ Neemo.modules.Slideshow = function(neemo) {
       this._min = 1;
       this._max = 8;
       this._previousButton = 1; //used to enable (1) and disable (0) the nav buttons
-      this._nextButton = 1;
+      this._nextButton = 1; //used to enable (1) and disable (0) the nav buttons
       /* I think all elsewhere now
       this.width  = 800;
       this.height = 600;
