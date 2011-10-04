@@ -20,6 +20,8 @@
     <script src="/js/Event.js"></script>
     <script src="/js/Slideshow.js"></script>
     <script src="/js/Form.js"></script>
+
+    <script src="/js/helpers.js"></script>
   </script>
   <script type="text/javascript">
     var map;
@@ -30,16 +32,27 @@
           Neemo.app.run();
           Neemo.env = env;
           });
+
+          $("nav").navigationHover();
         });
 
       </script>
     </head>
     <body>
-      <header>
-      <div class="logo">
-        <h1>NEEMO project</h1>
-      </div>
-      </header>
+    <header>
+    <a href="#"><h1 class="logo">NEEMO project</h1></a>
+    <nav>
+
+    <ul>
+      <li class="about"><a href="#">ABOUT THE PROJECT</a></li>
+      <li class="ranking"><a href="draft/ranking.html">RANKING</a></li>
+      <li class="selected mission"><a href="index.html">YOUR MISSION</a></li>
+    </ul>
+    <div class="bar"></div>
+
+    </nav>
+    </header>
+
 
       <div class="rays"></div>
 

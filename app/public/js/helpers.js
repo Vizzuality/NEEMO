@@ -5,9 +5,9 @@ jQuery.fn.navigationHover = function(opt) {
 
   var speed  = (opt && opt.speed) || 100;
   var easingMethod = (opt && opt.easingMethod) || "easeOutExpo";
+  var $currentOption;
 
   function select($option) {
-
     var l = $option.position().left;
     var w = $option.width();
 
@@ -19,22 +19,23 @@ jQuery.fn.navigationHover = function(opt) {
 
   this.each(function() {
 
-    if (opt.select) {
-      var $option = $(this).find("li." + opt.select + " a");
-      var sel = function() { select($option, opt.speed);}
+    if ($(this).find(".selected")) {
+      $currentOption = $(this).find("li.selected a");
+
+      $currentOption.click(function(e) {
+        e.preventDefault();
+      });
+
+      var sel = function() { select($currentOption, speed);}
       setTimeout(sel, 200);
     }
 
     $(this).mouseleave(function(e){
-      var $option = $(this).find("li."+opt.select+" a");
-      select($option);
+      select($currentOption);
     });
 
     $(this).find("a").hover(function(e){
-      select($(this), opt.speed);
+      select($(this), speed);
     });
   });
 }
-
-
-

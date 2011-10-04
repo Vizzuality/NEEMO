@@ -15,7 +15,8 @@
   sectorOpacity = .40,
   sectorOpacityDisabled = .25,
   sectorOpacityActive = .5,
-  selectedOption;
+  selectedOption,
+  selectedSector;
 
   var _mode;
 
@@ -53,12 +54,19 @@ $(function() {
     // TODO: add click event
   }
 
-  function highlightOption(option) {
-    option.attr("fill", "red");
+  function highlightSector(sector) {
+    sector.attr("fill", "red");
   }
 
-  function unhighlightOption(option) {
-    option.attr("fill", "black");
+  function unHighlightSector(sector) {
+    sector.attr("fill", "#000");
+  }
+
+  /* This function should be called on changing the region */
+  function clearSelection() {
+    $(".selection_window").hide(250, function() {
+      $(this).clear();
+    });
   }
 
   /* Drawing of the radial selector */
@@ -83,7 +91,13 @@ $(function() {
         e.preventDefault();
         e.stopPropagation();
 
-        highlightOption(this);
+        if (selectedSector) {
+          unHighlightSector(selectedSector);
+        }
+
+        selectedSector = this;
+        highlightSector(selectedSector);
+
         action.apply();
       });
 
@@ -104,13 +118,13 @@ $(function() {
     sectors.push(sector);
   }
 
-
   function closeRadialSelector(e) {
     if (e) {
       e.preventDefault();
       e.stopPropagation();
     }
 
+    unHighlightSector(selectedSector);
     $radial_selector.removeClass("open");
 
     $radial_selector.delay(500).animate({ opacity: 0 });
