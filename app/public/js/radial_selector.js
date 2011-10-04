@@ -1,22 +1,20 @@
 
   /* Radial selector configuration */
-  var canvasWidth  = 275;
-  var canvasHeight = 275;
+  var
+  canvasWidth  = 275,
+  canvasHeight = 275,
 
-  var sectorNum = 8;
-  var sector;
-  var sectors = [];
-  var cx = -60;
-  var cy = -11.7;
-  var centerX = 138;
-  var centerY = 138;
-  var sectorPath = "M230.301,135.651c3.62,8.709,3.48,18.071,0.301,26.23l93.729,36.011c12.09-31.82,11.98-68.321-3.16-101.931l-0.21-0.46L230.301,135.651z";
-
-
-
-  var sectorOpacity = .40;
-  var sectorOpacityDisabled = .25;
-  var sectorOpacityActive = .5;
+  sectorNum = 8,
+  sector,
+  sectors = [],
+  cx = -60,
+  cy = -11.7,
+  centerX = 138,
+  centerY = 138,
+  sectorPath = "M230.301,135.651c3.62,8.709,3.48,18.071,0.301,26.23l93.729,36.011c12.09-31.82,11.98-68.321-3.16-101.931l-0.21-0.46L230.301,135.651z",
+  sectorOpacity = .40,
+  sectorOpacityDisabled = .25,
+  sectorOpacityActive = .5;
 
   var _open = false;
 
@@ -30,10 +28,9 @@ $(function() {
     { action: function(e) { selectOption("GORGONIANS", e); }, text: "BARREL\nSPONGES", angle: 0, cX: centerX - 50, cY: 0},
     { action: function(e) { selectOption("coral", e); }, text: "CORAL HEAD", angle: 315, cX: centerX - 80, cY: cy - 50},
     { action: function(e) { selectOption("barrel", e); }, text: "GORGONIANS", angle: -90, cX: 0, cY: cy - 75}, null, null,
-    { action: close, text: "CLOSE", angle: 315, cX: -60, cY: 60}, null,
+    { action: closeRadialSelector, text: "CLOSE", angle: 315, cX: -60, cY: 60}, null,
     { action: function(e) { selectOption("other", e); }, text: "OTHER", angle: 45, cX: 60, cY: 60}, null
   ];
-
 
   /* Sector events */
   function onFocusSector(event) {
@@ -47,9 +44,8 @@ $(function() {
   function selectOption(name, e) {
     e.preventDefault();
     e.stopPropagation();
-    alert(name);
+    // TODO: add click event
   }
-
 
   /* Drawing of the radial selector */
   for (i = 0; i <= sectorNum - 1; i++) {
@@ -111,7 +107,7 @@ $(function() {
       }
 
     } else {
-      close(e);
+      closeRadialSelector(e);
     }
   }
 
