@@ -1,25 +1,31 @@
-var canvasWidth  = 275;
-var canvasHeight = 275;
 
-var sectorNum = 8;
-var sector;
-var sectors = [];
-var cx = -60;
-var cy = -11.7;
-var centerX = 138;
-var centerY = 138;
-var sectorPath = "M230.301,135.651c3.62,8.709,3.48,18.071,0.301,26.23l93.729,36.011c12.09-31.82,11.98-68.321-3.16-101.931l-0.21-0.46L230.301,135.651z";
+  /* Radial selector configuration */
+  var canvasWidth  = 275;
+  var canvasHeight = 275;
 
-$(function() {
+  var sectorNum = 8;
+  var sector;
+  var sectors = [];
+  var cx = -60;
+  var cy = -11.7;
+  var centerX = 138;
+  var centerY = 138;
+  var sectorPath = "M230.301,135.651c3.62,8.709,3.48,18.071,0.301,26.23l93.729,36.011c12.09-31.82,11.98-68.321-3.16-101.931l-0.21-0.46L230.301,135.651z";
 
-  var svg = Raphael("radial_selector", canvasWidth, canvasHeight);
 
-  var circle = svg.circle(centerX, centerY, 0).attr({ stroke:"none", fill: "r(0.75, 0.75)#000-#333" });
 
   var sectorOpacity = .40;
   var sectorOpacityDisabled = .25;
   var sectorOpacityActive = .5;
 
+  var _open = false;
+
+$(function() {
+
+  var svg = Raphael("radial_selector", canvasWidth, canvasHeight);
+  var circle = svg.circle(centerX, centerY, 0).attr({ stroke:"none", fill: "r(0.75, 0.75)#000-#333" });
+
+  /* Options for the radial selector */
   var options = [
     { action: function(e) { selectOption("GORGONIANS", e); }, text: "BARREL\nSPONGES", angle: 0, cX: centerX - 50, cY: 0},
     { action: function(e) { selectOption("coral", e); }, text: "CORAL HEAD", angle: 315, cX: centerX - 80, cY: cy - 50},
@@ -28,6 +34,8 @@ $(function() {
     { action: function(e) { selectOption("other", e); }, text: "OTHER", angle: 45, cX: 60, cY: 60}, null
   ];
 
+
+  /* Sector events */
   function onFocusSector(event) {
     this.animate({ opacity:sectorOpacityActive}, 250);
   }
@@ -36,6 +44,14 @@ $(function() {
     this.animate({ opacity:sectorOpacity}, 250);
   }
 
+  function selectOption(name, e) {
+    e.preventDefault();
+    e.stopPropagation();
+    alert(name);
+  }
+
+
+  /* Drawing of the radial selector */
   for (i = 0; i <= sectorNum - 1; i++) {
 
     if (options[i]) {
@@ -63,15 +79,8 @@ $(function() {
     sectors.push(sector);
   }
 
-  var _open = false;
 
-  function selectOption(name, e) {
-    e.preventDefault();
-    e.stopPropagation();
-    alert(name);
-  }
-
-  function close(e) {
+  function closeRadialSelector(e) {
     e.preventDefault();
     e.stopPropagation();
 
@@ -85,8 +94,7 @@ $(function() {
     }
   }
 
-  function open(e) {
-    console.log(e);
+  function toggleRadialSelector(e) {
     if (!_open) {
       _open = true;
 
@@ -107,9 +115,7 @@ $(function() {
     }
   }
 
-
-  $("#radial_selector").click(open);
-  $(".photo").click(open);
-
+  $("#radial_selector").click(toggleRadialSelector);
+  $(".photo").click(toggleRadialSelector);
 
 });
