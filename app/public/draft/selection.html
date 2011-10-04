@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="/css/style.css" />
+
+    <script src="http://www.google.com/jsapi"></script>
+    <script>google.load("jquery", "1.6.2");</script>
+    <script>google.load("jqueryui", "1.8.16");</script>
+
+    <script src="/js/libs/raphael-min.js"></script>
+    <script src="/js/libs/underscore-min.js"></script>
+    <script src="/js/libs/backbone-min.js"></script>
+    <script src="/js/libs/class.js"></script>
+    <script src="/js/libs/plugins.js"></script>
+
+    <script src="/js/selection.js"></script>
+
+    <style type="text/css">
+      #sector {
+
+        position:absolute;
+        left:900px;
+        top:300px;
+        z-index:9000;
+      }
+    </style>
+  </head>
+  <body>
+
+    <header>
+    <a href="#"><h1 class="logo">NEEMO project</h1></a>
+    </header>
+
+    <div class="rays"></div>
+
+    <div class="info">
+
+      <div class="username">
+        <h2>DCANO_49</h2>
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress" style="width:0"></div>
+      </div>
+      <span class="level"> Lvl. 2</span>
+
+      <ul>
+        <li><div class="point">+5</div> <p>you have found a new coral occurence</p></li>
+        <li><div class="point">+5</div> <p>you have found a new coral occurence</p></li>
+        <li><div class="point">+1</div> <p>you have confirmed a  coral occurence<p></li>
+        <li><div class="point">+5</div> <p>you have found a new coral occurence</p></li>
+        <li><div class="point">+5</div> <p>you have found a new coral occurence</p></li>
+      </ul>
+    </div>
+
+    <div id="container">
+      <div id="slideshow">
+
+        <div class="image selected">
+          <div class="photo"><img src="/regions/1.jpg" /></div>
+          <aside>
+          <ul>
+            <li><span class="count">12</span> fish</li>
+            <li><span class="count">03</span> coral</li>
+            <li><span class="count">07</span> other</li>
+          </ul>
+          <a href="#" class="next"><div class="icon"></div>Next</a>
+          </aside>
+        </div>
+
+        <div class="image">
+          <div class="photo"><img src="/regions/1.jpg" /></div>
+          <aside>
+          <ul>
+            <li><span class="count">12</span> fish</li>
+            <li><span class="count">03</span> coral</li>
+            <li><span class="count">07</span> other</li>
+          </ul>
+          <a href="#" class="next"><div class="icon"></div>Next</a>
+          </aside>
+        </div>
+
+        <div class="image">
+          <div class="photo"><img src="/regions/1.jpg" /></div>
+          <aside>
+          <ul>
+            <li><span class="count">12</span> fish</li>
+            <li><span class="count">03</span> coral</li>
+            <li><span class="count">07</span> other</li>
+          </ul>
+          <a href="#" class="next"><div class="icon"></div>Next</a>
+          </aside>
+        </div>
+
+        <div class="image">
+          <div class="photo"><img src="/regions/1.jpg" /></div>
+          <aside>
+          <ul>
+            <li><span class="count">12</span> fish</li>
+            <li><span class="count">03</span> coral</li>
+            <li><span class="count">07</span> other</li>
+          </ul>
+          <a href="#" class="next"><div class="icon"></div>Next</a>
+          </aside>
+        </div>
+
+        <div class="image">
+          <div class="photo"><img src="/regions/1.jpg" /></div>
+          <aside>
+          <ul>
+            <li><span class="count">12</span> fish</li>
+            <li><span class="count">03</span> coral</li>
+            <li><span class="count">07</span> other</li>
+          </ul>
+          <a href="#" class="next"><div class="icon"></div>Next</a>
+          </aside>
+        </div>
+
+      </div>
+    </div>
+    <nav>
+    <a href="#" class="previous">Previous</a> <a href="#" class="next">Next</a>
+    </nav>
+    <div id="pie"></div>
+  </body>
+</html>
+
