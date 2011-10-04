@@ -17,9 +17,10 @@
     <script src="/js/libs/underscore-min.js"></script>
     <script src="/js/libs/backbone-min.js"></script>
     <script src="/js/libs/class.js"></script>
-    <script src="/js/libs/plugins.js"></script>
 
-    <!-- <script src="/js/draft.js"></script>-->
+    <script src="/js/libs/plugins.js"></script>
+    <script src="/js/helpers.js"></script>
+    <script src="/js/draft.js"></script>
 
     <style type="text/css">
       #sector {
@@ -31,46 +32,9 @@
     </style>
     <script type="text/javascript">
       $(function() {
-
-          jQuery.fn.selectOption = function(opt) {
-
-          var speed  = (opt && opt.delay) || 100;
-          var easingMethod = (opt && opt.easingMethod) || "easeOutExpo";
-
-          function select($option) {
-
-          var l = $option.position().left;
-          var w = $option.width();
-
-          $option.parent().siblings("li.selected").removeClass("selected");
-          $option.parent().addClass("selected");
-          $(".bar").animate({opacity:1, width:w, left:l}, speed, easingMethod);
-          }
-
-          this.each(function() {
-            if (opt.select) {
-            var $option = $(this).find("li." + opt.select + " a");
-            var sel = function() { select($option);}
-            setTimeout(sel, 200);
-            }
-
-            $(this).mouseleave(function(e){
-              var $option = $(this).find("li."+opt.select+" a");
-              select($option);
-              });
-
-            $(this).find("a").hover(function(e){
-              select($(this));
-              });
-            });
-
-          }
-
-
-          $("nav").selectOption({ select: "about" });
-
-
+          $("nav").navigationHover({ select: "ranking" });
       });
+
     </script>
   </head>
   <body>
@@ -89,18 +53,26 @@
     </nav>
     </header>
 
-    <div class="rays"></div>
     <div class="info">
-      <div class="username">
+      <div class="line-through">
         <h2>RANKING</h2>
+        <div class="line"></div>
       </div>
     </div>
 
-    <div id="your-rank">
+    <div id="rank-box">
+      <div class="header">
+        <div class="icon trophee"></div>
+        <span class="title">Your rank</span>
 
-      YOUR RANK
-      #0013
-      <a href="#">VIEW YOUR POSITION</a>
+        <div class="line-through">
+          <div class="score">#0013</div>
+          <div class="line"></div>
+        </div>
+      </div>
+      <div class="footer">
+        <a href="#">VIEW YOUR POSITION</a>
+      </div>
     </div>
 
     <div id="ranking">
@@ -150,6 +122,66 @@
         </li>
 
         <li>
+        <h2>3#. STUART_LYNN</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:20%"></div>
+        </div>
+        <div class="icon-container">
+          <div class="icon trophee"></div>
+        </div>
+        </li>
+
+        <li>
+        <h2>3#. STUART_LYNN</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:20%"></div>
+        </div>
+        <div class="icon-container">
+          <div class="icon trophee"></div>
+        </div>
+        </li>
+
+        <li>
+        <h2>3#. STUART_LYNN</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:20%"></div>
+        </div>
+        <div class="icon-container">
+          <div class="icon trophee"></div>
+        </div>
+        </li>
+
+        <li>
+        <h2>3#. STUART_LYNN</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:20%"></div>
+        </div>
+        <div class="icon-container">
+          <div class="icon trophee"></div>
+        </div>
+        </li>
+
+        <li>
+        <h2>3#. STUART_LYNN</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:20%"></div>
+        </div>
+        <div class="icon-container">
+          <div class="icon trophee"></div>
+        </div>
+        </li>
+
+        <li>
+        <h2>3#. STUART_LYNN</h2> <div class="score">17,312 [LVL.3]</div>
+        <div class="progress-bar">
+          <div class="progress" style="width:20%"></div>
+        </div>
+        <div class="icon-container">
+          <div class="icon trophee"></div>
+        </div>
+        </li>
+
+        <li>
         <h2>4#. XAVIJAM</h2> <div class="score">17,312 [LVL.3]</div>
         <div class="progress-bar">
           <div class="progress" style="width:60%"></div>
@@ -169,5 +201,7 @@
         </li>
       </ul>
     </div>
+
+    <div class="rays"></div>
   </body>
 </html>
