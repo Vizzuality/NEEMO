@@ -30,11 +30,11 @@ $(function() {
 
   /* Options for the radial selector */
   var options = [
-    { action: function(e) { selectOption("GORGONIANS", e); }, text: "BARREL\nSPONGES", angle: 0, cX: centerX - 50, cY: 0},
-    { action: function(e) { selectOption("coral", e); }, text: "CORAL HEAD", angle: 315, cX: centerX - 80, cY: cy - 50},
-    { action: function(e) { selectOption("barrel", e); }, text: "GORGONIANS", angle: -90, cX: 0, cY: cy - 75}, null, null,
+    { action: function(e) { selectOption("barrel"); }, text: "BARREL\nSPONGES", angle: 0, cX: centerX - 50, cY: 0},
+    { action: function(e) { selectOption("coral"); }, text: "CORAL HEAD", angle: 315, cX: centerX - 80, cY: cy - 50},
+    { action: function(e) { selectOption("gorgonians"); }, text: "GORGONIANS", angle: -90, cX: 0, cY: cy - 75}, null, null,
     { action: closeRadialSelector, text: "CLOSE", angle: 315, cX: -60, cY: 60}, null,
-    { action: function(e) { selectOption("other", e); }, text: "OTHER", angle: 45, cX: 60, cY: 60}, null
+    { action: function(e) { selectOption("other"); }, text: "OTHER", angle: 45, cX: 60, cY: 60}, null
   ];
 
   /* Sector events */
@@ -46,14 +46,19 @@ $(function() {
     this.animate({ opacity:sectorOpacity}, 250);
   }
 
-  function selectOption(name, e) {
-    e.preventDefault();
-    e.stopPropagation();
-
+  function selectOption(name) {
     selectedOption = name;
     _mode = "select";
 
     // TODO: add click event
+  }
+
+  function highlightOption(option) {
+    option.attr("fill", "red");
+  }
+
+  function unhighlightOption(option) {
+    option.attr("fill", "black");
   }
 
   /* Drawing of the radial selector */
@@ -67,13 +72,25 @@ $(function() {
 
       var attr = { cursor:"hand", fill: "#000", stroke: "none", opacity: sectorOpacity };
 
-      var sectorSVG = svg.path(sectorPath).attr(attr);
+      var sectorSVG = svg.path(sectorPath);
+      sectorSVG.attr(attr);
       sectorSVG.hover(onFocusSector, onBlurSector);
-      sectorSVG.click(options[i].action);
+      //sectorSVG.click(options[i].action);
+
+      var action = options[i].action;
+
+      sectorSVG.click(function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        highlightOption(this);
+        action.apply();
+      });
 
     } else {
       var attr = { fill: "#000", stroke: "none", opacity: sectorOpacityDisabled };
-      var sectorSVG = svg.path(sectorPath).attr(attr);
+      var sectorSVG = svg.path(sectorPath);
+      sectorSVG.attr(attr);
 
       sectorSVG.click(function(e) {
         e.preventDefault();

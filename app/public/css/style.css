@@ -243,6 +243,11 @@ body {
   font-style: normal;
 }
 
+
+a { text-decoration:none; }
+
+#container { position:absolute; width:100%; height:100%; clear:both; overflow:hidden; }
+
 h1 {
   font-family:"EurostileLTStd";
   font-weight:600;
@@ -424,6 +429,7 @@ header nav ul li a {
   width:476px;
 }
 
+/* RANK BOX ---------------------------------------------- */
 #rank-box {
   position:absolute;
   top:100px;
@@ -483,96 +489,31 @@ header nav ul li a {
   color:#fff;
 }
 
+
+/* RADIAL SELECTOR ---------------------------------------------- */
+
 #radial_selector {
   width:268;
   height:268px;
   position:absolute;
   opacity:1;
   left:-990px;
-  z-index:9999;
+  z-index:1900;
 
   font-family:"EurostileLTStd";
   letter-spacing:1px;
 }
 
-.temp_nav {position:absolute; bottom: 10px; left:50%; margin-left:-110px; width:220px; text-align:center; z-index:2000;}
-.temp_nav a, .temp_nav a:visited {display:block; float:left; background:black; width:80px; margin-right:10px; padding:10px; text-decoration:none; font-weight:bold; color:#fff;}
-
-/* ==|== non-semantic helper classes ========================================
-Please define your styles before this section.
-========================================================================== */
-
-/* For image replacement */
-.ir { display: block; border: 0; text-indent: -999em; overflow: hidden; background-color: transparent; background-repeat: no-repeat; text-align: left; direction: ltr; }
-.ir br { display: none; }
-
-/* Hide from both screenreaders and browsers: h5bp.com/u */
-.hidden { display: none !important; visibility: hidden; }
-
-/* Hide only visually, but have it available for screenreaders: h5bp.com/v */
-.visuallyhidden { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; }
-
-/* Extends the .visuallyhidden class to allow the element to be focusable when navigated to via the keyboard: h5bp.com/p */
-.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus { clip: auto; height: auto; margin: 0; overflow: visible; position: static; width: auto; }
-
-/* Hide visually and from screenreaders, but maintain layout */
-.invisible { visibility: hidden; }
-
-/* Contain floats: h5bp.com/q */
-.clearfix:before, .clearfix:after { content: ""; display: table; }
-.clearfix:after { clear: both; }
-.clearfix { zoom: 1; }
-
-
-
-/* ==|== media queries ======================================================
-PLACEHOLDER Media Queries for Responsive Design.
-These override the primary ('mobile first') styles
-Modify as content requires.
-========================================================================== */
-
-@media only screen and (min-width: 480px) {
-  /* Style adjustments for viewports 480px and over go here */
-
+.selection_window {
+  width:200px;
+  height:200px;
+  border:1px solid #c00;
+  position:absolute;
+  z-index:2000;
+  opacity:.9;
 }
 
-@media only screen and (min-width: 768px) {
-  /* Style adjustments for viewports 768px and over go here */
-
-}
-
-
-
-/* ==|== print styles =======================================================
-Print styles.
-Inlined to avoid required HTTP connection: h5bp.com/r
-========================================================================== */
-
-@media print {
-  * { background: transparent !important; color: black !important; text-shadow: none !important; filter:none !important; -ms-filter: none !important; } /* Black prints faster: h5bp.com/s */
-  a, a:visited { text-decoration: underline; }
-  a[href]:after { content: " (" attr(href) ")"; }
-  abbr[title]:after { content: " (" attr(title) ")"; }
-  .ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after { content: ""; }  /* Don't show links for images, or javascript/internal links */
-  pre, blockquote { border: 1px solid #999; page-break-inside: avoid; }
-  thead { display: table-header-group; } /* h5bp.com/t */
-  tr, img { page-break-inside: avoid; }
-  img { max-width: 100% !important; }
-  @page { margin: 0.5cm; }
-  p, h2, h3 { orphans: 3; widows: 3; }
-  h2, h3 { page-break-after: avoid; }
-}
-
-
-/* ==|== styles left in draft/index.html ====================================
-These styles were left in draft/index.html
-I just pulled them out and stuck them here for use in next iteration
-========================================================================== */
-
-a { text-decoration:none; }
-
-
-#container { position:absolute; width:100%; height:100%; clear:both; overflow:hidden; }
+/* SLIDESHOW ---------------------------------------------- */
 
 #slideshow {
   width:9999px;
@@ -693,7 +634,8 @@ a { text-decoration:none; }
 
 .rays {position:absolute; left:0px; top:0px; background:url('/images/rays.png') no-repeat; width:386px; height:570px;}
 
-/* Progress bar */
+/* PROGRESS BAR ---------------------------------------------- */
+
 .progress-bar {
   position:relative;
   margin-right:5px;
@@ -716,8 +658,8 @@ a { text-decoration:none; }
   -webkit-transition: width .3s ease-out;
 }
 
+/* INFO PANEL ---------------------------------------------- */
 
-/* Info panel */
 .info {
   position:absolute;
   top:200px;
@@ -765,8 +707,6 @@ a { text-decoration:none; }
   color:rgba(255,255,255, .5);
 }
 
-
-
 .line-through {
   float:left;
   position:relative;
@@ -781,11 +721,77 @@ a { text-decoration:none; }
   background: url(/images/border.png) repeat-x;
 }
 
-.selection_window {
-  width:200px;
-  height:200px;
-  background:#c00;
-  position:absolute;
-  z-index:1000;
-  opacity:.9;
+.temp_nav {position:absolute; bottom: 10px; left:50%; margin-left:-110px; width:220px; text-align:center; z-index:2000;}
+.temp_nav a, .temp_nav a:visited {display:block; float:left; background:black; width:80px; margin-right:10px; padding:10px; text-decoration:none; font-weight:bold; color:#fff;}
+
+/* ==|== non-semantic helper classes ========================================
+Please define your styles before this section.
+========================================================================== */
+
+/* For image replacement */
+.ir { display: block; border: 0; text-indent: -999em; overflow: hidden; background-color: transparent; background-repeat: no-repeat; text-align: left; direction: ltr; }
+.ir br { display: none; }
+
+/* Hide from both screenreaders and browsers: h5bp.com/u */
+.hidden { display: none !important; visibility: hidden; }
+
+/* Hide only visually, but have it available for screenreaders: h5bp.com/v */
+.visuallyhidden { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; }
+
+/* Extends the .visuallyhidden class to allow the element to be focusable when navigated to via the keyboard: h5bp.com/p */
+.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus { clip: auto; height: auto; margin: 0; overflow: visible; position: static; width: auto; }
+
+/* Hide visually and from screenreaders, but maintain layout */
+.invisible { visibility: hidden; }
+
+/* Contain floats: h5bp.com/q */
+.clearfix:before, .clearfix:after { content: ""; display: table; }
+.clearfix:after { clear: both; }
+.clearfix { zoom: 1; }
+
+
+
+/* ==|== media queries ======================================================
+PLACEHOLDER Media Queries for Responsive Design.
+These override the primary ('mobile first') styles
+Modify as content requires.
+========================================================================== */
+
+@media only screen and (min-width: 480px) {
+  /* Style adjustments for viewports 480px and over go here */
+
 }
+
+@media only screen and (min-width: 768px) {
+  /* Style adjustments for viewports 768px and over go here */
+
+}
+
+
+
+/* ==|== print styles =======================================================
+Print styles.
+Inlined to avoid required HTTP connection: h5bp.com/r
+========================================================================== */
+
+@media print {
+  * { background: transparent !important; color: black !important; text-shadow: none !important; filter:none !important; -ms-filter: none !important; } /* Black prints faster: h5bp.com/s */
+  a, a:visited { text-decoration: underline; }
+  a[href]:after { content: " (" attr(href) ")"; }
+  abbr[title]:after { content: " (" attr(title) ")"; }
+  .ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after { content: ""; }  /* Don't show links for images, or javascript/internal links */
+  pre, blockquote { border: 1px solid #999; page-break-inside: avoid; }
+  thead { display: table-header-group; } /* h5bp.com/t */
+  tr, img { page-break-inside: avoid; }
+  img { max-width: 100% !important; }
+  @page { margin: 0.5cm; }
+  p, h2, h3 { orphans: 3; widows: 3; }
+  h2, h3 { page-break-after: avoid; }
+}
+
+
+/* ==|== styles left in draft/index.html ====================================
+These styles were left in draft/index.html
+I just pulled them out and stuck them here for use in next iteration
+========================================================================== */
+
