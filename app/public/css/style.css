@@ -592,7 +592,9 @@ a { text-decoration:none; }
   font-size:15px;
   display:block;
 }
-
+#slideshow .image aside ul li .count.highlight{
+  color: red;
+}
 #slideshow .image aside .next {
   display:block;
   background: url(/images/border.png) repeat-x left top;

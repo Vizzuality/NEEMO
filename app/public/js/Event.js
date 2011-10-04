@@ -90,30 +90,36 @@ Neemo.modules.events = function(neemo) {
   );
   neemo.events.ChangeRegion.TYPE = 'change_region';
 
-  /**
-     * Add point event.
-*/
-  neemo.events.AddPoint = neemo.events.Event.extend(
+
+  neemo.events.RegionOverview = neemo.events.Event.extend(
     {
     init: function(data, action) {
-      this._super('AddPoint', action);
+      this._super('RegionOverview', action);
       this._data = data;
     },
 
-    getPoint: function() {
+    getData: function() {
       return this._data;
-    },
-
-    getLat: function() {
-      return this._data.lat;
-    },
-
-    getLon: function() {
-      return this._data.lon;
     }
   }
   );
-  neemo.events.AddPoint.TYPE = 'add_point';
+  neemo.events.RegionOverview.TYPE = 'region_overview';
+
+  /**
+     * Add point event.
+*/
+  neemo.events.AddPoints = neemo.events.Event.extend(
+    {
+    init: function(data, action) {
+      this._super('AddPoints', action);
+      this._data = data;
+    },
+    getData: function() {
+      return this._data;
+    },
+  }
+  );
+  neemo.events.AddPoints.TYPE = 'add_points';
   /**
   * Form submission event.
   */
