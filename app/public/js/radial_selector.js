@@ -30,11 +30,11 @@ $(function() {
 
   /* Options for the radial selector */
   var options = [
-    { action: function(e) { selectOption("barrel"); }, text: "BARREL\nSPONGES", angle: 0, cX: centerX - 50, cY: 0},
-    { action: function(e) { selectOption("coral"); }, text: "CORAL HEAD", angle: 315, cX: centerX - 80, cY: cy - 50},
-    { action: function(e) { selectOption("gorgonians"); }, text: "GORGONIANS", angle: -90, cX: 0, cY: cy - 75}, null, null,
+    { action: function(e) { selectOption(e, "barrel"); }, text: "BARREL\nSPONGES", angle: 0, cX: centerX - 50, cY: 0},
+    { action: function(e) { selectOption(e, "coral"); }, text: "CORAL HEAD", angle: 315, cX: centerX - 80, cY: cy - 50},
+    { action: function(e) { selectOption(e, "gorgonians"); }, text: "GORGONIANS", angle: -90, cX: 0, cY: cy - 75}, null, null,
     { action: closeRadialSelector, text: "CLOSE", angle: 315, cX: -60, cY: 60}, null,
-    { action: function(e) { selectOption("other"); }, text: "OTHER", angle: 45, cX: 60, cY: 60}, null
+    { action: function(e) { selectOption(e, "other"); }, text: "OTHER", angle: 45, cX: 60, cY: 60}, null
   ];
 
   /* Sector events */
@@ -46,20 +46,12 @@ $(function() {
     this.animate({ opacity:sectorOpacity}, 250);
   }
 
-  function selectOption(name) {
+  function selectOption(e, name) {
+    e.preventDefault();
+    e.stopPropagation();
+
     selectedOption = name;
-
     addSelectWindow(coordinates.x, coordinates.y);
-
-
-  }
-
-  function highlightSector(sector) {
-    sector.attr("fill", "red");
-  }
-
-  function unHighlightSector(sector) {
-    sector.attr("fill", "#000");
   }
 
   /* This function should be called on changing the region */
@@ -83,23 +75,8 @@ $(function() {
       var sectorSVG = svg.path(sectorPath);
       sectorSVG.attr(attr);
       sectorSVG.hover(onFocusSector, onBlurSector);
-      //sectorSVG.click(options[i].action);
 
-      var action = options[i].action;
-
-      sectorSVG.click(function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        if (selectedSector) {
-          unHighlightSector(selectedSector);
-        }
-
-        selectedSector = this;
-        highlightSector(selectedSector);
-
-        action.apply();
-      });
+      sectorSVG.click(options[i].action);
 
     } else {
       var attr = { fill: "#000", stroke: "none", opacity: sectorOpacityDisabled };
@@ -124,7 +101,6 @@ $(function() {
       e.stopPropagation();
     }
 
-    unHighlightSector(selectedSector);
     $radial_selector.removeClass("open");
 
     $radial_selector.delay(500).animate({ opacity: 0 });
@@ -161,13 +137,14 @@ $(function() {
     // We create the selection window and place it over the image
     var $selectionWindow = $('<div class="selection_window"></div>');
     $selectedRegion.append($selectionWindow);
-    $selectionWindow.css({left:0, top:0});
 
     var left = x - ($selectionWindow.width() / 2);
     var top  = y - ($selectionWindow.height() / 2);
 
+    $selectionWindow.css({left:0, top:0, height:0, width:0});
+
     // Now we just move the window to its place
-    $selectionWindow.animate({opacity:1, left:left, top:top}, 500);
+    $selectionWindow.animate({width:200, height:200, opacity:1, left:left, top:top}, 200);
 
     closeRadialSelector();
   }
