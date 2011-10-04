@@ -52,6 +52,9 @@ $(function() {
     _mode = "select";
 
     // TODO: add click event
+
+    _mode = "selecting";
+    addSelectWindow();
   }
 
   function highlightSector(sector) {
@@ -150,34 +153,35 @@ $(function() {
         }, 1000, '<>');
       }
       $radial_selector.addClass("open");
-
     } else {
       closeRadialSelector(e);
     }
   }
 
-  function selectSomething($element, e) {
-    var x = e.offsetX;
-    var y = e.offsetY;
+  function addSelectWindow() {
+    var $element = $(".image.selected img");
+    var x = $element.offset().left;
+    var y = $element.offset().top;
 
     var $selection = $('<div class="selection_window"></div>');
-    $element.append($selection);
-    $selection.css({left: x - $selection.width() / 2 , top:y - $selection.height() / 2});;
+    $element.parent().append($selection);
+
+    console.log(($element.height() / 2), $selection.height());
+    $selection.css("left", ($element.width() / 2) - $selection.width() / 2);
+    $selection.css("top",  ($element.height() / 2) - $selection.height() / 2 );
     closeRadialSelector();
   }
 
+  //function selectSomething($element, e) {
+  //  var x = e.offsetX;
+  //  var y = e.offsetY;
+
+  //  var $selection = $('<div class="selection_window"></div>');
+  //  $element.append($selection);
+  //  $selection.css({left: x - $selection.width() / 2 , top:y - $selection.height() / 2});;
+  //  closeRadialSelector();
+  //}
+
   $radial_selector.click(toggleRadialSelector);
-  //$(".photo").click(toggleRadialSelector);
-
-  $(".photo").click(function(e) {
-
-    if (_mode == "select") {
-      _mode = "selecting";
-      selectSomething($(this), e);
-    } else if (!_mode) {
-      toggleRadialSelector(e);
-    }
-
-  });
-
+  $(".image.selected img").click(toggleRadialSelector);
 });
