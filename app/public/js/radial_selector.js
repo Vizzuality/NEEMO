@@ -1,25 +1,23 @@
+/* Radial selector configuration */
+var
+canvasWidth  = 275,
+canvasHeight = 275,
 
-  /* Radial selector configuration */
-  var
-  canvasWidth  = 275,
-  canvasHeight = 275,
+sectorNum = 8,
+sector,
+sectors = [],
+cx = -60,
+cy = -11.7,
+centerX = 138,
+centerY = 138,
+sectorPath = "M230.301,135.651c3.62,8.709,3.48,18.071,0.301,26.23l93.729,36.011c12.09-31.82,11.98-68.321-3.16-101.931l-0.21-0.46L230.301,135.651z",
+sectorOpacity = .40,
+sectorOpacityDisabled = .25,
+sectorOpacityActive = .5,
+selectedOption,
+selectedSector;
 
-  sectorNum = 8,
-  sector,
-  sectors = [],
-  cx = -60,
-  cy = -11.7,
-  centerX = 138,
-  centerY = 138,
-  sectorPath = "M230.301,135.651c3.62,8.709,3.48,18.071,0.301,26.23l93.729,36.011c12.09-31.82,11.98-68.321-3.16-101.931l-0.21-0.46L230.301,135.651z",
-  sectorOpacity = .40,
-  sectorOpacityDisabled = .25,
-  sectorOpacityActive = .5,
-  selectedOption,
-  selectedSector;
-  var coordinates = {};
-
-  var _mode;
+var coordinates = {};
 
 
 $(function() {
@@ -135,7 +133,6 @@ $(function() {
     for (i = 0; i <= sectorNum - 1; i++) {
       sectors[i].sector.animate({ rotation: (0) + " " + centerX + " " + centerY }, 1000, '<>');
     }
-    _mode = null;
   }
 
   function toggleRadialSelector(e) {
@@ -159,37 +156,29 @@ $(function() {
   }
 
   function addSelectWindow(x, y) {
-    var $selection = $('<div class="selection_window"></div>');
-    var $element = $(".image.selected");
-    $element.append($selection);
-    $selection.css({left:0, top:0});
+    var $selectedRegion = $(".image.selected");
 
-    var left = x - ($selection.width() / 2);
-    var top  = y - ($selection.height() / 2);
+    // We create the selection window and place it over the image
+    var $selectionWindow = $('<div class="selection_window"></div>');
+    $selectedRegion.append($selectionWindow);
+    $selectionWindow.css({left:0, top:0});
 
-    $selection.animate({opacity:1, left:left, top:top}, 500);
+    var left = x - ($selectionWindow.width() / 2);
+    var top  = y - ($selectionWindow.height() / 2);
+
+    // Now we just move the window to its place
+    $selectionWindow.animate({opacity:1, left:left, top:top}, 500);
 
     closeRadialSelector();
   }
 
-  //function selectSomething($element, e) {
-  //  var x = e.offsetX;
-  //  var y = e.offsetY;
-
-  //  var $selection = $('<div class="selection_window"></div>');
-  //  $element.append($selection);
-  //  $selection.css({left: x - $selection.width() / 2 , top:y - $selection.height() / 2});;
-  //  closeRadialSelector();
-  //}
-
   $radial_selector.click(toggleRadialSelector);
   $(".image.selected img").click(function(e) {
 
+    // Coordinates of the user's click event
     coordinates.x = e.offsetX;
     coordinates.y = e.offsetY;
+
     toggleRadialSelector(e);
   });
-
-
-
 });
