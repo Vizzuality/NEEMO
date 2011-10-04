@@ -28,7 +28,12 @@ function SelectionWindow(opt){
   this.$el = $('<div class="selection_window"></div>');
 }
 
+SelectionWindow.prototype.onDragEnd = function(){
+  console.log(this.name, this.x, this.y);
+}
+
 SelectionWindow.prototype.draw = function($region){
+  var that = this;
   console.log("Drawing a selection for a " + this.name);
   // We create the selection window and place it over the image
   $region.append(this.$el);
@@ -40,7 +45,7 @@ SelectionWindow.prototype.draw = function($region){
 
   // Now we just move the window to its place
   this.$el.animate({width:200, height:200, opacity:1, left:left, top:top}, 200);
-  this.$el.draggable();
+  this.$el.draggable({ containment: 'parent', stop: function(e) { that.onDragEnd(); } });
 
 };
 
@@ -123,7 +128,7 @@ $(function() {
     }
 
     $radial_selector.removeClass("open");
-    $radial_selector.delay(500).animate({ opacity: 0 }).fadeOut();;
+    $radial_selector.delay(500).animate({ opacity: 0 }).fadeOut(0);
     circle.animate({r:0}, 1000, '<>');
 
     // We hide each of the sectors
@@ -135,7 +140,7 @@ $(function() {
   function toggleRadialSelector(e) {
     if (!$radial_selector.hasClass("open")) {
 
-      $radial_selector.fadeIn();
+      $radial_selector.fadeIn(0);
       $radial_selector.css({ left: e.clientX - 133, top: e.clientY - 133 }).animate({ opacity: 1 });
 
       circle.animate({opacity:.7, r:30}, 1000, '<>');

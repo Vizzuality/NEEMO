@@ -509,12 +509,18 @@ header nav ul li a {
   opacity:0;
   width:200px;
   height:200px;
-  border:1px solid #c00;
-  border-top:10px solid #c00;
+  border:1px solid #333;
+  border-bottom:30px solid #333;
   position:absolute;
   z-index:2000;
-  opacity:.9;
-  cursor:hand;
+  opacity:.5;
+  cursor:move;
+}
+
+.selection_window:hover {
+
+  cursor:move;
+  border-color:red;
 }
 
 /* SLIDESHOW ---------------------------------------------- */
