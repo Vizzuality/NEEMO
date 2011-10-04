@@ -194,8 +194,8 @@ Neemo.modules.Slideshow = function(neemo) {
       this._toggleButtons(id);
     },
     bufferForward: function(url, id){
-      /* should buffer the images forward so they will be in place when scroll 
-       * probably a step process 
+      /* should buffer the images forward so they will be in place when scroll
+       * probably a step process
        * n -> x would all be loaded and queued
        * n -> x-v would then be displayed
        */
@@ -216,7 +216,7 @@ Neemo.modules.Slideshow = function(neemo) {
         this.addRegion(url,id);
         this.queueRegion(id);
         neemo.slideshowUtil.hideAside(neemo.slideshowUtil.backSlideEffect);
-    }, 
+    },
   }
   );
   neemo.ui.Slideshow.Region = neemo.ui.Display.extend(
@@ -277,7 +277,7 @@ Neemo.modules.Slideshow = function(neemo) {
         }, 2000, function() {
             $(this).removeClass('highlight');
         });
-  
+
     },
     focus: function(){
         $("#slideshow div.selected").removeClass("selected");
@@ -304,7 +304,7 @@ Neemo.modules.Slideshow = function(neemo) {
       /* Define the 'Previous' and 'Next' button UI elements */
     {
     init: function() {
-      this._super($('<nav>'));
+      this._super($('<div class="temp_nav">'));
       this.getElement().html(this._html());
       $('body').append(this.getElement());
       this._next;
@@ -358,7 +358,7 @@ Neemo.modules.slideshowUtil = function(neemo) {
      * All used by globally directing functions
      */
     neemo.slideshowUtil = {}
-    
+
     neemo.slideshowUtil.config = {
         width: 800,
         margin: -196,
@@ -370,7 +370,7 @@ Neemo.modules.slideshowUtil = function(neemo) {
         $("#slideshow div.selected").removeClass("selected");
         $("#slideshow div.queued").addClass('selected');
         $("#slideshow div.selected").removeClass("queued");
-        
+
         $("#container").scrollTo("+="+(that.width/2 + that.margin) +"px", {duration:250, easing: that.easingMethod, onAfter: function() {
             moving = false;
             neemo.slideshowUtil.showAside();
