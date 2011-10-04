@@ -30,7 +30,7 @@ jQuery.fn.navigationHover = function(opt) {
       setTimeout(sel, 200);
     }
 
-    $(this).mouseleave(function(e){
+    $(this).parent().mouseleave(function(e){
       select($currentOption);
     });
 

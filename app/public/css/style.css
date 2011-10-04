@@ -266,11 +266,12 @@ h2 {
 
 header {
   position:absolute;
-  top:45px;
+  top:35px;
   left:60px;
   clear:both;
   overflow:hidden;
   z-index:1000;
+  padding:10px 0;
 }
 
 header a {
