@@ -273,33 +273,13 @@ Scoreboard.modules.RankingList = function(scoreboard) {
       bus.addHandler(
         'UpdateRankingList',
         function(data){
-<<<<<<< HEAD
-            data = data.getData();
-            var first = true;
-            $(that._display.getElement()).html(null);
-            for (i in data.rows){
-                var u = new scoreboard.ui.RankingList.User();
-                var tmp_pts = Math.floor(Math.random()*10) + Math.floor(100/data.rows[i].user_rank);
-                var tmp_prog = Math.floor(Math.random()*101);
-                u.getRankName().text(data.rows[i].user_rank + "#. "+data.rows[i].user_id.toUpperCase());
-                u.getScore().text(tmp_pts + " [LVL."+data.rows[i].user_lvl+"]");
-                u.getProgress().css({'width': tmp_prog+"%"});
-                if(first){
-                    u.getElement().append('<div class="icon-container">' +
-                                             '<div class="icon trophee"></div>' +
-                                          '</div>');
-                    u.getElement().addClass('selected');
-                    first = false;
-                }
-                $(that._display.getElement()).append(u.getElement());
-=======
           data = data.getData();
           var first = true;
           $(that._display.getElement()).html(null);
 
           for (i in data.rows){
 
-            var u = new scoreboard.ui.Ranking.User();
+            var u = new scoreboard.ui.RankingList.User();
             var tmp_pts  = Math.floor(Math.random()*10) + Math.floor(100/data.rows[i].user_rank);
             var tmp_prog = Math.floor(Math.random()*101);
 
@@ -317,7 +297,6 @@ Scoreboard.modules.RankingList = function(scoreboard) {
                                       '</div>');
               u.getElement().addClass('selected');
               first = false;
->>>>>>> 1dd3d151c0aced1d06e25b80c26a9eb7e29b85f9
             }
             $(that._display.getElement()).append(u.getElement());
           }
@@ -357,15 +336,9 @@ Scoreboard.modules.RankingList = function(scoreboard) {
   );
   /**
   * The slideshow display.
-<<<<<<< HEAD
   */
   scoreboard.ui.RankingList.Display = scoreboard.ui.Display.extend(
       /* Provides the slideshow wrapper, append, prepend, and remove options */
-=======
-*/
-  scoreboard.ui.Ranking.Display = scoreboard.ui.Display.extend(
-    /* Provides the slideshow wrapper, append, prepend, and remove options */
->>>>>>> 1dd3d151c0aced1d06e25b80c26a9eb7e29b85f9
     {
       init: function(config) {
         this.config = config;
@@ -500,13 +473,8 @@ Scoreboard.modules.events = function(scoreboard) {
   scoreboard.events.UpdateUserRank.TYPE = 'update_user_rank';
   /**
   * Score list update event.
-<<<<<<< HEAD
   */
   scoreboard.events.UpdateRankingList = scoreboard.events.Event.extend(
-=======
-*/
-  scoreboard.events.UpdateList = scoreboard.events.Event.extend(
->>>>>>> 1dd3d151c0aced1d06e25b80c26a9eb7e29b85f9
     {
     init: function(data, action) {
       this._super('UpdateRankingList', action);
