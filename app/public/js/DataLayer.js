@@ -11,6 +11,7 @@ Neemo.modules.DataLayer = function(neemo) {
       var that = this;
       this._bus = bus;
       this._api = api;
+      this._region = region;
     },
 
     _bindEvents: function(){
@@ -20,7 +21,7 @@ Neemo.modules.DataLayer = function(neemo) {
         'ImageClick',
         function(data){
           neemo.log.info('Image Click Recieved');
-          that._radial.handleClick(data.getEvent());
+          that._radial_selector.handleClick(data.getEvent());
         }
       );
     },
@@ -37,18 +38,14 @@ Neemo.modules.DataLayer = function(neemo) {
       //$('#' + this._canvasid).click(function(e){that._canvasClick(e)});
     },
     start: function() {
-      this._bindDisplay(new neemo.ui.DataLayer.Display({
-      }));
-      this._radial = new neemo.ui.DataLayer.Radial(this._bus);
-      this._radial.start();
+      this._radial_selector = new neemo.ui.DataLayer.RadialSelector(this._bus);
+      this._radial_selector.start();
       this._bindEvents();
     },
   }
   );
-
-
-
-  neemo.ui.DataLayer.Radial = neemo.ui.Display.extend(
+  
+  neemo.ui.DataLayer.RadialSelector = neemo.ui.Display.extend(
     {
     init: function(bus) {
         this._bus = bus;
@@ -153,6 +150,8 @@ Neemo.modules.DataLayer = function(neemo) {
         //selection.draw(selectedRegion);
         var selection = new neemo.ui.Annotation.Engine(this._bus, this._api, opt);
         selection.start(selectedRegion);
+        selection.enableSubmit();
+        selection.enableVote();
 
         this.closeRadialSelector();
     },
@@ -212,77 +211,6 @@ Neemo.modules.DataLayer = function(neemo) {
             this.closeRadialSelector(e);
         }
     }
-  }
-  );
-
-
-  neemo.ui.DataLayer.SelectionWindow = neemo.ui.Display.extend(
-    {
-    init: function(opt, bus) {
-      this._bus = bus;
-      this.x = opt.x;
-      this.y = opt.y;
-      this.name = opt.name;
-      this._super(this._html());
-      this.$el = $(this.getElement());
-      this.transitionSpeed = 250;
-    },
-    clear: function($region){
-      this.$el.fadeOut(this.transitionSpeed, function() {
-        $(this).clear();
-      });
-    },
-    draw: function($region){
-      var that = this;
-      // We create the selection window and place it over the image
-      $region.append(this.$el);
-
-      // Centering of the box
-      var left = this.x - (this.$el.width() / 2);
-      var top  = this.y - (this.$el.height() / 2);
-
-      console.log("Drawing a selection for a " + this.name  + " "  + left + " " + top );
-      this.$el.css({left:0, top:0, height:0, width:0}); // initial position
-
-      // Now we just move the window to its place
-      this.$el.animate({width:200, height:200, opacity:1, left:left, top:top}, 200);
-      this.$el.draggable({ handle:"controls", containment: 'parent', stop: function(e) { that.onDragEnd(); } });
-      this.$el.resizable({ minWidth: 80, minHeight: 18, handles: 'nw, se' });
-    },
-    updateCoordinates: function(){
-      this.x = this.$el.position().left + this.$el.width() / 2;
-      this.y = this.$el.position().top  + this.$el.height() / 2;
-    },
-    onDragEnd: function(){
-      this.updateCoordinates();
-      console.log(this.name, this.x, this.y);
-    },
-    _html: function() {
-      return   '<div class="selection_window">'+
-                   '<div class="controls">'+
-                     '<div class="name">' + this.name + '</div>' +
-                     '<a href="#" class="submit">Submit</a>' +
-                     '<a href="#" class="close">x</a>' +
-                     '<a href="#" class="agree"><div class="icon"></div></a>' +
-                     '<a href="#" class="disagree"><div class="icon"></div></a>' +
-                     '</div>' +
-                   '</div>';
-    }
-  }
-  );
-  /**
-  * The datalayer display.
-  */
-  neemo.ui.DataLayer.Display = neemo.ui.Display.extend(
-      /* Provides the datalayer wrapper, append, prepend, and remove options */
-    {
-    init: function(config) {
-      this.config = config;
-      this._super($("#datalayer"));
-    },
-    addRegion: function(region){
-        $(this.getElement()).append($(region));
-    },
   }
   );
 }

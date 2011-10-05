@@ -23,11 +23,15 @@ Neemo.modules.Annotation = function(neemo) {
       var that = this;
       this._display = display;
       display.setEngine(this);
-      //$('#' + this._canvasid).click(function(e){that._canvasClick(e)});
     },
     start: function($region) {
       this._bindDisplay(new neemo.ui.Annotation.Display());
+      
       this.$el = $(this._display.getElement());
+      this.$el.find('.submit').hide();
+      this.$el.find(['agree','disagree']).hide();
+      this.setName(this.name);
+      
       this._bindEvents();
       var that = this;
       // We create the selection window and place it over the image
@@ -58,6 +62,15 @@ Neemo.modules.Annotation = function(neemo) {
       this.updateCoordinates();
       console.log(this.name, this.x, this.y);
     },
+    enableSubmit: function(){
+      this.$el.find('.submit').show();
+    },
+    enableVote: function(){
+      this.$el.find(['agree','disagree']).show();
+    },
+    setName: function(name){
+      this.$el.find('.name').text(name);
+    }
   }
   );
 
@@ -69,8 +82,8 @@ Neemo.modules.Annotation = function(neemo) {
     _html: function() {
       return   '<div class="selection_window">'+
                    '<div class="controls">'+
-                     '<div class="name">' + this.name + '</div>' +
-                     '<a href="#" class="submit">Submit</a>' +
+                     '<div class="name"></div>' +
+                     '<a href="#" class="submit">Submit</a>'+
                      '<a href="#" class="close">x</a>' +
                      '<a href="#" class="agree"><div class="icon"></div></a>' +
                      '<a href="#" class="disagree"><div class="icon"></div></a>' +
