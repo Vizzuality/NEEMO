@@ -277,7 +277,7 @@ Scoreboard.modules.Ranking = function(scoreboard) {
         function(data){
             data = data.getData();
             var first = true;
-            $(that._display.getElement()).text(null);
+            $(that._display.getElement()).html(null);
             for (i in data.rows){
                 var u = new scoreboard.ui.Ranking.User();
                 var tmp_pts = Math.floor(Math.random()*10) + Math.floor(100/data.rows[i].user_rank);
