@@ -68,10 +68,7 @@ $(function() {
   var $radial_selector = $("#"+ selectorID);
 
   var svg = Raphael(selectorID, canvasWidth, canvasHeight);
-  var circle = svg.circle(centerX, centerY, 0).attr({ stroke:"#333", "stroke-width":"4px", fill: "none" });
-  svg.rect(centerX -1, centerY - 5, 2, 10).attr({ stroke:"none", fill: "#333" });
-  svg.rect(centerX-5 , centerY -1, 10, 2).attr({ stroke:"none", fill: "#333" });
-  //svg.rect(centerX , centerY -1, 10, 2).attr({ stroke:"none", fill: "#333" });
+  var circle = svg.circle(centerX, centerY, 0).attr({ stroke:"none", fill: "r(0.75, 0.75)#000-#333" });
 
   /* Options for the radial selector */
   var options = [
@@ -154,17 +151,13 @@ $(function() {
 
     $radial_selector.removeClass("open");
     $radial_selector.fadeOut(300, function() {
-    circle.animate({r:0}, 300, '<>');
+    //circle.animate({r:0}, 300, '<>');
 
     // We hide each of the sectors
       for (i = 0; i <= sectorNum - 1; i++) {
         sectors[i].sector.animate({ rotation: (0) + " " + centerX + " " + centerY }, 300, '<>');
       }
     });
-  }
-
-  function moveRadialSelector(e) {
-    $radial_selector.animate({ left: e.clientX - $radial_selector.width() / 2, top: e.clientY - $radial_selector.height() / 2 }, 500, "easeOutExpo");
   }
 
   function toggleRadialSelector(e) {
@@ -188,17 +181,13 @@ $(function() {
     }
   }
 
-  //  $radial_selector.click(toggleRadialSelector);
+  $radial_selector.click(toggleRadialSelector);
   $(".image.selected img").click(function(e) {
 
     // Coordinates of the user's click event
     coordinates.x = e.offsetX;
     coordinates.y = e.offsetY;
 
-    if ($radial_selector.hasClass("open")) {
-      moveRadialSelector(e);
-    } else {
-      toggleRadialSelector(e);
-    }
+    toggleRadialSelector(e);
   });
 });

@@ -130,7 +130,6 @@ Neemo.modules.Slideshow = function(neemo) {
       this._bus.fireEvent(new Neemo.env.events.RegionClick(data));
       //testing here, fireEvent(new Neemo.env.events.RegionClick({region: 2}))
     },
-
     _bindDisplay: function(display, text) {
       var that = this;
       this._display = display;
@@ -143,7 +142,6 @@ Neemo.modules.Slideshow = function(neemo) {
       nav.setEngine(this);
       //$('#' + this._canvasid).click(function(e){that._canvasClick(e)});
     },
-
     start: function() {
       this._bindDisplay(new neemo.ui.Slideshow.Display({
             width: this.width,
@@ -164,6 +162,15 @@ Neemo.modules.Slideshow = function(neemo) {
           var Region = new neemo.ui.Slideshow.Region(url, id, this._bus);
           if (!(id in this._regions)) {
               this._display.addRegion(Region.getElement());
+
+
+              var $el = Region.getElement();
+              $el.click(function(e) {
+                console.log($(this), $(this).attr("class"), $(this).hasClass("selected"));
+              });
+
+
+
               if (id < this._max){
                   Region.enableNextButton();
               }
@@ -231,34 +238,34 @@ Neemo.modules.Slideshow = function(neemo) {
       this._categories = {};
     },
     getNextButton: function(){
-        //cache here
-        return $(this.getElement()[0]).find('.next');
+      //cache here
+      return $(this.getElement()[0]).find('.next');
     },
     enableNextButton: function(){
-        var that = this;
-        $(this.getNextButton()).click(function(){
-            that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that.id + 1}));
-        });
+      var that = this;
+      $(this.getNextButton()).click(function(){
+        that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that.id + 1}));
+      });
     },
     start: function(url){
       this._image.onload = function() {
       }
     },
     _getCategory: function(id){
-        var x = $(this.getElement()).find('.' + id);
-        if (x.length == 0){
-            x = this._addCategory(id);
-        }
-        return x;
+      var x = $(this.getElement()).find('.' + id);
+      if (x.length == 0){
+        x = this._addCategory(id);
+      }
+      return x;
     },
     _addCategory: function(id){
-        var newCategory = $('<li class="'+id+'"></li>');
-        $(this.getElement()).find('ul').append(newCategory);
-        return newCategory
+      var newCategory = $('<li class="'+id+'"></li>');
+      $(this.getElement()).find('ul').append(newCategory);
+      return newCategory
     },
     setCategoryValue: function(id, name, value){
-        var c = this._getCategory(id);
-        c.html('<span class="count">'+value+'</span>'+name+'');
+      var c = this._getCategory(id);
+      c.html('<span class="count">'+value+'</span>'+name+'');
     },
     incrCategoryValue: function(id, name, value){
         var c = this._getCategory(id),
@@ -280,8 +287,8 @@ Neemo.modules.Slideshow = function(neemo) {
 
     },
     focus: function(){
-        $("#slideshow div.selected").removeClass("selected");
-        $(this.getElement()).addClass('selected');
+      $("#slideshow div.selected").removeClass("selected");
+      $(this.getElement()).addClass('selected');
     },
     queue: function(){
         $("#slideshow div.queued").removeClass("queued");
