@@ -29,6 +29,8 @@ function SelectionWindow(opt){
                '<div class="controls">'+
                  '<a href="#" class="submit">Submit</a>' +
                  '<a href="#" class="close">x</a>' +
+                 '<a href="#" class="agree"><div class="icon"></div></a>' +
+                 '<a href="#" class="disagree"><div class="icon"></div></a>' +
                  '</div>' +
                '</div>');
   this.transitionSpeed = 250;

@@ -563,6 +563,26 @@ header nav ul li a {
   background:rgba(255,255,255, .3);
 }
 
+.selection_window .controls a.agree,
+.selection_window .controls a.disagree {
+  float:right;
+}
+
+.selection_window .controls a.agree .icon,
+.selection_window .controls a.disagree .icon {
+  width:8px;
+  height:8px;
+  background:url(/images/sprite.png) no-repeat;
+}
+
+.selection_window .controls a.agree .icon {
+  background-position: -14px 0;
+}
+
+.selection_window .controls a.disagree .icon {
+  background-position: -32px 0;
+}
+
 /* SLIDESHOW ---------------------------------------------- */
 
 #slideshow {
@@ -800,7 +820,7 @@ header nav ul li a {
 /* Resizable
 ----------------------------------*/
 .ui-resizable { position: relative;}
-.ui-resizable-handle { position: absolute;font-size: 0.1px;z-index: 99999; display: block; background:url(/images/resize_handle.png) no-repeat;}
+.ui-resizable-handle { position: absolute;font-size: 0.1px;z-index: 99999; display: block; background:url(/images/sprite.png) no-repeat 0 0;}
 .ui-resizable-disabled .ui-resizable-handle, .ui-resizable-autohide .ui-resizable-handle { display: none; }
 .ui-resizable-n { cursor: n-resize;   height: 10px; width: 100%; top: -5px; left: 0px; }
 .ui-resizable-s { cursor: s-resize;   height: 10px; width: 100%; bottom: -5px; left: 0px; }
