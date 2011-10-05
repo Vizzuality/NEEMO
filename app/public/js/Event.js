@@ -88,7 +88,24 @@ Neemo.modules.events = function(neemo) {
     }
   }
   );
-  neemo.events.ChangeRegion.TYPE = 'change_region';
+  neemo.events.ChangeRegion.TYPE = 'change_region';;
+
+  /**
+     * Update user profile.
+  */
+  neemo.events.UpdateUserProfile = neemo.events.Event.extend(
+    {
+    init: function(data, action) {
+      this._super('UpdateUserProfile', action);
+      this._region = data.region;
+    },
+
+    getRegion: function() {
+      return this._region;
+    }
+  }
+  );
+  neemo.events.UpdateUserProfile.TYPE = 'update_user_profile';
 
 
   neemo.events.RegionOverview = neemo.events.Event.extend(
@@ -121,12 +138,12 @@ Neemo.modules.events = function(neemo) {
   );
   neemo.events.AddPoints.TYPE = 'add_points';
   /**
-  * Form submission event.
+  * New data submission event.
   */
-  neemo.events.FormSubmit = neemo.events.Event.extend(
+  neemo.events.DataSubmit = neemo.events.Event.extend(
     {
     init: function(data, action) {
-      this._super('FormSubmit', action);
+      this._super('DataSubmit', action);
       this._data = data;
     },
 
@@ -135,7 +152,25 @@ Neemo.modules.events = function(neemo) {
     },
   }
   );
-  neemo.events.FormSubmit.TYPE = 'form_submit';
+  neemo.events.DataSubmit.TYPE = 'data_submit';
+  
+  /**
+  * New data submission event.
+  */
+  neemo.events.ImageClick = neemo.events.Event.extend(
+    {
+    init: function(event, action) {
+      this._super('ImageClick', action);
+      this._event = event;
+    },
+
+    getEvent: function() {
+      return this._event;
+    },
+  }
+  );
+  neemo.events.ImageClick.TYPE = 'image_click';
+  
   /**
   * The event bus.
   */

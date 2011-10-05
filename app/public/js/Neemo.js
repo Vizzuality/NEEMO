@@ -46,6 +46,8 @@ Neemo.modules.app = function(neemo) {
       this.form.start();
       this.slideshow = new neemo.ui.Slideshow.Engine(this._bus, this._api, config.region);
       this.slideshow.start();
+      this.datalayer = new neemo.ui.DataLayer.Engine(this._bus, this._api);
+      this.datalayer.start();
       this.socket = new neemo.socket.Engine(this._bus, config.region);
       
     },
@@ -78,13 +80,14 @@ Neemo.modules.socket = function(neemo) {
       var that = this;
       this.socket.on('connect', function () {
         neemo.log.info('soccket connected!');
-        that._bus.fireEvent(new neemo.events.ChangeRegion({region: that._region}));
       });
-      this.socket.on('message',function(data){
-        neemo.log.info('user id updated: '+data);
-        that._id = data;
+      this.socket.on('user-metadata',function(data){
+        neemo.log.info('recieved user profile for: ' + data.user_id);
+        that._id = data.user_id;
+        that._bus.fireEvent(new Neemo.env.events.UpdateUserProfile(data));
       });
       this.socket.on('region-metadata', function (data) {
+         neemo.log.info('socket metadata received');
          that._bus.fireEvent(new Neemo.env.events.RegionOverview(data));
       });
       this.socket.on('region-new-data', function (data) {
@@ -93,10 +96,12 @@ Neemo.modules.socket = function(neemo) {
                 that._bus.fireEvent(new Neemo.env.events.AddPoints(data));
             }
         }
-        neemo.log.info('socket update received');
-       }, this);
+        //neemo.log.info('socket update received');
+       });
        
-       this.socket.emit('join', {region: this._region} );
+       this.socket.emit('join', {region: this._region} ,
+            that._bus.fireEvent(new neemo.events.ChangeRegion({region: that._region}))
+       );
     },
     _bindEvents: function(){
       var that = this,

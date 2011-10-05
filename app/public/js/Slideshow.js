@@ -19,17 +19,6 @@ Neemo.modules.Slideshow = function(neemo) {
       this._max = 8;
       this._previousButton = 1; //used to enable (1) and disable (0) the nav buttons
       this._nextButton = 1; //used to enable (1) and disable (0) the nav buttons
-      /* I think all elsewhere now
-      this.width  = 800;
-      this.height = 600;
-      this.speed  = 500;
-      this.i = 0;
-      this.margin = -196;
-      this.moving = false;
-      this.easingMethod = null, // 'easeInExpo',
-      this.numberOfRegions = 5;
-      this._canvasid = 'region-focus-image';
-      */
     },
 
     _bindEvents: function(){
@@ -101,35 +90,6 @@ Neemo.modules.Slideshow = function(neemo) {
         }
       );
     },
-    _getClickOffset: function(event){
-        var x;
-        var y;
-        if (event.pageX || event.pageY) {
-          x = event.pageX;
-          y = event.pageY;
-        }
-        else {
-          x = event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-          y = event.clientY + document.body.scrollTop + document.documentElement.scrollTop;
-        }
-        var el = this._display.getElement(this._canvasid);
-        x -= el[0].offsetLeft;
-        y -= el[0].offsetTop;
-
-        return [x,y];
-    },
-    _canvasClick: function(event){
-      var x, y, c;
-      c = this._getClickOffset(event);
-      x = c[0]
-      y = c[1]
-      var lat = 90 - (180.0 * y)/this._height;
-      var lon = -180 + (360.0 * x)/this._width;
-      var data = {lat: lat, lon: lon, click_x: x, click_y: y};
-      ///TODO method not implemented yet
-      this._bus.fireEvent(new Neemo.env.events.RegionClick(data));
-      //testing here, fireEvent(new Neemo.env.events.RegionClick({region: 2}))
-    },
     _bindDisplay: function(display, text) {
       var that = this;
       this._display = display;
@@ -167,6 +127,9 @@ Neemo.modules.Slideshow = function(neemo) {
               var $el = Region.getElement();
               $el.click(function(e) {
                 console.log($(this), $(this).attr("class"), $(this).hasClass("selected"));
+                if( $(this).hasClass("selected") ){
+                    that._bus.fireEvent(new Neemo.env.events.ImageClick(e));
+                }
               });
 
 

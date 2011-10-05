@@ -8,7 +8,20 @@ exports.start = function(io, cartodb) {
     /* Setup main App socket connections and functions
      */
     io.sockets.on('connection', function (socket) {
-        socket.send(socket.id);
+        var session_id = socket.id;
+        user_profile = {
+            user_id: 'andrewxhill',
+            user_rank: 1,
+            user_lvl: 11,
+            user_pts: 17600,
+            user_latest: [
+                {points: "+5", title: "You have found a new coral occurrence"},
+                {points: "+5", title: "You have found a new coral occurrence"},
+                {points: "+1", title: "You have confirmed a new coral occurrence"},
+                {points: "+5", title: "You have found a new coral occurrence"}
+            ]
+        }
+        socket.emit('user-metadata', user_profile);
         socket.on('join', function (data) {
             socket.join(data.region);
             /* Send a CartoDB SQL request here
