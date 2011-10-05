@@ -535,11 +535,11 @@ header nav ul li a {
 
 #slideshow {
   width:9999px;
-  margin: 0 0 0 650px;
+  margin: 0 0 0 610px;
   height:610px;
   position:absolute;
   top:50%;
-  margin-top:-305px;
+  margin-top:-275px;
 
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -742,8 +742,8 @@ header nav ul li a {
 .depth {
   position:absolute;
   color:#fff;
-  top:150px;
-  left:1170px;
+  top:130px;
+  left:1140px;
   text-transform: uppercase;
   z-index:2000;
 }
