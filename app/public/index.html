@@ -22,27 +22,22 @@
     <script src="/js/Form.js"></script>
 
     <script src="/js/helpers.js"></script>
-  </script>
-  <script type="text/javascript">
-    var map;
+    <script type="text/javascript">
+	    $(document).ready(function() {
+	        Neemo(function(env) {
+	          Neemo.app = new env.app.Instance({logging: true, region: 1});
+	          Neemo.app.run();
+	          Neemo.env = env;
+	        });
 
-    $(document).ready(function() {
-        Neemo(function(env) {
-          Neemo.app = new env.app.Instance({logging: true, region: 1});
-          Neemo.app.run();
-          Neemo.env = env;
-        });
-
-        $("nav").navigationHover();
-     });
-
+	        $("nav").navigationHover();
+	     });
       </script>
     </head>
     <body>
-    <header>
-    <a href="#"><h1 class="logo">NEEMO project</h1></a>
-    <nav>
-
+      <header>
+      <a href="#"><h1 class="logo">NEEMO project</h1></a>
+      <nav>
     <ul>
       <li class="about"><a href="#">ABOUT THE PROJECT</a></li>
       <li class="ranking"><a href="/ranking.html">RANKING</a></li>
@@ -50,16 +45,16 @@
     </ul>
     <div class="bar"></div>
 
-    </nav>
-    </header>
+      </nav>
+      </header>
 
 
-      <div class="rays"></div>
 
       <div class="info">
 
-        <div class="username">
+        <div class="line-through">
           <h2>DCANO_49</h2>
+          <div class="line"></div>
         </div>
 
         <div class="progress-bar">
@@ -74,11 +69,36 @@
           <li><div class="point">+5</div> <p>you have found a new coral occurence</p></li>
           <li><div class="point">+5</div> <p>you have found a new coral occurence</p></li>
         </ul>
+
+
+        <div id="rank-box">
+          <div class="header">
+            <div class="icon trophee"></div>
+            <span class="title">Your rank</span>
+
+            <div class="line-through">
+              <div class="score">#0013</div>
+              <div class="line"></div>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+
+      <div class="depth">
+        <div class="line-through">
+          <h2>00231</h2>
+          <div class="line"></div>
+        </div>
+        <div class="legend">Meters left</div>
       </div>
 
       <div id="container">
         <div id="slideshow"></div>
       </div>
 
+      <div class="rays"></div>
     </body>
   </html>
