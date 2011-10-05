@@ -517,7 +517,7 @@ header nav ul li a {
   opacity:0;
   width:200px;
   height:200px;
-  border:1px solid rgba(0,0,0,.3);
+  border:2px solid rgba(0,0,0,.6);
   position:absolute;
   z-index:2000;
   opacity:.5;
@@ -527,16 +527,40 @@ header nav ul li a {
 
 .selection_window:hover {
   cursor:move;
-  border-color:red;
+  border-color:rgba(0,0,0,.8);
+}
+.selection_window:hover .controls {
+  background:rgba(0,0,0,.8);
 }
 
 .selection_window .controls {
   bottom:0;
   left:0;
   width:100%;
-  height:20px;
+  height:12px;
+  padding:3px 0;
   position:absolute;
   background:rgba(0,0,0,.6);
+}
+
+.selection_window .controls a {
+  color:#fff;
+  font-family:"EurostileLTStd-Demi";
+  font-size:10px;
+  text-align:center;
+  letter-spacing:1px;
+  display:block;
+  background:#000;
+  margin-right:3px;
+  padding:3px;
+  float:left;
+  height:8px;
+  line-height:12px;
+  text-transform:uppercase;
+  border-radius:3px;
+}
+.selection_window .controls a:hover {
+  background:rgba(255,255,255, .3);
 }
 
 /* SLIDESHOW ---------------------------------------------- */

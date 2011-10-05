@@ -26,8 +26,11 @@ function SelectionWindow(opt){
   this.y = opt.y;
   this.name = opt.name;
   this.$el = $('<div class="selection_window">'+
-               '<div class="controls"></div>'
-               +'</div>');
+               '<div class="controls">'+
+                 '<a href="#" class="submit">Submit</a>' +
+                 '<a href="#" class="close">x</a>' +
+                 '</div>' +
+               '</div>');
   this.transitionSpeed = 250;
 }
 
@@ -52,7 +55,7 @@ SelectionWindow.prototype.draw = function($region){
   // Now we just move the window to its place
   this.$el.animate({width:200, height:200, opacity:1, left:left, top:top}, 200);
   this.$el.draggable({ handle:"controls", containment: 'parent', stop: function(e) { that.onDragEnd(); } });
-  this.$el.resizable({ minHeight: 20, handles: 'nw, se' });
+  this.$el.resizable({ minWidth: 80, minHeight: 18, handles: 'nw, se' });
 };
 
 SelectionWindow.prototype.updateCoordinates = function(){
