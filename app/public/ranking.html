@@ -35,15 +35,14 @@
     </style>
     <script type="text/javascript">
       $(function() {
-			Scoreboard(function(env) {
-			  Scoreboard.app = new env.app.Instance({logging: true});
-			  Scoreboard.app.run();
-			  Scoreboard.env = env;
-			});
-			
-            $("nav").navigationHover({ select: "ranking" });
-      });
+          Scoreboard(function(env) {
+            Scoreboard.app = new env.app.Instance({logging: true});
+            Scoreboard.app.run();
+            Scoreboard.env = env;
+            });
 
+          $("nav").navigationHover();
+      });
     </script>
   </head>
   <body>

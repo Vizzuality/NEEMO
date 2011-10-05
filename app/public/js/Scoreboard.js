@@ -56,8 +56,6 @@ Scoreboard.modules.app = function(scoreboard) {
   );
 };
 
-
-
 Scoreboard.modules.ui = function(scoreboard) {
 
   scoreboard.ui = {};
@@ -71,7 +69,7 @@ Scoreboard.modules.ui = function(scoreboard) {
     * Starts the engine and provides a container for its display.
     *
     * @param container the container for the engine display
-    */
+*/
     start: function(container) {
       throw scoreboard.exceptions.NotImplementedError;
     },
@@ -79,12 +77,12 @@ Scoreboard.modules.ui = function(scoreboard) {
   );
   /**
   * Base class for DOM elements.
-  */
+*/
   scoreboard.ui.Element = Class.extend(
     {
     /**
     * Constructs a new Element from an element.
-    */
+*/
     init: function(element) {
       if (!element) {
         element = '<div>';
@@ -95,7 +93,7 @@ Scoreboard.modules.ui = function(scoreboard) {
     //to be hooked to jquery specific. this might be a bit much.
     //if so we can just scope jquery and use it fully. what it is
     //nice for is swapping out jquery for another. used example,
-    
+
     getElement: function() {
       return this._element;
     },
@@ -103,12 +101,12 @@ Scoreboard.modules.ui = function(scoreboard) {
   );
   /**
   * Base class for Displays.
-  */
+*/
   scoreboard.ui.Display = scoreboard.ui.Element.extend(
     {
     /**
     * Constructs a new Display with the given DOM element.
-    */
+*/
     init: function(element) {
       this._super(element);
     },
@@ -117,7 +115,7 @@ Scoreboard.modules.ui = function(scoreboard) {
     * Sets the engine for this display.
     *
     * @param engine a mol.ui.Engine subclass
-    */
+*/
     setEngine: function(engine) {
       this._engine = engine;
     }
@@ -139,14 +137,14 @@ Scoreboard.modules.socket = function(scoreboard) {
       var that = this;
       this.socket.on('connect', function () {
         scoreboard.log.info('soccket connected!');
-            that.socket.emit('join', {page: 1} );
+        that.socket.emit('join', {page: 1} );
       });
       this.socket.on('user-ranking',function(data){
         scoreboard.log.info('user ranking data recieved!');
         that._bus.fireEvent(new scoreboard.events.UpdateUserRank(data));
       });
       this.socket.on('scoreboard-update',function(data){
-          //{"time":0.002,"total_rows":4,"rows":[{"user_id":"unknooooown","user_rank":4,"user_lvl":1},{"user_id":"anon","user_rank":3,"user_lvl":2},{"user_id":"capndave","user_rank":2,"user_lvl":4},{"user_id":"andrewxhill","user_rank":1,"user_lvl":11}]}
+        //{"time":0.002,"total_rows":4,"rows":[{"user_id":"unknooooown","user_rank":4,"user_lvl":1},{"user_id":"anon","user_rank":3,"user_lvl":2},{"user_id":"capndave","user_rank":2,"user_lvl":4},{"user_id":"andrewxhill","user_rank":1,"user_lvl":11}]}
         scoreboard.log.info('new rankings!');
         that._bus.fireEvent(new scoreboard.events.UpdateRankingList(data));
       });
@@ -166,9 +164,9 @@ Scoreboard.modules.socket = function(scoreboard) {
         }
       );
 
-      /*
-      * Change the socket 'room' we are listening to when the region changes
-      */
+/*
+* Change the socket 'room' we are listening to when the region changes
+*/
       bus.addHandler(
         'ChangeRegion',
         function(event){
@@ -200,19 +198,19 @@ Scoreboard.modules.UserRank = function(scoreboard) {
     _bindEvents: function(){
       var that = this
       , bus = this._bus;
-      
+
       bus.addHandler(
         'UpdateUserRank',
         function(data){
-            data = data.getData();
-        	var strString = '' + data.user_rank;
-        	while(strString.length<4){
-        		strString = '0' + strString;
-        	}
-            that._display.getRank().text('#' + strString);
+          data = data.getData();
+          var strString = '' + data.user_rank;
+          while(strString.length<4){
+            strString = '0' + strString;
+          }
+          that._display.getRank().text('#' + strString);
         }
       );
-      
+
     },
     start: function() {
       this._bindDisplay(new scoreboard.ui.UserRank.Display({ }));
@@ -222,36 +220,36 @@ Scoreboard.modules.UserRank = function(scoreboard) {
   );
   /**
   * The userrank display.
-  */
+*/
   scoreboard.ui.UserRank.Display = scoreboard.ui.Display.extend(
-      /* Provides the slideshow wrapper, append, prepend, and remove options */
+    /* Provides the slideshow wrapper, append, prepend, and remove options */
     {
-    init: function(config) {
-      this.config = config;
-      this._super(this._html());
-      $('#rank-box').append(this.getElement());
-      this._rank = null;
-    },
-    getRank: function(){
+      init: function(config) {
+        this.config = config;
+        this._super(this._html());
+        $('#rank-box').append(this.getElement());
+        this._rank = null;
+      },
+      getRank: function(){
         if (! this._rank){
-            this._rank = $(this.getElement()).find('.score');
+          this._rank = $(this.getElement()).find('.score');
         }
         return this._rank;
-    },
-    _html: function() {
-      return  '<div class="header">' +
-       '<div class="icon trophee"></div>' +
-       '<span class="title">Your rank</span>' +
-       '<div class="line-through">' +
-       '  <div class="score">not avail.</div>' +
-       '   <div class="line"></div>' +
-       '</div>' +
-       '</div>' +
-       '<div class="footer">' +
-       '  <a href="#">VIEW YOUR POSITION</a>' +
-       '</div>';
+      },
+      _html: function() {
+        return  '<div class="header">' +
+          '<div class="icon trophee"></div>' +
+            '<span class="title">Your rank</span>' +
+              '<div class="line-through">' +
+                '  <div class="score">not avail.</div>' +
+                  '   <div class="line"></div>' +
+                    '</div>' +
+                      '</div>' +
+                        '<div class="footer">' +
+                          '  <a href="#">VIEW YOUR POSITION</a>' +
+                            '</div>';
+      }
     }
-  }
   );
 }
 
@@ -271,10 +269,11 @@ Scoreboard.modules.RankingList = function(scoreboard) {
     _bindEvents: function(){
       var that = this
       , bus = this._bus;
-      
+
       bus.addHandler(
         'UpdateRankingList',
         function(data){
+<<<<<<< HEAD
             data = data.getData();
             var first = true;
             $(that._display.getElement()).html(null);
@@ -293,10 +292,38 @@ Scoreboard.modules.RankingList = function(scoreboard) {
                     first = false;
                 }
                 $(that._display.getElement()).append(u.getElement());
+=======
+          data = data.getData();
+          var first = true;
+          $(that._display.getElement()).html(null);
+
+          for (i in data.rows){
+
+            var u = new scoreboard.ui.Ranking.User();
+            var tmp_pts  = Math.floor(Math.random()*10) + Math.floor(100/data.rows[i].user_rank);
+            var tmp_prog = Math.floor(Math.random()*101);
+
+            tmp_prog = (tmp_prog == 100) ? 99.6 : tmp_prog; // fix to show a nice full progress bar
+
+            u.getRankName().text(data.rows[i].user_rank + "#. "+data.rows[i].user_id.toUpperCase());
+            u.getScore().text(tmp_pts + " [LVL."+data.rows[i].user_lvl+"]");
+
+            u.getProgress().css({width: 0});
+            u.getProgress().animate({width: tmp_prog + "%"}, 300, 'easeOutQuad');
+
+            if(first){
+              u.getElement().append('<div class="icon-container">' +
+                                    '<div class="icon trophee"></div>' +
+                                      '</div>');
+              u.getElement().addClass('selected');
+              first = false;
+>>>>>>> 1dd3d151c0aced1d06e25b80c26a9eb7e29b85f9
             }
+            $(that._display.getElement()).append(u.getElement());
+          }
         }
       );
-      
+
     },
     start: function() {
       this._bindDisplay(new scoreboard.ui.RankingList.Display({ }));
@@ -310,35 +337,41 @@ Scoreboard.modules.RankingList = function(scoreboard) {
       this._super(this._html());
     },
     getRankName: function(){
-        return $(this.getElement()).find('.rank_name');
+      return $(this.getElement()).find('.rank_name');
     },
     getScore: function(){
-        return $(this.getElement()).find('.score');
+      return $(this.getElement()).find('.score');
     },
     getProgress: function(){
-        return $(this.getElement()).find('.progress');
+      return $(this.getElement()).find('.progress');
     },
     _html: function() {
       return  '<li>' +
         '  <h2 class="rank_name">1#. STUART_LYNN</h2> <div class="score">17,312 [LVL.3]</div>' +
-        '  <div class="progress-bar">' +
-        '    <div class="progress" style="width:99.7%"></div>' +
-        '  </div>' +
-        '</li>';
+          '  <div class="progress-bar">' +
+            '    <div class="progress" style="width:99.7%"></div>' +
+              '  </div>' +
+                '</li>';
     }
   }
   );
   /**
   * The slideshow display.
+<<<<<<< HEAD
   */
   scoreboard.ui.RankingList.Display = scoreboard.ui.Display.extend(
       /* Provides the slideshow wrapper, append, prepend, and remove options */
+=======
+*/
+  scoreboard.ui.Ranking.Display = scoreboard.ui.Display.extend(
+    /* Provides the slideshow wrapper, append, prepend, and remove options */
+>>>>>>> 1dd3d151c0aced1d06e25b80c26a9eb7e29b85f9
     {
-    init: function(config) {
-      this.config = config;
-      this._super($("#ranking ul"));
-    },
-  }
+      init: function(config) {
+        this.config = config;
+        this._super($("#ranking ul"));
+      },
+    }
   );
 }
 
@@ -379,7 +412,7 @@ Scoreboard.modules.log = function(scoreboard) {
   };
 };
 /**
- * Exceptions module for handling exceptions.
+* Exceptions module for handling exceptions.
 */
 Scoreboard.modules.exceptions = function(scoreboard) {
   scoreboard.exceptions = {};
@@ -404,7 +437,7 @@ Scoreboard.modules.exceptions = function(scoreboard) {
 };
 
 /**
- * Events module for working with application events. Contains a Bus object that
+* Events module for working with application events. Contains a Bus object that
  * is used to bind event handlers and to trigger events.
 */
 Scoreboard.modules.events = function(scoreboard) {
@@ -419,7 +452,7 @@ Scoreboard.modules.events = function(scoreboard) {
     * Constructs a new event.
     *
     * @param type the type of event
-    */
+*/
     init: function(type, action) {
       var IllegalArgumentException = scoreboard.exceptions.IllegalArgumentException;
       if (!type) {
@@ -433,7 +466,7 @@ Scoreboard.modules.events = function(scoreboard) {
     * Gets the event type.
     *
     * @return the event type string
-    */
+*/
     getType: function() {
       return this._type;
     },
@@ -442,7 +475,7 @@ Scoreboard.modules.events = function(scoreboard) {
     * Gets the action.
     *
     * @return action
-    */
+*/
     getAction: function() {
       return this._action;
     }
@@ -451,7 +484,7 @@ Scoreboard.modules.events = function(scoreboard) {
 
   /**
   * User Rank update event.
-  */
+*/
   scoreboard.events.UpdateUserRank = scoreboard.events.Event.extend(
     {
     init: function(data, action) {
@@ -467,8 +500,13 @@ Scoreboard.modules.events = function(scoreboard) {
   scoreboard.events.UpdateUserRank.TYPE = 'update_user_rank';
   /**
   * Score list update event.
+<<<<<<< HEAD
   */
   scoreboard.events.UpdateRankingList = scoreboard.events.Event.extend(
+=======
+*/
+  scoreboard.events.UpdateList = scoreboard.events.Event.extend(
+>>>>>>> 1dd3d151c0aced1d06e25b80c26a9eb7e29b85f9
     {
     init: function(data, action) {
       this._super('UpdateRankingList', action);
@@ -483,7 +521,7 @@ Scoreboard.modules.events = function(scoreboard) {
   scoreboard.events.UpdateRankingList.TYPE = 'update_ranking_list';
   /**
   * The event bus.
-  */
+*/
   scoreboard.events.Bus = function() {
     if (!(this instanceof scoreboard.events.Bus)) {
       return new scoreboard.events.Bus();
@@ -494,7 +532,7 @@ Scoreboard.modules.events = function(scoreboard) {
     * Fires an event on the event bus.
     *
     * @param event the event to fire
-    */
+*/
     this.fireEvent = function(event) {
       this.trigger(event.getType(), event);
     };
@@ -504,7 +542,7 @@ Scoreboard.modules.events = function(scoreboard) {
     *
     * @param type the event type
     * @param handler the event handler callback function
-    */
+*/
     this.addHandler = function(type, handler) {
       this.bind(
         type,
