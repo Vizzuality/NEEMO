@@ -9,23 +9,32 @@ var   express     = require('express')
     , https       = require("https")
     , http        = require("http")
     , querystring = require('querystring')
-    , rsub        = redis.createClient()
-    , rsto        = redis.createClient();
+    , rsub        = redis.createClient() //listens to all socket bases poi incoming
+    , rsto        = redis.createClient(); //for storing incoming poi that the queue processes and sends to cartodb
     
-exports.start = function(io) {
+exports.start = function(io, cartodb) {
     rsub.stream.addListener('connect', function(){
+        /* this is broken off from the main Socket classes because we may want to completely decouple it
+         * from the application to free up some speed
+         */
         rsub.subscribeTo("poi-emit", 
             function (channel, data) {
                 data = JSON.parse(data);
-                io.sockets.in(data.region).emit('update', data);
-                rsto.rpush( 'poi-store', JSON.stringify( data ), function(){ console.log('pussssssshhhed')});
+                io.sockets.in(data.region).emit('region-new-data', data);
+                /* 
+                 * Send POI to CartoDB here 
+                 */
+                //rsto.rpush( 'poi-store', JSON.stringify( data ), function(){});
             }
         );
     });
     
     var fakeEmit = function(){
+        /* sends random updates */
         var id = Math.floor(Math.random()*11);
-        io.sockets.in(id).emit('update', {
+        
+        io.sockets.in(id).emit('region-new-data', {
+        //io.sockets.in(id).emit('update-totals', {
             region_id: id,
             eventType: 'points',
             categories: [

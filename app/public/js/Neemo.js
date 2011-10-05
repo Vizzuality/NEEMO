@@ -82,17 +82,18 @@ Neemo.modules.socket = function(neemo) {
       this.socket.on('message',function(data){
         that._id = data;
       });
-      this.socket.on('regionOverview', function (data) {
+      this.socket.on('region-metadata', function (data) {
          that._bus.fireEvent(new Neemo.env.events.RegionOverview(data));
       });
-      this.socket.on('update', function (data) {
+      this.socket.on('region-new-data', function (data) {
         if(data.id != that._id){
             if (data.eventType == 'points'){
                 that._bus.fireEvent(new Neemo.env.events.AddPoints(data));
             }
         }
         neemo.log.info('socket update received');
-      }, this);
+       }, this);
+       
        this.socket.emit('join', {region: this._id} );
     },
     _bindEvents: function(){
