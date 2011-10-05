@@ -66,7 +66,8 @@ Neemo.modules.socket = function(neemo) {
   neemo.socket.Engine = Class.extend(
     {
     init: function(bus, region) {
-      this._id = region;
+      this._id = null;
+      this._region = region;
       this._bus = bus;
       this.region = region;
       this.socket = io.connect();
@@ -77,16 +78,17 @@ Neemo.modules.socket = function(neemo) {
       var that = this;
       this.socket.on('connect', function () {
         neemo.log.info('soccket connected!');
-        that._bus.fireEvent(new neemo.events.ChangeRegion({region: that._id}));
+        that._bus.fireEvent(new neemo.events.ChangeRegion({region: that._region}));
       });
       this.socket.on('message',function(data){
+        neemo.log.info('user id updated: '+data);
         that._id = data;
       });
       this.socket.on('region-metadata', function (data) {
          that._bus.fireEvent(new Neemo.env.events.RegionOverview(data));
       });
       this.socket.on('region-new-data', function (data) {
-        if(data.id != that._id){
+        if(data.id == that._region){
             if (data.eventType == 'points'){
                 that._bus.fireEvent(new Neemo.env.events.AddPoints(data));
             }
@@ -94,7 +96,7 @@ Neemo.modules.socket = function(neemo) {
         neemo.log.info('socket update received');
        }, this);
        
-       this.socket.emit('join', {region: this._id} );
+       this.socket.emit('join', {region: this._region} );
     },
     _bindEvents: function(){
       var that = this,

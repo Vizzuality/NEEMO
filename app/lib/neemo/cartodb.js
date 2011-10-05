@@ -1,56 +1,28 @@
-var   express     = require('express')
-    //, RedisPool   = require("./redis_pool")
-    , io          = require('socket.io')
-    , pub         = '/home/andrew/workspace/neemo/NEEMO/app/lib/neemo/public'
-    , _           = require('underscore')
-    , Step        = require('step')
-    , sys         = require('sys')
+var   sys         = require('sys')
     , fs          = require("fs")
     , path        = require("path")
     , querystring = require('querystring')
-    , OAuth       = require('oauth').OAuth
-    , cartodb     = require('./cartodb')
-    , RedisStore  = require('connect-redis')(express);
+    , OAuth       = require('oauth').OAuth;
 
-module.exports = function(opts){
-    var opts = opts || {};
-    // initialize express server
-    var app = express.createServer();
-    app.use(express.bodyParser());
-    app.use(express.cookieParser());
-    app.use('/js', express.static('./public/js'));
-    app.use('/images', express.static('./public/images'));
-    app.use('/css', express.static('./public/css'));
-    app.use('/regions', express.static('./public/regions'));
-    app.use(express.static('./public'));
-    app.use(express.logger({buffer:true, format:'[:remote-addr :date] \033[90m:method\033[0m \033[36m:url\033[0m \033[90m:status :response-time ms -> :res[Content-Type]\033[0m'}));
-
-    cartodb.start(function(){
-        require('./dirtsock').start(io.listen(app), this);
-    });
-    /*
+exports.start = function(callback){
     
     eval(fs.readFileSync('cartodb_settings.js', encoding="ascii"));
     
-    cartodb.oa = new OAuth('http://andrew.cartodb.com/oauth/request_token',
-                       'http://andrew.cartodb.com/oauth/access_token',
-                       'J39kX9otGAp9zwFhZG8QuuajqAZXJ4HsXXvErEaF',
-                       'BIZd2v7zgE6lmry7WIj2tjfMvFo1r4Madxv9PlkZ',
+    cartodb.oa = new OAuth(cartodb.request_url,
+                       cartodb.access_url,
+                       cartodb.consumer_key,
+                       cartodb.consumer_secret,
                        "1.0",
-                       "http://68.175.5.167:4000/oauth/callback",
+                       cartodb.callback,
                        "HMAC-SHA1");
-    
-    cartodb.private_query     = 'SELECT ST_SRID(the_geom) FROM fisheryclosure LIMIT 1'
-    cartodb.request_url       = 'https://' + cartodb.username + '.cartodb.com/oauth/request_token'
-    cartodb.access_url        = 'https://' + cartodb.username + '.cartodb.com/oauth/access_token'
-    cartodb.api_url           = 'https://' + cartodb.username + '.cartodb.com/api/v1/sql';
     
     cartodb.oa = new OAuth(cartodb.request_url, cartodb.access_url, cartodb.consumer_key, cartodb.consumer_secret, "1.0", null, "HMAC-SHA1");
 
     // Request temporary request tokens
     cartodb.oa.getOAuthRequestToken(function(error, request_key, request_secret, results){
-        if(error) sys.puts('error :' + error);
-        else {
+        if(error) {
+            sys.puts('error :' + error);
+        } else {
             // Output consumer and request tokens (for completeness)
             sys.puts('\n== Consumer Tokens ==');
             sys.puts('consumer key :' + cartodb.consumer_key);
@@ -72,7 +44,7 @@ module.exports = function(opts){
                     throw new Error("...XAuth failed. Please check your password and username.");
                 } else {
                     sys.puts("...XAuth successful!");
-
+                    
                     // Parse access tokens from returned query string
                     access_tokens = querystring.parse(data);
                     cartodb.access_key    = access_tokens['oauth_token'];
@@ -96,15 +68,15 @@ module.exports = function(opts){
                     cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function (error, data, response) {
                         sys.puts('\n== CartoDB result for POST "' + cartodb.private_query + '" ==');
                         sys.puts(data + '\n');
+                        cartodb.ready(callback);
                     });
-                    
-    
                 }
             });
         }
     });
-    */
-    
-    return app;
+    cartodb.ready = function(callback){
+        callback();
+    }
+    return cartodb;
 };
 
