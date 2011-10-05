@@ -40,8 +40,8 @@ Scoreboard.modules.app = function(scoreboard) {
       this._bus = new scoreboard.events.Bus();
       this.userrank = new scoreboard.ui.UserRank.Engine(this._bus, this._api);
       this.userrank.start();
-      this.ranking = new scoreboard.ui.Ranking.Engine(this._bus, this._api);
-      this.ranking.start();
+      this.rankinglist = new scoreboard.ui.RankingList.Engine(this._bus, this._api);
+      this.rankinglist.start();
       this.socket = new scoreboard.socket.Engine(this._bus);
     },
 
@@ -146,7 +146,7 @@ Scoreboard.modules.socket = function(scoreboard) {
       this.socket.on('scoreboard-update',function(data){
         //{"time":0.002,"total_rows":4,"rows":[{"user_id":"unknooooown","user_rank":4,"user_lvl":1},{"user_id":"anon","user_rank":3,"user_lvl":2},{"user_id":"capndave","user_rank":2,"user_lvl":4},{"user_id":"andrewxhill","user_rank":1,"user_lvl":11}]}
         scoreboard.log.info('new rankings!');
-        that._bus.fireEvent(new scoreboard.events.UpdateList(data));
+        that._bus.fireEvent(new scoreboard.events.UpdateRankingList(data));
       });
     },
     _bindEvents: function(){
@@ -253,9 +253,9 @@ Scoreboard.modules.UserRank = function(scoreboard) {
   );
 }
 
-Scoreboard.modules.Ranking = function(scoreboard) {
-  scoreboard.ui.Ranking = {};
-  scoreboard.ui.Ranking.Engine = Class.extend(
+Scoreboard.modules.RankingList = function(scoreboard) {
+  scoreboard.ui.RankingList = {};
+  scoreboard.ui.RankingList.Engine = Class.extend(
     {
     init: function(bus, region) {
       var that = this;
@@ -271,7 +271,7 @@ Scoreboard.modules.Ranking = function(scoreboard) {
       , bus = this._bus;
 
       bus.addHandler(
-        'UpdateList',
+        'UpdateRankingList',
         function(data){
           data = data.getData();
           var first = true;
@@ -279,7 +279,7 @@ Scoreboard.modules.Ranking = function(scoreboard) {
 
           for (i in data.rows){
 
-            var u = new scoreboard.ui.Ranking.User();
+            var u = new scoreboard.ui.RankingList.User();
             var tmp_pts  = Math.floor(Math.random()*10) + Math.floor(100/data.rows[i].user_rank);
             var tmp_prog = Math.floor(Math.random()*101);
 
@@ -305,12 +305,12 @@ Scoreboard.modules.Ranking = function(scoreboard) {
 
     },
     start: function() {
-      this._bindDisplay(new scoreboard.ui.Ranking.Display({ }));
+      this._bindDisplay(new scoreboard.ui.RankingList.Display({ }));
       this._bindEvents();
     },
   }
   );
-  scoreboard.ui.Ranking.User = scoreboard.ui.Display.extend(
+  scoreboard.ui.RankingList.User = scoreboard.ui.Display.extend(
     {
     init: function(bus) {
       this._super(this._html());
@@ -336,9 +336,9 @@ Scoreboard.modules.Ranking = function(scoreboard) {
   );
   /**
   * The slideshow display.
-*/
-  scoreboard.ui.Ranking.Display = scoreboard.ui.Display.extend(
-    /* Provides the slideshow wrapper, append, prepend, and remove options */
+  */
+  scoreboard.ui.RankingList.Display = scoreboard.ui.Display.extend(
+      /* Provides the slideshow wrapper, append, prepend, and remove options */
     {
       init: function(config) {
         this.config = config;
@@ -473,11 +473,11 @@ Scoreboard.modules.events = function(scoreboard) {
   scoreboard.events.UpdateUserRank.TYPE = 'update_user_rank';
   /**
   * Score list update event.
-*/
-  scoreboard.events.UpdateList = scoreboard.events.Event.extend(
+  */
+  scoreboard.events.UpdateRankingList = scoreboard.events.Event.extend(
     {
     init: function(data, action) {
-      this._super('UpdateList', action);
+      this._super('UpdateRankingList', action);
       this._data = data;
     },
 
@@ -486,7 +486,7 @@ Scoreboard.modules.events = function(scoreboard) {
     },
   }
   );
-  scoreboard.events.UpdateList.TYPE = 'update_list';
+  scoreboard.events.UpdateRankingList.TYPE = 'update_ranking_list';
   /**
   * The event bus.
 */
