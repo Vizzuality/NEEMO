@@ -29,6 +29,7 @@ exports.start = function(io, cartodb) {
              */
             socket.emit('region-metadata', {
                   region_id: data.region,
+                  meters_left: 239+data.region,
                   categories: [
                     {
                         id: 'fish',

@@ -39,7 +39,7 @@ Neemo.modules.DataLayer = function(neemo) {
     start: function() {
       this._bindDisplay(new neemo.ui.DataLayer.Display({
       }));
-      this._radial = new neemo.ui.DataLayer.Radial;
+      this._radial = new neemo.ui.DataLayer.Radial(this._bus);
       this._radial.start();
       this._bindEvents();
     },
@@ -50,7 +50,8 @@ Neemo.modules.DataLayer = function(neemo) {
 
   neemo.ui.DataLayer.Radial = neemo.ui.Display.extend(
     {
-    init: function(id, bus) {
+    init: function(bus) {
+        this._bus = bus;
         this.selectorID = "radial_selector";
         this.radial_selector = $("#"+ this.selectorID);
         this._super(this.radial_selector);
@@ -85,6 +86,7 @@ Neemo.modules.DataLayer = function(neemo) {
             { action: function(e) { that.selectOption(e, "barrel"); }, text: "BARREL\nSPONGES", angle: 0, cX: that.centerX - 50, cY: 0},
             { action: function(e) { that.selectOption(e, "coral"); }, text: "CORAL HEAD", angle: 315, cX: this.centerX - 80, cY: that.cy - 50},
             { action: function(e) { that.selectOption(e, "gorgonians"); }, text: "GORGONIANS", angle: -90, cX: 0, cY: that.cy - 75}, null, null,
+            //{ action: that.closeRadialSelector(), text: "CLOSE", angle: 315, cX: -60, cY: 60}, null,
             { action: function(){that.closeRadialSelector()}, text: "CLOSE", angle: 315, cX: -60, cY: 60}, null,
             { action: function(e) { that.selectOption(e, "other"); }, text: "OTHER", angle: 45, cX: 60, cY: 60}, null
         ];
@@ -146,10 +148,11 @@ Neemo.modules.DataLayer = function(neemo) {
     },
   
     addSelectWindow: function(opt) {
-        var $selectedRegion = $(".image.selected");
-
-        var selection = new neemo.ui.DataLayer.SelectionWindow({x:opt.x, y:opt.y, name:opt.name});
-        selection.draw($selectedRegion);
+        var selectedRegion = $(".image.selected");
+        //var selection = new neemo.ui.DataLayer.SelectionWindow({x:opt.x, y:opt.y, name:opt.name}, this._bus);
+        //selection.draw(selectedRegion);
+        var selection = new neemo.ui.Annotation.Engine(this._bus, this._api, opt);
+        selection.start(selectedRegion);
 
         this.closeRadialSelector();
     },
@@ -215,7 +218,8 @@ Neemo.modules.DataLayer = function(neemo) {
 
   neemo.ui.DataLayer.SelectionWindow = neemo.ui.Display.extend(
     {
-    init: function(opt) {
+    init: function(opt, bus) {
+      this._bus = bus;
       this.x = opt.x;
       this.y = opt.y;
       this.name = opt.name;

@@ -45,6 +45,11 @@ Neemo.modules.Slideshow = function(neemo) {
         'RegionOverview',
         function(data){
             data = data.getData();
+            var t = '' + data.meters_left;
+            while (t.length < 5) t = '0'+t;
+            
+            $('.depth h2').text(t);
+            
             if (that._regions[data.region_id]){
                 var Region = that._regions[data.region_id];
                 for (i in data.categories){
@@ -94,13 +99,11 @@ Neemo.modules.Slideshow = function(neemo) {
       var that = this;
       this._display = display;
       display.setEngine(this);
-      //$('#' + this._canvasid).click(function(e){that._canvasClick(e)});
     },
     _bindNav: function(nav) {
       var that = this;
       this._nav = nav;
       nav.setEngine(this);
-      //$('#' + this._canvasid).click(function(e){that._canvasClick(e)});
     },
     start: function() {
       this._bindDisplay(new neemo.ui.Slideshow.Display({
@@ -189,6 +192,7 @@ Neemo.modules.Slideshow = function(neemo) {
     },
   }
   );
+  
   neemo.ui.Slideshow.Region = neemo.ui.Display.extend(
     {
     init: function(url, id, bus) {
