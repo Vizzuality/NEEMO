@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>Ranking</title>
+    <link rel="stylesheet" href="/css/style.css" />
+
+    <script src="http://www.google.com/jsapi"></script>
+    <script>google.load("jquery", "1.6.2");</script>
+    <script>google.load("jqueryui", "1.8.16");</script>
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script src="/js/libs/raphael-min.js"></script>
+    <script src="/js/libs/underscore-min.js"></script>
+    <script src="/js/libs/backbone-min.js"></script>
+    <script src="/js/libs/class.js"></script>
+    <script src="/js/libs/plugins.js"></script>
+
+    <script src="/js/Scoreboard.js"></script>
+
+    <script src="/js/helpers.js"></script>
+
+    <style type="text/css">
+      #sector {
+        position:absolute;
+        left:900px;
+        top:300px;
+        z-index:9000;
+      }
+    </style>
+    <script type="text/javascript">
+      $(function() {
+			Scoreboard(function(env) {
+			  Scoreboard.app = new env.app.Instance({logging: true});
+			  Scoreboard.app.run();
+			  Scoreboard.env = env;
+			});
+			
+            $("nav").navigationHover({ select: "ranking" });
+      });
+
+    </script>
+  </head>
+  <body>
+
+    <header>
+    <a href="#"><h1 class="logo">NEEMO project</h1></a>
+    <nav>
+
+    <ul>
+      <li class="about"><a href="#">ABOUT THE PROJECT</a></li>
+      <li class="ranking selected"><a href="#">RANKING</a></li>
+      <li class="mission"><a href="index.html">CONTINUE YOUR MISSION</a></li>
+    </ul>
+    <div class="bar"></div>
+
+    </nav>
+    </header>
+
+    <div class="info">
+      <div class="line-through">
+        <h2>RANKING</h2>
+        <div class="line"></div>
+      </div>
+    </div>
+
+    <div id="rank-box">
+    </div>
+
+    <div id="ranking">
+      <ul>
+      </ul>
+    </div>
+
+    <div class="rays"></div>
+  </body>
+</html>

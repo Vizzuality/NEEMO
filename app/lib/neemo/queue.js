@@ -9,19 +9,24 @@ var   express     = require('express')
     , http        = require("http")
     , querystring = require('querystring')
     , sys         = require('sys')
-    , rsub        = redis.createClient()
+    , rsub        = redis.createClient() //listens for new events to store on CartoDB
+    , upub        = redis.createClient() //publishes updated rankings
     , OAuth       = require('oauth').OAuth
-    , fs          = require('fs');
+    , fs          = require('fs')
+    , pageSize    = 15  //defines the users per page to store for Scoreboard
+    , page        = 1   //init for counter
+    , rankUpdate  = false;  //informs the rankupdate to pass when there haven't been updates
     
 module.exports = function(opts){
     
-    eval(fs.readFileSync('cartodb_settings.js', encoding="ascii"));
     
     var app = express.createServer();
     app.use(express.bodyParser());
     app.use(express.cookieParser());
     app.use(express.static('./public'));
     app.use(express.logger({buffer:true, format:'[:remote-addr :date] \033[90m:method\033[0m \033[36m:url\033[0m \033[90m:status :response-time ms -> :res[Content-Type]\033[0m'}));
+    
+    eval(fs.readFileSync('cartodb_settings.js', encoding="ascii"));
     
     cartodb.oa = new OAuth('http://andrew.cartodb.com/oauth/request_token',
                        'http://andrew.cartodb.com/oauth/access_token',
@@ -89,13 +94,14 @@ module.exports = function(opts){
                         sys.puts(data + '\n');
                     });
                     
+                    processRankings();
                     processQueue();
                 }
             });
         }
     });
     
-            
+    /* Takes all published POIs and Pushes them to CartoDB */
     function handleStorage(err, data) {
       if (data == null) {
         setTimeout(function() { processQueue(); }, 100);
@@ -112,11 +118,55 @@ module.exports = function(opts){
             console.log('\n== CartoDB result for NEEMO put "' + query + '" ==');
             console.log(data + '\n');
         });
+        rankUpdate = true;
         processQueue();
       }
     }
     function processQueue() {
       rsub.lpop('poi-store', handleStorage);
     }
+    
+    function handleRankings() {
+        var protected_request = cartodb.api_url;
+        var offset = pageSize * (page - 1)
+        var query = "SELECT user_id, user_rank, user_lvl, poll FROM neemo_scores LIMIT "+pageSize+" OFFSET "+offset+";";
+        var body = {q: query}
+        cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function (error, data, response) {
+            data = JSON.parse(data);
+            
+            var output = {
+                total_rows: data.total_rows,
+                page: page,
+                limit: pageSize,
+                ranks: {}
+            };
+            for (i in data.rows){
+                var u = {
+                    user_id: data.rows[i].user_id,
+                    user_rank: data.rows[i].user_rank,
+                    user_lvl: data.rows[i].user_lvl
+                }
+                output.ranks[data.rows[i].poll] = u;
+            }
+            upub.publish('scoreboard-update', JSON.stringify( output ));
+            
+            if (data.total_rows == pageSize){
+                page++;
+            } else {
+                rankUpdate = false;
+                page = 1;
+            }
+        });
+        
+        setTimeout(function() { processRankings(); }, 100);
+    }
+    function processRankings() {
+        if (page != 1 || rankUpdate){
+            handleRankings();
+        } else {
+            setTimeout(function() { processRankings(); }, 25000);
+        }
+    }
+    
     return app;
 }

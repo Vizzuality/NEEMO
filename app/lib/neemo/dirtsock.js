@@ -4,16 +4,17 @@ var   Step        = require('step')
     , rpub        = redis.createClient();
     
 // Sets up the socket server
-exports.start = function(io) {
-    //var redis_pool = new RedisPool();
+exports.start = function(io, cartodb) {
+    /* Setup main App socket connections and functions
+     */
     io.sockets.on('connection', function (socket) {
         socket.send(socket.id);
         socket.on('join', function (data) {
-            console.log('hoined');
-            //socket.set('region', data.region );
             socket.join(data.region);
-            //here would ask CartoDB for the totals
-            socket.emit('regionOverview', {
+            /* Send a CartoDB SQL request here
+             *
+             */
+            socket.emit('region-metadata', {
                   region_id: data.region,
                   categories: [
                     {
@@ -36,13 +37,12 @@ exports.start = function(io) {
 	    });
         socket.on('leave', function (data) {
             socket.leave('/'+data.region)
-            socket.leave('/'+data.region + 1);
-            socket.leave('/'+(data.region - 1));
         });
 	    socket.on('poi', function (data) {
             rpub.publish( 'poi-emit', JSON.stringify( data ));
         });
     });
     
-    require('./worker').start(io);
+    require('./scoreboard').start(io, cartodb);
+    require('./worker').start(io, cartodb);
 }
