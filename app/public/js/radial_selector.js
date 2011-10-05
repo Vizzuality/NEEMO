@@ -27,6 +27,7 @@ function SelectionWindow(opt){
   this.name = opt.name;
   this.$el = $('<div class="selection_window">'+
                '<div class="controls">'+
+                 '<div class="name">' + this.name + '</div>' +
                  '<a href="#" class="submit">Submit</a>' +
                  '<a href="#" class="close">x</a>' +
                  '<a href="#" class="agree"><div class="icon"></div></a>' +
@@ -44,7 +45,6 @@ SelectionWindow.prototype.clear = function($region){
 
 SelectionWindow.prototype.draw = function($region){
   var that = this;
-  console.log("Drawing a selection for a " + this.name);
   // We create the selection window and place it over the image
   $region.append(this.$el);
 
@@ -52,6 +52,7 @@ SelectionWindow.prototype.draw = function($region){
   var left = this.x - (this.$el.width() / 2);
   var top  = this.y - (this.$el.height() / 2);
 
+  console.log("Drawing a selection for a " + this.name  + " "  + left + " " + top );
   this.$el.css({left:0, top:0, height:0, width:0}); // initial position
 
   // Now we just move the window to its place
