@@ -50,6 +50,7 @@ SelectionWindow.prototype.draw = function($region){
   // Now we just move the window to its place
   this.$el.animate({width:200, height:200, opacity:1, left:left, top:top}, 200);
   this.$el.draggable({ containment: 'parent', stop: function(e) { that.onDragEnd(); } });
+  this.$el.resizable();
 };
 
 SelectionWindow.prototype.updateCoordinates = function(){
