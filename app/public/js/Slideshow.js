@@ -55,7 +55,6 @@ Neemo.modules.Slideshow = function(neemo) {
                 for (i in data.categories){
                     if (data.categories[i].count > 0){
                         Region.setCategoryValue(data.categories[i].id, data.categories[i].name, data.categories[i].count);
-                        //Region.incrCategoryValue(data.categories[i].id, data.categories[i].name, 1)
                     }
                 }
             }
@@ -167,7 +166,7 @@ Neemo.modules.Slideshow = function(neemo) {
        * n -> x-v would then be displayed
        */
        var i = id + 1;
-       while (i < id + this._forwardBuffer & i < this._max){
+       while (i < id + this._forwardBuffer & i <= this._max){
            this.addRegion(url, i);
            i++;
        }

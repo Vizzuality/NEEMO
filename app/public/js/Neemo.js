@@ -35,7 +35,7 @@ Neemo.modules.app = function(neemo) {
   neemo.app.Instance = Class.extend(
     {
     init: function(config) {
-      var region = 1;
+      this._region = config.region;
       neemo.log.enabled = config ? config.logging: false;
       this._bus = new neemo.events.Bus();
       //this.ui = new neemo.ui.Engine(config, this._bus);
@@ -50,12 +50,13 @@ Neemo.modules.app = function(neemo) {
       this.slideshow.start();
       this.datalayer = new neemo.ui.DataLayer.Engine(this._bus, this._api);
       this.datalayer.start();
-      this.socket = new neemo.socket.Engine(this._bus, config.region);
+      this.socket = new neemo.socket.Engine(this._bus);
       
     },
 
     run: function() {
       neemo.log.info('App is now running!');
+      this._bus.fireEvent(new neemo.events.ChangeRegion({region: this._region}));
     },
 
     getBus: function() {
@@ -69,11 +70,10 @@ Neemo.modules.socket = function(neemo) {
   neemo.socket = {};
   neemo.socket.Engine = Class.extend(
     {
-    init: function(bus, region) {
+    init: function(bus) {
       this._id = null;
-      this._region = region;
+      this._region = -1;
       this._bus = bus;
-      this.region = region;
       this.socket = io.connect();
       this._bindEvents();
       this._setupSockets();
@@ -100,10 +100,6 @@ Neemo.modules.socket = function(neemo) {
         }
         //neemo.log.info('socket update received');
        });
-       
-       this.socket.emit('join', {region: this._region} ,
-            that._bus.fireEvent(new neemo.events.ChangeRegion({region: that._region}))
-       );
     },
     _bindEvents: function(){
       var that = this,
