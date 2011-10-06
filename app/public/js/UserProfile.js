@@ -49,8 +49,8 @@ Neemo.modules.UserProfile = function(neemo) {
       /* UserProfile UI elements */
     {
     init: function() {
-      this._super(this._html());
-      $('.info').append(this.getElement());
+      this._super($('.info'));
+      $(this.getElement()).append(this._html());
     },
     getName: function(){
       return $(this.getElement()).find('.user-name');
@@ -72,7 +72,7 @@ Neemo.modules.UserProfile = function(neemo) {
               '<div class="progress-bar">'+
               '  <div class="progress"></div>'+
               '</div>'+
-              '<span class="level"> Lvl. 2</span>'+
+              '<span class="level"></span>'+
               '<ul>'+
               '  <li><div class="point">+5</div> <p>you have found a new coral occurence</p></li>'+
               '  <li><div class="point">+5</div> <p>you have found a new coral occurence</p></li>'+

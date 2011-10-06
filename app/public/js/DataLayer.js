@@ -7,11 +7,12 @@ Neemo.modules.DataLayer = function(neemo) {
   neemo.ui.DataLayer = {};
   neemo.ui.DataLayer.Engine = Class.extend(
     {
-    init: function(bus, api, region) {
+    init: function(bus, api) {
       var that = this;
       this._bus = bus;
       this._api = api;
-      this._region = region;
+      this._region = -1;
+      this._annotations = [];
     },
 
     _bindEvents: function(){
@@ -30,9 +31,31 @@ Neemo.modules.DataLayer = function(neemo) {
         'ChangeRegion',
         function(data){
           neemo.log.info('Clearing annotations');
+          that._region = data.getRegion();
           that._radial_selector.clearAnnotations();
+          that.clearAnnotations();
         }
       );
+      bus.addHandler(
+        'AddPoints',
+        function(data){
+            data = data.getData();
+            if (data.region == that._region){
+                var activeRegion = $(".image.selected");
+                var annotation = new neemo.ui.Annotation.Engine(that._bus, that._api, data);
+                annotation.start(activeRegion, true);
+                annotation.enableVote();
+                that._annotations.push(annotation);
+            }
+        }
+      );
+    },
+    clearAnnotations: function(){
+        while(this._annotations.length > 0){
+            var t = this._annotations.pop();
+            t.remove();
+            t = null;
+        }
     },
     _bindDisplay: function(display, text) {
       var that = this;
@@ -136,7 +159,7 @@ Neemo.modules.DataLayer = function(neemo) {
     clearAnnotations: function(){
         while(this._annotations.length > 0){
             var t = this._annotations.pop();
-            t.empty();
+            t.remove();
             t = null;
         }
     },
@@ -164,8 +187,6 @@ Neemo.modules.DataLayer = function(neemo) {
   
     addSelectWindow: function(opt) {
         var selectedRegion = $(".image.selected");
-        //var selection = new neemo.ui.DataLayer.SelectionWindow({x:opt.x, y:opt.y, name:opt.name}, this._bus);
-        //selection.draw(selectedRegion);
         var selection = new neemo.ui.Annotation.Engine(this._bus, this._api, opt);
         selection.start(selectedRegion);
         selection.enableSubmit();

@@ -1,16 +1,23 @@
 var   Step        = require('step')
     , _           = require('underscore')
     , redis       = require('redis-client')
+    , crypto      = require('crypto')
     , rpub        = redis.createClient();
 // Sets up the socket server
 exports.start = function(io, cartodb, store) {
-    var validateSession = function(key){
-        var s = JSON.stringify(data);
+    var validateSession = function(input){
+        var key = "superSecretKey";
+        var data = input.substr(0,44);
+        var hash = input.substr(44,28);
+        
         var hmac = crypto.createHmac("sha1", key);
-        var hash2 = hmac.update(s);
+        var hash2 = hmac.update(data);
         var digest = hmac.digest(encoding="base64");
-
-        return true;
+        if (digest==data){
+            return true;
+        }else{
+            return true;
+        }
     }
     /* Setup main App socket connections and functions
      */
@@ -22,29 +29,46 @@ exports.start = function(io, cartodb, store) {
          * if valid, stores it with the socket.id
          */
         socket.once('message', function(data){
-            console.log('hihi');
-            console.log('hihi');
-            console.log('hihi');
-            console.log('hihi');
-            console.log(data);
-            console.log(data);
-            console.log(data);
-            console.log(data);
-            console.log(data);
-            //validate key here
-            user_profile = {
-                user_id: 'andrewxhill',
-                user_rank: 1,
-                user_lvl: 11,
-                user_pts: 17600,
-                user_latest: [
-                    {points: "+5", title: "You have found a new coral occurrence"},
-                    {points: "+5", title: "You have found a new coral occurrence"},
-                    {points: "+1", title: "You have confirmed a new coral occurrence"},
-                    {points: "+5", title: "You have found a new coral occurrence"}
-                ]
+            data = JSON.parse(data);
+            if (validateSession(data.auth)){
+                //perform a create or get here!
+                var protected_request = cartodb.api_url;
+                var query = "SELECT user_id, user_lvl, user_rank, user_score, user_progress FROM neemo_users WHERE user_id = '"+data.username+"' LIMIT 1;";
+                var body = {q: query}
+                cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function (error, result, response) {
+                    //console.log('\n== CartoDB result for NEEMO get "' + query + '" ==');
+                    //console.log(result + '\n');
+                    result = JSON.parse(result);
+                    if (result.total_rows == 0){
+                        user_profile = {
+                            user_id: data.username,
+                            user_rank: 0,
+                            user_lvl: 1,
+                            user_pts: 1,
+                            user_progress: 1,
+                            user_latest: [
+                                {points: "+1", title: "Welcome to NEEMO!"}
+                            ]
+                        };
+                        socket.emit('user-metadata', user_profile);
+                        var q2 = "INSERT INTO neemo_users (user_id, user_lvl, user_rank, user_score, user_progress) VALUES ('"+data.username+"', 1, (SELECT count(*)+1 FROM neemo_users), 0, 1)";
+                        var b2 = {q: q2};
+                        cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, b2, null);
+                    } else {
+                        user_profile = {
+                            user_id: result.rows[0].user_id,
+                            user_rank: result.rows[0].user_rank,
+                            user_lvl: result.rows[0].user_lvl,
+                            user_pts: result.rows[0].user_score,
+                            user_progress: result.rows[0].user_progress,
+                            user_latest: [
+                                {points: "+0", title: "Welcome back to NEEMO!"}
+                            ]
+                        }
+                        socket.emit('user-metadata', user_profile);
+                    }
+                });
             }
-            socket.emit('user-metadata', user_profile);
         });
         socket.on('join', function (data) {
             socket.join(data.region);
@@ -76,11 +100,19 @@ exports.start = function(io, cartodb, store) {
         socket.on('leave', function (data) {
             socket.leave('/'+data.region)
         });
-	    socket.on('poi', function (data) {
-            rpub.publish( 'poi-emit', JSON.stringify( data ));
+	    socket.on('submit-data', function (data) {
+            if (validateSession(data.auth)){
+                //rpub.publish( 'poi-emit', JSON.stringify( data ));
+                var protected_request = cartodb.api_url;
+                var query = "INSERT INTO neemo (category, click_x, click_y, width, height, region, user_id, upvotes, downvotes) VALUES ('"+data.category+"',"+data.x+","+data.y+","+data.width+","+data.height+","+data.region+",'"+data.username+"', 1, 0)";
+                var body = {q: query}
+                cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null);
+                delete data['auth'];
+                io.sockets.in(data.region).emit('region-new-data', data);
+            }
         });
     });
     
     require('./scoreboard').start(io, cartodb, store);
-    require('./worker').start(io, cartodb);
+    //require('./worker').start(io, cartodb);
 }

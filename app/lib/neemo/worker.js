@@ -60,7 +60,7 @@ exports.start = function(io, cartodb) {
         });
         setTimeout(function(){fakeEmit()}, 500);
     }
-    fakeEmit();
+    //fakeEmit();
     /*
     function popFromQueue() {
       rsub.lpop('emit-queue', handleEmit);

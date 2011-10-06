@@ -64,14 +64,9 @@ Neemo.modules.Slideshow = function(neemo) {
         'AddPoints',
         function(data){
             data = data.getData();
-            if (that._regions[data.region_id]){
-                var Region = that._regions[data.region_id];
-                for (i in data.categories){
-                    if (data.categories[i].count > 0){
-                        //Region.setCategoryValue(data.categories[i].id, data.categories[i].name, data.categories[i].count);
-                        Region.incrCategoryValue(data.categories[i].id, data.categories[i].name, data.categories[i].count);
-                    }
-                }
+            if (that._regions[data.region]){
+                var Region = that._regions[data.region];
+                Region.incrCategoryValue(data.category, data.category, 1);
             }
         }
       );

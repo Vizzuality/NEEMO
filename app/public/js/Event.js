@@ -155,7 +155,7 @@ Neemo.modules.events = function(neemo) {
   neemo.events.DataSubmit.TYPE = 'data_submit';
   
   /**
-  * New data submission event.
+  * New data creation event.
   */
   neemo.events.ImageClick = neemo.events.Event.extend(
     {
@@ -170,6 +170,23 @@ Neemo.modules.events = function(neemo) {
   }
   );
   neemo.events.ImageClick.TYPE = 'image_click';
+  
+  /**
+  * New data submission event.
+  */
+  neemo.events.SubmitData = neemo.events.Event.extend(
+    {
+    init: function(data, action) {
+      this._super('SubmitData', action);
+      this._data = data;
+    },
+
+    getData: function() {
+      return this._data;
+    },
+  }
+  );
+  neemo.events.SubmitData.TYPE = 'submit_data';
   
   /**
   * The event bus.

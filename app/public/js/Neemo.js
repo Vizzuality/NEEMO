@@ -72,7 +72,7 @@ Neemo.modules.socket = function(neemo) {
     {
     init: function(bus) {
       this._id = null;
-      this._region = -1;
+      this.region = -1;
       this._bus = bus;
       this.socket = io.connect();
       this._bindEvents();
@@ -85,7 +85,7 @@ Neemo.modules.socket = function(neemo) {
       var that = this;
       this.socket.on('connect', function () {
         neemo.log.info('soccket connected!');
-        that.socket.send(that._socketAuth);
+        that.socket.send(JSON.stringify({auth: that._socketAuth, username: that._username}));
       });
       this.socket.on('user-metadata',function(data){
         neemo.log.info('recieved user profile for: ' + data.user_id);
@@ -97,10 +97,9 @@ Neemo.modules.socket = function(neemo) {
          that._bus.fireEvent(new Neemo.env.events.RegionOverview(data));
       });
       this.socket.on('region-new-data', function (data) {
-        if(data.id == that._region){
-            if (data.eventType == 'points'){
-                that._bus.fireEvent(new Neemo.env.events.AddPoints(data));
-            }
+        console.log('new Data!');
+        if(data.region == that.region){
+            that._bus.fireEvent(new Neemo.env.events.AddPoints(data));
         }
         //neemo.log.info('socket update received');
        });
@@ -110,14 +109,14 @@ Neemo.modules.socket = function(neemo) {
       bus = this._bus;
       /* send the new click data to server */
       bus.addHandler(
-        'FormSubmit',
+        'SubmitData',
         function(event){
-          neemo.log.info('form recieved');
+          neemo.log.info('data recieved');
           var data = event.getData();
-          data.id = that._id;
           data.region = that.region;
-          data.sid = that._sid;
-          that.socket.emit('poi', data);
+          data.username = that._username;
+          data.auth = that._socketAuth;
+          that.socket.emit('submit-data', data);
         }
       );
 

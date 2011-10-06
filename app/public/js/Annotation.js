@@ -22,21 +22,33 @@ Neemo.modules.Annotation = function(neemo) {
     _bindEvents: function(){
       var that = this
       , bus = this._bus;
+      
       this.$el.find('.submit').click(function(){
-        console.log('submit data');
-        //that._bus.fireEvent(new Neemo.env.events.SubmitData({x: that.x, y: that.y, width: that.$el.widht(), height: that.$el.height()}));
+        that._bus.fireEvent(new Neemo.env.events.SubmitData({category: that.name, x: that.x, y: that.y, width: that.$el.width(), height: that.$el.height()}));
+        that.remove();
+        //this.$el.animate({width:200, height:200, opacity:1, left:left, top:top}, 200);
       });
+      
+    },
+    remove: function(){
+        this.$el.draggable("destroy");
+        this.$el.resizable("destroy");
+        if(this._display){
+            $(this._display.getElement()).remove();
+        }
+        this._display = null;
     },
     _bindDisplay: function(display, text) {
       var that = this;
       this._display = display;
       display.setEngine(this);
     },
-    start: function($region) {
+    start: function($region, burn) {
       this._bindDisplay(new neemo.ui.Annotation.Display());
       
       this.$el = $(this._display.getElement());
       this.$el.find('.submit').hide();
+      this.$el.find('.close').hide();
       this.$el.find('.agree').hide();
       this.$el.find('.disagree').hide();
       this.setName(this.name);
@@ -52,11 +64,14 @@ Neemo.modules.Annotation = function(neemo) {
 
       console.log("Drawing a selection for a " + this.name  + " "  + left + " " + top );
       this.$el.css({left:0, top:0, height:0, width:0}); // initial position
-
+      
       // Now we just move the window to its place
       this.$el.animate({width:200, height:200, opacity:1, left:left, top:top}, 200);
-      this.$el.draggable({ handle:"controls", containment: 'parent', stop: function(e) { that.onDragEnd(); } });
-      this.$el.resizable({ minWidth: 80, minHeight: 18, handles: 'nw, se' });
+      
+      if (!burn){
+          this.$el.draggable({ handle:"controls", containment: 'parent', stop: function(e) { that.onDragEnd(); } });
+          this.$el.resizable({ minWidth: 80, minHeight: 18, handles: 'nw, se' });
+      }
     },
     clear: function($region){
       this.$el.fadeOut(this.transitionSpeed, function() {
@@ -73,9 +88,11 @@ Neemo.modules.Annotation = function(neemo) {
     },
     enableSubmit: function(){
       this.$el.find('.submit').show();
+      this.$el.find('.close').show();
     },
     enableVote: function(){
-      this.$el.find(['agree','disagree']).show();
+      this.$el.find('.agree').show();
+      this.$el.find('.disagree').show();
     },
     setName: function(name){
       this.$el.find('.name').text(name);
@@ -96,8 +113,8 @@ Neemo.modules.Annotation = function(neemo) {
                      '<a href="#" class="close">x</a>' +
                      '<a href="#" class="agree"><div class="icon"></div></a>' +
                      '<a href="#" class="disagree"><div class="icon"></div></a>' +
-                     '</div>' +
-                   '</div>';
+                   '</div>' +
+               '</div>';
     }
   }
   );

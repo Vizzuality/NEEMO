@@ -10,7 +10,7 @@ var   express     = require('express')
     , querystring = require('querystring')
     , crypto      = require('crypto')
     , CAS         = require('cas')
-    , csa         = {login: 'https://login.zooniverse.org', logout: 'https://login.zooniverse.org/logout', service: 'http://68.175.5.167:4000'}
+    , csa         = {login: 'https://login.zooniverse.org', logout: 'https://login.zooniverse.org/logout', service: 'http://10.52.252.154:4000'}
     , OAuth       = require('oauth').OAuth
     , cartodb     = require('./cartodb')
     , Base64      = require('./Base64')
@@ -42,9 +42,10 @@ module.exports = function(opts){
             //TODO get session.id into the client Cookie, need to include it with Socket requests
             next();
         } else if (route == '/logout' ){
+            req.session.destroy();
             res.cookie('socketAuth', null, { expires: new Date(Date.now() + 90000), httpOnly: false });
             res.cookie('neemoUser', null, { expires: new Date(Date.now() + 90000), httpOnly: false });
-            req.session.key = null;
+            //req.session.key = null;
             res.redirect(csa.logout + '?service=' + csa.service);
         } else if (route == '/login' ){
             res.redirect(csa.login + '?service=' + csa.service);
@@ -65,6 +66,7 @@ module.exports = function(opts){
                         var hmac = crypto.createHmac("sha1", key);
                         var hash2 = hmac.update(s);
                         var digest = hmac.digest(encoding="base64");
+                        
                         //keylen = 28
                         req.session.sid = s+digest;
                         req.session.username = username;
@@ -108,7 +110,7 @@ module.exports = function(opts){
     app.use('/js', express.static('./public/js'));
     app.use('/images', express.static('./public/images'));
     app.use('/css', express.static('./public/css'));
-    //app.use(cas_middleware);
+    app.use(cas_middleware);
     app.use('/regions', express.static('./public/regions'));
     app.use(express.static('./public'));
     app.use(express.bodyParser());
