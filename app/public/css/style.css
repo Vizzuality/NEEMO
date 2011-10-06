@@ -759,23 +759,26 @@ nav ul {
   margin-top:-250px;
 }
 
-.info .depth {
+.depth {
+  position:absolute;
+  right:100px;
+  top:200px;
   color:#fff;
   text-transform: uppercase;
   z-index:2000;
 }
 
-.info .depth .legend {
+.depth .legend {
   font-family: 'EurostileLTStd';
   letter-spacing:1px;
   font-size:10px;
 }
 
-.info .depth .line {
+.depth .line {
   top:10px;
 }
 
-.info .depth h2 {
+.depth h2 {
   margin:0;
   color:#fff;
   font-size:21px;

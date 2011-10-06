@@ -43,25 +43,36 @@
             Scoreboard.env = env;
             });
 
-          $("nav").navigationHover();
+  $("nav").navigationHover();
+          $(".keyboard").helpShortcuts();
+          $(".help").helpInfo();
+
+          $(window).resize(function() {
+            var left = $("#slideshow").offset().left - ($(".info").width() + 137);
+            if (left > 0) {
+            $(".info").stop().animate({left:left }, 500);
+            }
+            });
+
       });
     </script>
   </head>
-  <body>
+  <body class="ranking">
 
     <header>
     <a href="#"><h1 class="logo">NEEMO project</h1></a>
-    <nav>
+    </header>
 
+    <nav>
     <ul>
       <li class="about"><a href="#">ABOUT THE PROJECT</a></li>
-      <li class="ranking selected"><a href="#">RANKING</a></li>
+      <li class="ranking selected"><a href="/ranking.html">RANKING</a></li>
       <li class="mission"><a href="/mission.html">CONTINUE YOUR MISSION</a></li>
     </ul>
     <div class="bar"></div>
-
     </nav>
-    </header>
+
+
 
     <div class="info">
       <div class="line-through">
@@ -78,6 +89,29 @@
       </ul>
     </div>
 
+ <div class="shortcuts">
+          <div class="header">
+            <div class="line-through">
+              <h3 class="more-info">Shortcuts</h3>
+              <div class="line"></div>
+            </div>
+            <div class="close"></div>
+          </div>
+          <div class="inner">
+            <ul>
+              <li class="next"><div class="icon"></div>Next image</li>
+              <li class="previous"><div class="icon"></div>Previous image</li>
+              <li class="ranking"><div class="icon"></div>Show ranking</li>
+            </ul>
+            <ul>
+              <li class="gorgonians"><div class="icon"></div> Identify Gorgonians</li>
+              <li class="coral"><div class="icon"></div>Identify Coral Head</li>
+              <li class="barrel"><div class="icon"></div>Identify Barrel</li>
+              <li class="other"><div class="icon"></div>Identify Other</li>
+            </ul>
+          </div>
+        </div>
+    <div class="keyboard"></div>
     <div class="rays"></div>
   </body>
 </html>
