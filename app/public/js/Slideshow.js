@@ -47,9 +47,9 @@ Neemo.modules.Slideshow = function(neemo) {
             data = data.getData();
             var t = '' + data.meters_left;
             while (t.length < 5) t = '0'+t;
-            
+
             $('.depth h2').text(t);
-            
+
             if (that._regions[data.region_id]){
                 var Region = that._regions[data.region_id];
                 for (i in data.categories){
@@ -88,7 +88,7 @@ Neemo.modules.Slideshow = function(neemo) {
           }
         }
       );
-      
+
     },
     _bindDisplay: function(display, text) {
       var that = this;
@@ -118,12 +118,12 @@ Neemo.modules.Slideshow = function(neemo) {
       var that = this;
       if (!(id in this._regions)) {
           var Region = new neemo.ui.Slideshow.Region(url, id, this._bus);
-          
+
           this._display.addRegion(Region.getElement());
           if (id < this._max){
               Region.enableNextButton();
           }
-          
+
           $(Region.getImage()).click(function(e) {
             if($(this).parent().parent('.selected').length > 0){
                 that._bus.fireEvent(new Neemo.env.events.ImageClick(e));
@@ -171,16 +171,21 @@ Neemo.modules.Slideshow = function(neemo) {
       this.addRegion(url,id);
       this.queueRegion(id);
       this.bufferForward(url, id);
-      neemo.slideshowUtil.hideAside(neemo.slideshowUtil.forwardSlideEffect);
+
+      neemo.slideshowUtil.hideDepthLine(function() {
+        neemo.slideshowUtil.hideAside(neemo.slideshowUtil.forwardSlideEffect);
+      });
     },
     scrollBack: function(url, id){
         this.addRegion(url,id);
         this.queueRegion(id);
-        neemo.slideshowUtil.hideAside(neemo.slideshowUtil.backSlideEffect);
+        neemo.slideshowUtil.hideDepthLine(function() {
+          neemo.slideshowUtil.hideAside(neemo.slideshowUtil.backSlideEffect);
+        });
     },
   }
   );
-  
+
   neemo.ui.Slideshow.Region = neemo.ui.Display.extend(
     {
     init: function(url, id, bus) {
@@ -256,6 +261,7 @@ Neemo.modules.Slideshow = function(neemo) {
     _html: function() {
       return  '<div class="image">' +
                 '<div class="photo"></div>' +
+                '<div class="depth-line"></div>' +
                 '<aside> '+
                     '<ul> '+
                     '</ul> '+
@@ -339,8 +345,9 @@ Neemo.modules.slideshowUtil = function(neemo) {
 
         $("#container").scrollTo("+="+(that.width/2 + that.margin) +"px", {duration:250, easing: that.easingMethod, onAfter: function() {
             moving = false;
-            neemo.slideshowUtil.showAside();
-            //showAside();
+            neemo.slideshowUtil.showAside(function() {
+              neemo.slideshowUtil.showDepthLine();
+            });
         }});
     };
     neemo.slideshowUtil.backSlideEffect = function(){
@@ -352,16 +359,31 @@ Neemo.modules.slideshowUtil = function(neemo) {
             neemo.slideshowUtil.config.moving = true;
             $("#container").scrollTo("-="+(that.width/2 + that.margin) +"px", {duration:250, easing: that.easingMethod, onAfter: function() {
                 neemo.slideshowUtil.config.moving = false;
-                neemo.slideshowUtil.showAside();
+                neemo.slideshowUtil.showAside(function() {
+                  neemo.slideshowUtil.showDepthLine();
+                });
             }});
         }
     };
-    neemo.slideshowUtil.showAside = function() {
+    neemo.slideshowUtil.showAside = function(callback) {
         $("#slideshow div.selected aside").css({height:"400px", right:"59px"});
         $("#slideshow div.selected aside").show(0, function() {
-            $(this).delay(200).animate({opacity:1, right:"-59px"}, 250);
+            $(this).delay(200).animate({opacity:1, right:"-59px"}, 250, callback);
         });
     };
+
+    neemo.slideshowUtil.showDepthLine = function() {
+      $("#slideshow div.selected .depth-line").animate({opacity:1}, 200);
+    };
+
+    neemo.slideshowUtil.hideDepthLine = function(callback) {
+      if ($("#slideshow div.selected .depth-line").length > 0){
+        $("#slideshow div.selected .depth-line").animate({opacity:0}, 200, callback);
+      }   else {
+        callback();
+      }
+    };
+
     neemo.slideshowUtil.hideAside = function(callback) {
         /* Slideshow inits without a selected div, so add the check here to just fire callback in that case */
         if ($("#slideshow div.selected aside").length > 0){
