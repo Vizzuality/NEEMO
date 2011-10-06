@@ -25,37 +25,21 @@
 
     <script src="/js/helpers.js"></script>
 
-    <style type="text/css">
-      #sector {
-        position:absolute;
-        left:900px;
-        top:300px;
-        z-index:9000;
-      }
-    </style>
     <script type="text/javascript">
-	  var authCookie;
+      var authCookie;
       $(function() {
-	  	  authCookie = document.cookie.split('=',1)[1];
+          authCookie = document.cookie.split('=',1)[1];
           Scoreboard(function(env) {
             Scoreboard.app = new env.app.Instance({logging: true});
             Scoreboard.app.run();
             Scoreboard.env = env;
             });
 
-  $("nav").navigationHover();
+          $("nav").navigationHover();
           $(".keyboard").helpShortcuts();
           $(".help").helpInfo();
-
-          $(window).resize(function() {
-            var left = $("#slideshow").offset().left - ($(".info").width() + 137);
-            if (left > 0) {
-            $(".info").stop().animate({left:left }, 500);
-            }
-            });
-
-      });
-    </script>
+          });
+</script>
   </head>
   <body class="ranking">
 
@@ -89,28 +73,28 @@
       </ul>
     </div>
 
- <div class="shortcuts">
-          <div class="header">
-            <div class="line-through">
-              <h3 class="more-info">Shortcuts</h3>
-              <div class="line"></div>
-            </div>
-            <div class="close"></div>
-          </div>
-          <div class="inner">
-            <ul>
-              <li class="next"><div class="icon"></div>Next image</li>
-              <li class="previous"><div class="icon"></div>Previous image</li>
-              <li class="ranking"><div class="icon"></div>Show ranking</li>
-            </ul>
-            <ul>
-              <li class="gorgonians"><div class="icon"></div> Identify Gorgonians</li>
-              <li class="coral"><div class="icon"></div>Identify Coral Head</li>
-              <li class="barrel"><div class="icon"></div>Identify Barrel</li>
-              <li class="other"><div class="icon"></div>Identify Other</li>
-            </ul>
-          </div>
+    <div class="shortcuts">
+      <div class="header">
+        <div class="line-through">
+          <h3 class="more-info">Shortcuts</h3>
+          <div class="line"></div>
         </div>
+        <div class="close"></div>
+      </div>
+      <div class="inner">
+        <ul>
+          <li class="next"><div class="icon"></div>Next image</li>
+          <li class="previous"><div class="icon"></div>Previous image</li>
+          <li class="ranking"><div class="icon"></div>Show ranking</li>
+        </ul>
+        <ul>
+          <li class="gorgonians"><div class="icon"></div> Identify Gorgonians</li>
+          <li class="coral"><div class="icon"></div>Identify Coral Head</li>
+          <li class="barrel"><div class="icon"></div>Identify Barrel</li>
+          <li class="other"><div class="icon"></div>Identify Other</li>
+        </ul>
+      </div>
+    </div>
     <div class="keyboard"></div>
     <div class="rays"></div>
   </body>
