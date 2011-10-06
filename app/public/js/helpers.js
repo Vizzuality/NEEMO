@@ -102,24 +102,40 @@ jQuery.fn.helpShortcuts = function(opt) {
   });
 }
 
-jQuery.fn.helpInfo = function(opt) {
+ var HelpInfo = function(e, opt){
 
-  var $el,
+  var $el = $(".help"),
+  id = "helpInfo",
   panelWidth = 485,
   speed  = (opt && opt.speed) || 200,
   easingMethod = (opt && opt.easingMethod) || "easeOutExpo";
 
-  function updateHeader(name) {
+  function _updateHeader(name) {
     $el.find("h3").html("What is a " + name + "?");
   }
 
-  this.each(function() {
-    $el = $(this);
+  function _hide() {
+    $el.animate({opacity:0, left:$el.position().left - 50}, speed, function() {
+      $el.css({display:"none"});
+    });
+  }
 
-    $el.find(".close").click(function() {
-      $el.fadeOut(speed);
+  function _show(x, y) {
+    $el.css({display:"block", opacity:0, left:x - $el.width(), top:y - 50});
+    $el.animate({opacity:1, left:x - $el.width() - 50}, speed);
+  }
+
+  function _move(x, y) {
+    $el.animate({top:y - 50}, speed);
+  }
+
+  function _start() {
+
+    $(window).bind('_close.' + id, function() {
+      _close();
     });
 
+    $el.find(".close").click(_close);
     $el.find(".more-info, .nav").click(function() {
       var species = $(this).parents("li").next("li");
       var direction = "+=";
@@ -136,49 +152,81 @@ jQuery.fn.helpInfo = function(opt) {
 
       $el.find(".inner").scrollTo(direction + distance, speed, {easing:easingMethod} );
       var speciesName = species.find(".icon").attr("class").replace("icon ", "");
-      updateHeader(speciesName);
+      _updateHeader(speciesName);
     });
-  });
-}
+  }
+
+  function _goto(el) {
+    $el.find(".inner").scrollTo(direction + distance, speed, {easing:easingMethod} );
+  }
+
+  function _open(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    $li = $(e.target).closest("li");
+    if ($el.hasClass("open")) {
+      _move($li.offset().left, $li.offset().top);
+    } else {
+      $el.addClass("open");
+      _show($li.offset().left, $li.offset().top);
+    }
+  }
+
+  function _close() {
+    GOD.unsubscribe("_close." + id);
+    $(".help").removeClass("open");
+    _hide();
+  }
+
+  return {
+    start: _start,
+    open: _open
+  };
+ }
+
+
+
+
 
 /*
 * Controls the behaviour of the navigation menu
 * */
-jQuery.fn.navigationHover = function(opt) {
+ jQuery.fn.navigationHover = function(opt) {
 
-  var speed  = (opt && opt.speed) || 100;
-  var easingMethod = (opt && opt.easingMethod) || "easeOutExpo";
-  var $currentOption;
+   var speed  = (opt && opt.speed) || 100;
+   var easingMethod = (opt && opt.easingMethod) || "easeOutExpo";
+   var $currentOption;
 
-  function select($option) {
-    var l = $option.position().left;
-    var w = $option.width();
+   function select($option) {
+     var l = $option.position().left;
+     var w = $option.width();
 
-    $option.parent().siblings("li.selected").removeClass("selected");
-    $option.parent().addClass("selected");
+     $option.parent().siblings("li.selected").removeClass("selected");
+     $option.parent().addClass("selected");
 
-    $(".bar").animate({opacity:1, width:w, left:l}, speed, easingMethod);
-  }
+     $(".bar").animate({opacity:1, width:w, left:l}, speed, easingMethod);
+   }
 
-  this.each(function() {
+   this.each(function() {
 
-    if ($(this).find(".selected")) {
-      $currentOption = $(this).find("li.selected a");
+     if ($(this).find(".selected")) {
+       $currentOption = $(this).find("li.selected a");
 
-      $currentOption.click(function(e) {
-        e.preventDefault();
-      });
+       $currentOption.click(function(e) {
+         e.preventDefault();
+       });
 
-      var sel = function() { select($currentOption, speed);}
-      setTimeout(sel, 200);
-    }
+       var sel = function() { select($currentOption, speed);}
+       setTimeout(sel, 200);
+     }
 
-    $(this).mouseleave(function(e){
-      select($currentOption);
-    });
+     $(this).mouseleave(function(e){
+       select($currentOption);
+     });
 
-    $(this).find("a").hover(function(e){
-      select($(this), speed);
-    });
-  });
-}
+     $(this).find("a").hover(function(e){
+       select($(this), speed);
+     });
+   });
+ }

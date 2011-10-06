@@ -35,7 +35,11 @@
 
           $("nav").navigationHover();
           $(".keyboard").helpShortcuts();
-          $(".help").helpInfo();
+
+          var help = new HelpInfo();
+          help.start();
+
+          $("aside li").live("click", help.open);
 
           $(window).resize(function() {
             var left = $("#slideshow").offset().left - ($(".info").width() + 137);
