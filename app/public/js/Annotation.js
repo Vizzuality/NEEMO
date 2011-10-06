@@ -37,7 +37,8 @@ Neemo.modules.Annotation = function(neemo) {
       
       this.$el = $(this._display.getElement());
       this.$el.find('.submit').hide();
-      this.$el.find('agree').hide();
+      this.$el.find('.agree').hide();
+      this.$el.find('.disagree').hide();
       this.setName(this.name);
       
       this._bindEvents();

@@ -34,9 +34,7 @@
       }
     </style>
     <script type="text/javascript">
-	  var authCookie;
       $(function() {
-	  	  authCookie = document.cookie.split('=',1)[1];
           Scoreboard(function(env) {
             Scoreboard.app = new env.app.Instance({logging: true});
             Scoreboard.app.run();

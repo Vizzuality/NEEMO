@@ -27,9 +27,8 @@ module.exports = function(opts){
     var cas_middleware = function(req, res, next){
         var ticket = req.param('ticket'),
             route  = req.url;
-            
-        if (route == '/index.html' || route == '/' || route == '/about.html' || route == '/favicon.ico') {
-            //TODO get session.id into the client Cookie, need to include it with Socket requests
+        
+        if (route.split('.ht').length > 1){
             if (req.session){
                 res.cookie('socketAuth', req.session.sid, { expires: new Date(Date.now() + 900000), httpOnly: false });
                 res.cookie('neemoUser', req.session.username, { expires: new Date(Date.now() + 900000), httpOnly: false });
@@ -37,12 +36,18 @@ module.exports = function(opts){
                 res.cookie('socketAuth', null, { expires: new Date(Date.now() + 90000), httpOnly: false });
                 res.cookie('neemoUser', null, { expires: new Date(Date.now() + 90000), httpOnly: false });
             }
+        }
+        
+        if (route == '/index.html' || route == '/' || route == '/about.html' || route == '/favicon.ico') {
+            //TODO get session.id into the client Cookie, need to include it with Socket requests
             next();
         } else if (route == '/logout' ){
             res.cookie('socketAuth', null, { expires: new Date(Date.now() + 90000), httpOnly: false });
             res.cookie('neemoUser', null, { expires: new Date(Date.now() + 90000), httpOnly: false });
             req.session.key = null;
             res.redirect(csa.logout + '?service=' + csa.service);
+        } else if (route == '/login' ){
+            res.redirect(csa.login + '?service=' + csa.service);
         } else if (req.session && req.session.loggedin){
             next();
         } else {
@@ -103,7 +108,7 @@ module.exports = function(opts){
     app.use('/js', express.static('./public/js'));
     app.use('/images', express.static('./public/images'));
     app.use('/css', express.static('./public/css'));
-    app.use(cas_middleware);
+    //app.use(cas_middleware);
     app.use('/regions', express.static('./public/regions'));
     app.use(express.static('./public'));
     app.use(express.bodyParser());

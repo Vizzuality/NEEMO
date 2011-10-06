@@ -77,12 +77,15 @@ Neemo.modules.socket = function(neemo) {
       this.socket = io.connect();
       this._bindEvents();
       this._setupSockets();
-      this._sid = document.cookie.split('=',2)[1];
+      this._cookie = document.cookie.split(';');
+      this._socketAuth = this._cookie[0].split('=')[1];
+      this._username = this._cookie[1].split('=')[1];
     },
     _setupSockets: function(){
       var that = this;
       this.socket.on('connect', function () {
         neemo.log.info('soccket connected!');
+        that.socket.send(that._socketAuth);
       });
       this.socket.on('user-metadata',function(data){
         neemo.log.info('recieved user profile for: ' + data.user_id);
