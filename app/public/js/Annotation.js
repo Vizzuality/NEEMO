@@ -22,8 +22,9 @@ Neemo.modules.Annotation = function(neemo) {
     _bindEvents: function(){
       var that = this
       , bus = this._bus;
-      this.$el.find('.submit').click(function{
-        that._bus.fireEvent(new Neemo.env.events.SubmitData({x: that.x, y: that.y, width: that.$el.widht(), height: that.$el.height()}));
+      this.$el.find('.submit').click(function(){
+        console.log('submit data');
+        //that._bus.fireEvent(new Neemo.env.events.SubmitData({x: that.x, y: that.y, width: that.$el.widht(), height: that.$el.height()}));
       });
     },
     _bindDisplay: function(display, text) {
@@ -36,7 +37,7 @@ Neemo.modules.Annotation = function(neemo) {
       
       this.$el = $(this._display.getElement());
       this.$el.find('.submit').hide();
-      this.$el.find(['agree','disagree']).hide();
+      this.$el.find('agree').hide();
       this.setName(this.name);
       
       this._bindEvents();

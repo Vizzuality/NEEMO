@@ -13,6 +13,7 @@ var   express     = require('express')
     , csa         = {login: 'https://login.zooniverse.org', logout: 'https://login.zooniverse.org/logout', service: 'http://68.175.5.167:4000'}
     , OAuth       = require('oauth').OAuth
     , cartodb     = require('./cartodb')
+    , Base64      = require('./Base64')
     , RedisStore  = require('connect-redis')(express)
     , store       = new RedisStore();
 
@@ -29,18 +30,18 @@ module.exports = function(opts){
             
         if (route == '/index.html' || route == '/' || route == '/about.html' || route == '/favicon.ico') {
             //TODO get session.id into the client Cookie, need to include it with Socket requests
-            //console.log(req.session.getSessionID());
             if (req.session){
                 res.cookie('socketAuth', req.session.sid, { expires: new Date(Date.now() + 900000), httpOnly: false });
-            }
-            if (req.session){
+                res.cookie('neemoUser', req.session.username, { expires: new Date(Date.now() + 900000), httpOnly: false });
+            } else {
+                res.cookie('socketAuth', null, { expires: new Date(Date.now() + 90000), httpOnly: false });
+                res.cookie('neemoUser', null, { expires: new Date(Date.now() + 90000), httpOnly: false });
             }
             next();
         } else if (route == '/logout' ){
             res.cookie('socketAuth', null, { expires: new Date(Date.now() + 90000), httpOnly: false });
-            req.session.loggedin = false;
-            req.session.username = null;
-            req.session.sid = null;
+            res.cookie('neemoUser', null, { expires: new Date(Date.now() + 90000), httpOnly: false });
+            req.session.key = null;
             res.redirect(csa.logout + '?service=' + csa.service);
         } else if (req.session && req.session.loggedin){
             next();
@@ -51,13 +52,20 @@ module.exports = function(opts){
                     res.send({error: err});
                   } else {
                     if (status) {
-                        req.session.loggedin = status;
+                        var key = "superSecretKey";
+                        var data = {
+                            username: username,
+                        }
+                        var s = JSON.stringify(data);
+                        var hmac = crypto.createHmac("sha1", key);
+                        var hash2 = hmac.update(s);
+                        var digest = hmac.digest(encoding="base64");
+                        //keylen = 28
+                        req.session.sid = s+digest;
                         req.session.username = username;
+                        req.session.loggedin = true;
                         req.session.cookie.expires = new Date(Date.now() + 3600000);
                         req.session.cookie.maxAge = 3600000;
-                        var sid = req.socket.remoteAddress + '' + Math.round((new Date().valueOf() * Math.random())) + '';
-                        req.session.sid = crypto.createHash('md5').update(sid).digest("hex");
-                        //store.set(req.session.sid ,JSON.stringify({loggedin: status, username: username}));
                         store.set(req.session.sid , JSON.stringify({loggedin: status, username: username}));
                     } 
                     res.redirect('/');
@@ -95,7 +103,7 @@ module.exports = function(opts){
     app.use('/js', express.static('./public/js'));
     app.use('/images', express.static('./public/images'));
     app.use('/css', express.static('./public/css'));
-    //app.use(cas_middleware);
+    app.use(cas_middleware);
     app.use('/regions', express.static('./public/regions'));
     app.use(express.static('./public'));
     app.use(express.bodyParser());
