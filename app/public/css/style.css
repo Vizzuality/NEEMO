@@ -635,6 +635,24 @@ nav ul {
   zoom: 1; *display: inline; /* IE */
 }
 
+#slideshow div.selected .depth-line {
+  z-index:2000;
+  opacity:1;
+  bottom:50px;
+  width:800px;
+}
+
+#slideshow .depth-line {
+  width:400px;
+  left:0;
+  position:absolute;
+  background:url(/images/sprite.png) no-repeat 0 -759px;
+  height:8px;
+  z-index:1000;
+  opacity:.3;
+  bottom:25px;
+}
+
 #slideshow .image img {
   position:absolute;
   width:400px;
