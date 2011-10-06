@@ -94,6 +94,7 @@ Neemo.modules.Slideshow = function(neemo) {
           }
         }
       );
+      
     },
     _bindDisplay: function(display, text) {
       var that = this;
@@ -123,24 +124,17 @@ Neemo.modules.Slideshow = function(neemo) {
       var that = this;
       if (!(id in this._regions)) {
           var Region = new neemo.ui.Slideshow.Region(url, id, this._bus);
-          if (!(id in this._regions)) {
-              this._display.addRegion(Region.getElement());
-
-
-              var $el = Region.getElement();
-              $el.click(function(e) {
-                console.log($(this), $(this).attr("class"), $(this).hasClass("selected"));
-                if( $(this).hasClass("selected") ){
-                    that._bus.fireEvent(new Neemo.env.events.ImageClick(e));
-                }
-              });
-
-
-
-              if (id < this._max){
-                  Region.enableNextButton();
-              }
+          
+          this._display.addRegion(Region.getElement());
+          if (id < this._max){
+              Region.enableNextButton();
           }
+          
+          $(Region.getImage()).click(function(e) {
+            if($(this).parent().parent('.selected').length > 0){
+                that._bus.fireEvent(new Neemo.env.events.ImageClick(e));
+            }
+          });
           Region.start();
           this._regions[id] = Region;
       }
@@ -203,6 +197,10 @@ Neemo.modules.Slideshow = function(neemo) {
       this._super(this._html());
       $(this.getElement()).find('.photo').append(this._image);
       this._categories = {};
+    },
+    getImage: function(){
+      //cache here
+      return $(this.getElement()[0]).find('img');
     },
     getNextButton: function(){
       //cache here

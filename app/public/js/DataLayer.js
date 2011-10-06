@@ -151,7 +151,6 @@ Neemo.modules.DataLayer = function(neemo) {
         var selection = new neemo.ui.Annotation.Engine(this._bus, this._api, opt);
         selection.start(selectedRegion);
         selection.enableSubmit();
-        selection.enableVote();
 
         this.closeRadialSelector();
     },

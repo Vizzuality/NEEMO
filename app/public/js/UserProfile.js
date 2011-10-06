@@ -11,6 +11,7 @@ Neemo.modules.UserProfile = function(neemo) {
       var that = this;
       this._bus = bus;
       this._api = api;
+      this._profile = {};
     },
 
     _bindEvents: function(){
@@ -20,6 +21,13 @@ Neemo.modules.UserProfile = function(neemo) {
         'UpdateUserProfile',
         function(event){
           neemo.log.info('User update recieved');
+          data = event.getData();
+          that._profile = data;
+          that._display.getName().text(data.user_id.toUpperCase());
+          that._display.getLevel().text(" Lvl. "+data.user_lvl);
+          var s = ''+data.user_rank;
+          while (s.length < 4) s = '0'+s;
+          that._display.getRank().text("#"+s);
         }
       );
     },
@@ -34,8 +42,6 @@ Neemo.modules.UserProfile = function(neemo) {
     },
   }
   );
-  
-
   /**
   * The userprofile display.
   */
@@ -46,9 +52,21 @@ Neemo.modules.UserProfile = function(neemo) {
       this._super(this._html());
       $('.info').append(this.getElement());
     },
+    getName: function(){
+      return $(this.getElement()).find('.user-name');
+    },
+    getLevel: function(){
+      return $(this.getElement()).find('.level');
+    },
+    getActivity: function(){
+      return $(this.getElement()).find('ul');
+    },
+    getRank: function(){
+      return $(this.getElement()).find('.score');
+    },
     _html: function() {
       return  '<div class="line-through">'+
-              '  <h2>ANDREWXHILL</h2>'+
+              '  <h2 class="user-name">n/a</h2>'+
               '  <div class="line"></div>'+
               '</div>'+
               '<div class="progress-bar">'+
@@ -67,7 +85,7 @@ Neemo.modules.UserProfile = function(neemo) {
               '    <div class="icon trophee"></div>'+
               '    <span class="title">Your rank</span>'+
               '    <div class="line-through">'+
-              '      <div class="score">#0013</div>'+
+              '      <div class="score">#0000</div>'+
               '      <div class="line"></div>'+
               '    </div>'+
               '  </div>'+

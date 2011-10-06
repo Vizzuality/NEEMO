@@ -97,11 +97,11 @@ Neemo.modules.events = function(neemo) {
     {
     init: function(data, action) {
       this._super('UpdateUserProfile', action);
-      this._region = data.region;
+      this._data = data;
     },
 
-    getRegion: function() {
-      return this._region;
+    getData: function() {
+      return this._data;
     }
   }
   );
