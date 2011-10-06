@@ -22,6 +22,9 @@ Neemo.modules.Annotation = function(neemo) {
     _bindEvents: function(){
       var that = this
       , bus = this._bus;
+      this.$el.find('.submit').click(function{
+        that._bus.fireEvent(new Neemo.env.events.SubmitData({x: that.x, y: that.y, width: that.$el.widht(), height: that.$el.height()}));
+      });
     },
     _bindDisplay: function(display, text) {
       var that = this;

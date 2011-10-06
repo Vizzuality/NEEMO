@@ -95,7 +95,7 @@ module.exports = function(opts){
     app.use('/js', express.static('./public/js'));
     app.use('/images', express.static('./public/images'));
     app.use('/css', express.static('./public/css'));
-    app.use(cas_middleware);
+    //app.use(cas_middleware);
     app.use('/regions', express.static('./public/regions'));
     app.use(express.static('./public'));
     app.use(express.bodyParser());
