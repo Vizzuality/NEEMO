@@ -75,26 +75,24 @@ exports.start = function(io, cartodb, store) {
             /* Send a CartoDB SQL request here
              *
              */
-            socket.emit('region-metadata', {
-                  region_id: data.region,
-                  meters_left: 239+data.region,
-                  categories: [
-                    {
-                        id: 'fish',
-                        name: 'fish',
-                        count: Math.floor(Math.random()*101)
-                    },
-                    {
-                        id: 'coral',
-                        name: 'coral',
-                        count: Math.floor(Math.random()*101)
-                    },
-                    {
-                        id: 'other',
-                        name: 'other',
-                        count: Math.floor(Math.random()*101)
+            var protected_request = cartodb.api_url;
+            var query = "SELECT category, click_x, click_y, width, height, region, user_id, upvotes, downvotes FROM neemo WHERE region = '"+data.region+"' ORDER BY created_at DESC LIMIT 10";
+            var body = {q: query}
+            cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function(error, data, response) {
+                data = JSON.parse(data);
+                for (i in data.rows){
+                    
+                    var out = { 
+                        category: data.rows[i].category,
+                        x: data.rows[i].click_x,
+                        y: data.rows[i].click_y,
+                        width: data.rows[i].width,
+                        height: data.rows[i].height,
+                        region: data.rows[i].region,
+                        username: data.rows[i].user_id 
                     }
-                  ]
+                    socket.emit('region-new-data', out);
+                }
             });
 	    });
         socket.on('leave', function (data) {
@@ -108,6 +106,7 @@ exports.start = function(io, cartodb, store) {
                 var body = {q: query}
                 cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null);
                 delete data['auth'];
+                console.log(data);
                 io.sockets.in(data.region).emit('region-new-data', data);
             }
         });

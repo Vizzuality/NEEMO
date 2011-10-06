@@ -12,6 +12,8 @@ Neemo.modules.Annotation = function(neemo) {
       this._api = api;
       this.x = opt.x;
       this.y = opt.y;
+      this.width = opt.width ? opt.width : 160;
+      this.height = opt.height ? opt.height : 100;
       this.name = opt.name;
       this.transitionSpeed = 250;
     },
@@ -59,14 +61,14 @@ Neemo.modules.Annotation = function(neemo) {
       $region.append(this.$el);
 
       // Centering of the box
-      var left = this.x - (this.$el.width() / 2);
-      var top  = this.y - (this.$el.height() / 2);
+      var left = this.x - (this.width / 2);
+      var top  = this.y - (this.height / 2);
 
       console.log("Drawing a selection for a " + this.name  + " "  + left + " " + top );
       this.$el.css({left:0, top:0, height:0, width:0}); // initial position
       
       // Now we just move the window to its place
-      this.$el.animate({width:200, height:200, opacity:1, left:left, top:top}, 200);
+      this.$el.animate({width:this.width, height:this.height, opacity:1, left:left, top:top}, 200);
       
       if (!burn){
           this.$el.draggable({ handle:"controls", containment: 'parent', stop: function(e) { that.onDragEnd(); } });

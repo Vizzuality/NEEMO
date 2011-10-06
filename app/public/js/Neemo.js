@@ -42,14 +42,12 @@ Neemo.modules.app = function(neemo) {
       this._api = config.api || new neemo.ajax.Api(this._bus);
       //this.map = new neemo.ui.Map.Engine(config, this._bus, this._api, config.region);
       //this.map.start();
-      this.form = new neemo.ui.Form.Engine(this._bus, this._api);
-      this.form.start();
       this.userprofile = new neemo.ui.UserProfile.Engine(this._bus, this._api);
       this.userprofile.start();
-      this.slideshow = new neemo.ui.Slideshow.Engine(this._bus, this._api, config.region);
-      this.slideshow.start();
       this.datalayer = new neemo.ui.DataLayer.Engine(this._bus, this._api);
       this.datalayer.start();
+      this.slideshow = new neemo.ui.Slideshow.Engine(this._bus, this._api, config.region);
+      this.slideshow.start();
       this.socket = new neemo.socket.Engine(this._bus);
       
     },
