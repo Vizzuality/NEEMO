@@ -77,6 +77,7 @@ Neemo.modules.socket = function(neemo) {
       this.socket = io.connect();
       this._bindEvents();
       this._setupSockets();
+      this._sid = document.cookie.split('=',2)[1];
     },
     _setupSockets: function(){
       var that = this;
@@ -112,6 +113,7 @@ Neemo.modules.socket = function(neemo) {
           var data = event.getData();
           data.id = that._id;
           data.region = that.region;
+          data.sid = that._sid;
           that.socket.emit('poi', data);
         }
       );

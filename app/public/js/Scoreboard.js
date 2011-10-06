@@ -132,10 +132,12 @@ Scoreboard.modules.socket = function(scoreboard) {
       this.socket = io.connect('/scoreboard');
       //this._bindEvents();
       this._setupSockets();
+      this._sid = document.cookie.split('=',2)[1];
     },
     _setupSockets: function(){
       var that = this;
-      this.socket.on('connect', function () {
+      this.socket.on('connect', function (client) {
+        that.socket.send(that.sid);
         scoreboard.log.info('soccket connected!');
         that.socket.emit('join', {page: 1} );
       });

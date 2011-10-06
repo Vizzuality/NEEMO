@@ -34,6 +34,9 @@ exports.start = function(io, cartodb, store) {
     }
     
     io.of('/scoreboard').on('connection', function (socket) {
+        socket.once('message', function(sid) {
+            console.log(sid);
+        });
         socket.on('join', function (data) {
             var pageSize = 15,
                 protected_request = cartodb.api_url,
