@@ -110,7 +110,8 @@ jQuery.fn.helpShortcuts = function(opt) {
   speed  = (opt && opt.speed) || 200,
   easingMethod = (opt && opt.easingMethod) || "easeOutExpo";
 
-  function _updateHeader(name) {
+  function _updateHeader($species) {
+    var name = $species.find(".icon").attr("class").replace("icon ", "");
     $el.find("h3").html("What is a " + name + "?");
   }
 
@@ -129,6 +130,16 @@ jQuery.fn.helpShortcuts = function(opt) {
     $el.animate({top:y - 50}, speed);
   }
 
+  function _select($asideLi) {
+    var c = $asideLi.attr("class");
+    var $species = $el.find("div." + c).parents("li")
+
+    if ($species.index() > 0) {
+      $el.find(".inner").scrollTo($species.index() * panelWidth, speed, {easing:easingMethod} );
+      _updateHeader($species);
+    }
+  }
+
   function _start() {
 
     $(window).bind('_close.' + id, function() {
@@ -137,22 +148,21 @@ jQuery.fn.helpShortcuts = function(opt) {
 
     $el.find(".close").click(_close);
     $el.find(".more-info, .nav").click(function() {
-      var species = $(this).parents("li").next("li");
+      var $species = $(this).parents("li").next("li");
       var direction = "+=";
       var distance = panelWidth;
 
       if ($(this).hasClass("previous")) {
-        species = $(this).parents("li").prev("li");
+        $species = $(this).parents("li").prev("li");
         direction = "-=";
       } else if ($(this).hasClass("first")) {
-        species = $(this).parents("ul").find("li:first-child");
+        $species = $(this).parents("ul").find("li:first-child");
         direction = 0;
         distance = 0;
       }
 
       $el.find(".inner").scrollTo(direction + distance, speed, {easing:easingMethod} );
-      var speciesName = species.find(".icon").attr("class").replace("icon ", "");
-      _updateHeader(speciesName);
+      _updateHeader($species);
     });
   }
 
@@ -163,25 +173,26 @@ jQuery.fn.helpShortcuts = function(opt) {
   function _open(e) {
     e.preventDefault();
     e.stopPropagation();
+    var $li = $(e.target).closest("li");
 
-    $li = $(e.target).closest("li");
     if ($el.hasClass("open")) {
       _move($li.offset().left, $li.offset().top);
     } else {
       $el.addClass("open");
       _show($li.offset().left, $li.offset().top);
     }
+    _select($li);
   }
 
   function _close() {
-    GOD.unsubscribe("_close." + id);
     $(".help").removeClass("open");
     _hide();
   }
 
   return {
     start: _start,
-    open: _open
+    open: _open,
+    close: _close
   };
  }
 
