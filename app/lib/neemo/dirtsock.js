@@ -2,9 +2,8 @@ var   Step        = require('step')
     , _           = require('underscore')
     , redis       = require('redis-client')
     , rpub        = redis.createClient();
-    
 // Sets up the socket server
-exports.start = function(io, cartodb) {
+exports.start = function(io, cartodb, store) {
     /* Setup main App socket connections and functions
      */
     io.sockets.on('connection', function (socket) {
@@ -57,6 +56,6 @@ exports.start = function(io, cartodb) {
         });
     });
     
-    require('./scoreboard').start(io, cartodb);
+    require('./scoreboard').start(io, cartodb, store);
     require('./worker').start(io, cartodb);
 }

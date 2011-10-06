@@ -8,6 +8,8 @@ exports.start = function(callback){
     
     eval(fs.readFileSync('cartodb_settings.js', encoding="ascii"));
     
+    cartodb.callback = callback;
+    
     cartodb.oa = new OAuth(cartodb.request_url,
                        cartodb.access_url,
                        cartodb.consumer_key,
@@ -68,15 +70,12 @@ exports.start = function(callback){
                     cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function (error, data, response) {
                         sys.puts('\n== CartoDB result for POST "' + cartodb.private_query + '" ==');
                         sys.puts(data + '\n');
-                        cartodb.ready(callback);
+                        cartodb.callback();
                     });
                 }
             });
         }
     });
-    cartodb.ready = function(callback){
-        callback();
-    }
     return cartodb;
 };
 

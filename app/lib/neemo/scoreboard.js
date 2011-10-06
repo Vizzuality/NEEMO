@@ -4,7 +4,7 @@ var   Step        = require('step')
     , usub        = redis.createClient();
     
 // Sets up the socket server for the scoreboard
-exports.start = function(io, cartodb) {
+exports.start = function(io, cartodb, store) {
     /* Setup Scoreboard connections and functions
      */
 
