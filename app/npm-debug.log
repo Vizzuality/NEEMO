@@ -1,0 +1,537 @@
+info it worked if it ends with ok
+verbose cli [ 'node', '/usr/local/bin/npm', 'install', 'connect' ]
+info using npm@1.0.30
+info using node@v0.4.11
+verbose config file /Users/andrewhill/.npmrc
+verbose config file /Users/andrewhill/local/node/etc/npmrc
+silly testEngine { name: 'NEEMO',
+silly testEngine   version: '0.0.1',
+silly testEngine   main: './lib/neemo/index.js',
+silly testEngine   description: 'NEEMO Node.js App',
+silly testEngine   url: 'https://github.com/Vizzuality/NEEMO',
+silly testEngine   licenses: [ { type: 'MIT' } ],
+silly testEngine   repositories: 
+silly testEngine    [ { type: 'git',
+silly testEngine        url: 'git://github.com/Vizzuality/NEEMO.git' } ],
+silly testEngine   author: 
+silly testEngine    { name: 'Andrew W. Hill, Vizzuality',
+silly testEngine      email: 'andrew@vizzuality.com',
+silly testEngine      url: 'http://vizzuality.com/Vizzuality/NEEMO' },
+silly testEngine   dependencies: 
+silly testEngine    { 'socket.io': '0.8.4',
+silly testEngine      underscore: '1.1.x',
+silly testEngine      step: '0.0.x',
+silly testEngine      express: '2.4.3',
+silly testEngine      'generic-pool': '1.0.6',
+silly testEngine      'socket.io-client': '0.8.4',
+silly testEngine      'redis-client': '0.3.5',
+silly testEngine      'connect-redis': '1.0.7',
+silly testEngine      'node-oauth': '0.1.0' },
+silly testEngine   devDependencies: { expresso: '0.8.x' },
+silly testEngine   scripts: { test: 'which expresso | sh' },
+silly testEngine   _id: 'NEEMO@0.0.1',
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.30',
+silly testEngine   _nodeVersion: 'v0.4.11',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/andrewhill/workspace/NEEMO/app/package.json
+verbose loadDefaults NEEMO@0.0.1
+silly testEngine { name: 'cas',
+silly testEngine   version: '0.0.1',
+silly testEngine   description: 'Central Authentication Service (CAS) client for Node.js',
+silly testEngine   keywords: 
+silly testEngine    [ 'cas',
+silly testEngine      'central authentication service',
+silly testEngine      'auth',
+silly testEngine      'authentication',
+silly testEngine      'central',
+silly testEngine      'service' ],
+silly testEngine   author: { name: 'Casey Banner', email: 'kcbanner@gmail.com' },
+silly testEngine   dependencies: {},
+silly testEngine   main: 'index',
+silly testEngine   engines: { node: '0.4.x' },
+silly testEngine   _id: 'cas@0.0.1',
+silly testEngine   devDependencies: {},
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.30',
+silly testEngine   _nodeVersion: 'v0.4.11',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/andrewhill/workspace/NEEMO/app/node_modules/cas/package.json
+verbose loadDefaults cas@0.0.1
+silly testEngine { name: 'connect-redis',
+silly testEngine   description: 'Redis session store for Connect',
+silly testEngine   version: '1.0.7',
+silly testEngine   author: 
+silly testEngine    { name: 'TJ Holowaychuk',
+silly testEngine      email: 'tj@vision-media.ca' },
+silly testEngine   main: './index.js',
+silly testEngine   dependencies: { redis: '>= 0.0.1' },
+silly testEngine   devDependencies: { connect: '1.4.x' },
+silly testEngine   engines: { node: '>= 0.1.98' },
+silly testEngine   _id: 'connect-redis@1.0.7',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.30',
+silly testEngine   _nodeVersion: 'v0.4.11',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/andrewhill/workspace/NEEMO/app/node_modules/connect-redis/package.json
+verbose loadDefaults connect-redis@1.0.7
+silly testEngine { name: 'express',
+silly testEngine   description: 'Sinatra inspired web development framework',
+silly testEngine   version: '2.4.3',
+silly testEngine   author: 
+silly testEngine    { name: 'TJ Holowaychuk',
+silly testEngine      email: 'tj@vision-media.ca' },
+silly testEngine   contributors: 
+silly testEngine    [ { name: 'TJ Holowaychuk',
+silly testEngine        email: 'tj@vision-media.ca' },
+silly testEngine      { name: 'Aaron Heckmann',
+silly testEngine        email: 'aaron.heckmann+github@gmail.com' },
+silly testEngine      { name: 'Ciaran Jessup', email: 'ciaranj@gmail.com' },
+silly testEngine      { name: 'Guillermo Rauch', email: 'rauchg@gmail.com' } ],
+silly testEngine   dependencies: 
+silly testEngine    { connect: '>= 1.5.2 < 2.0.0',
+silly testEngine      mime: '>= 0.0.1',
+silly testEngine      qs: '>= 0.0.6' },
+silly testEngine   devDependencies: 
+silly testEngine    { 'connect-form': '0.2.1',
+silly testEngine      ejs: '0.4.2',
+silly testEngine      expresso: '0.7.2',
+silly testEngine      hamljs: '0.5.1',
+silly testEngine      jade: '0.11.0',
+silly testEngine      stylus: '0.13.0',
+silly testEngine      should: '0.2.1',
+silly testEngine      'express-messages': '0.0.2',
+silly testEngine      'node-markdown': '>= 0.0.1',
+silly testEngine      'connect-redis': '>= 0.0.1' },
+silly testEngine   keywords: [ 'framework', 'sinatra', 'web', 'rest', 'restful' ],
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/visionmedia/express.git' },
+silly testEngine   main: 'index',
+silly testEngine   bin: { express: './bin/express' },
+silly testEngine   scripts: { test: 'make test', prepublish: 'npm prune' },
+silly testEngine   engines: { node: '>= 0.4.1 < 0.5.0' },
+silly testEngine   _id: 'express@2.4.3',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.30',
+silly testEngine   _nodeVersion: 'v0.4.11',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/andrewhill/workspace/NEEMO/app/node_modules/express/package.json
+verbose loadDefaults express@2.4.3
+silly testEngine { name: 'expresso',
+silly testEngine   version: '0.8.1',
+silly testEngine   description: 'TDD framework, light-weight, fast, CI-friendly',
+silly testEngine   author: 
+silly testEngine    { name: 'TJ Holowaychuk',
+silly testEngine      email: 'tj@vision-media.ca' },
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/visionmedia/expresso.git' },
+silly testEngine   bin: 
+silly testEngine    { expresso: './bin/expresso',
+silly testEngine      'node-jscoverage': './deps/jscoverage/node-jscoverage' },
+silly testEngine   scripts: { preinstall: 'make deps/jscoverage/node-jscoverage' },
+silly testEngine   _id: 'expresso@0.8.1',
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: {},
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.30',
+silly testEngine   _nodeVersion: 'v0.4.11',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/andrewhill/workspace/NEEMO/app/node_modules/expresso/package.json
+verbose loadDefaults expresso@0.8.1
+silly testEngine { name: 'generic-pool',
+silly testEngine   description: 'Generic resource pooling for Node.JS',
+silly testEngine   version: '1.0.6',
+silly testEngine   author: 
+silly testEngine    { name: 'James Cooper',
+silly testEngine      email: 'james@bitmechanic.com' },
+silly testEngine   contributors: 
+silly testEngine    [ { name: 'James Cooper',
+silly testEngine        email: 'james@bitmechanic.com' },
+silly testEngine      { name: 'Peter Galiba',
+silly testEngine        email: 'poetro@poetro.hu',
+silly testEngine        url: 'http://poetro.hu/' },
+silly testEngine      { name: 'Gary Dusbabek' },
+silly testEngine      { name: 'Tom MacWright',
+silly testEngine        url: 'http://www.developmentseed.org/' } ],
+silly testEngine   keywords: [ 'pool', 'pooling', 'throttle' ],
+silly testEngine   main: 'lib/generic-pool.js',
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/coopernurse/node-pool.git' },
+silly testEngine   engines: { node: '>= 0.2.0' },
+silly testEngine   _id: 'generic-pool@1.0.6',
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: {},
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.30',
+silly testEngine   _nodeVersion: 'v0.4.11',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/andrewhill/workspace/NEEMO/app/node_modules/generic-pool/package.json
+verbose loadDefaults generic-pool@1.0.6
+silly testEngine { name: 'node-oauth',
+silly testEngine   description: 'A node.js client for OAuth API',
+silly testEngine   version: '0.1.0',
+silly testEngine   author: { name: 'EastCloud', email: 'info@east-cloud.co.jp' },
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/EastCloud/node-oauth.git' },
+silly testEngine   main: './index',
+silly testEngine   engines: { node: '>=0.4.0' },
+silly testEngine   licenses: 
+silly testEngine    [ { type: 'Apache License, Version 2.0',
+silly testEngine        url: 'http://www.apache.org/licenses/LICENSE-2.0' } ],
+silly testEngine   _id: 'node-oauth@0.1.0',
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: {},
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.30',
+silly testEngine   _nodeVersion: 'v0.4.11',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/andrewhill/workspace/NEEMO/app/node_modules/node-oauth/package.json
+verbose loadDefaults node-oauth@0.1.0
+silly testEngine { name: 'oauth',
+silly testEngine   description: 'Library for interacting with OAuth 1.0, 1.0A, 2 and Echo.  Provides simplified client access and allows for construction of more complex apis and OAuth providers.',
+silly testEngine   version: '0.9.5',
+silly testEngine   directories: { lib: './lib' },
+silly testEngine   main: 'index.js',
+silly testEngine   author: { name: 'Ciaran Jessup', email: 'ciaranj@gmail.com' },
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/ciaranj/node-oauth.git' },
+silly testEngine   devDependencies: { vows: '0.5.x' },
+silly testEngine   _id: 'oauth@0.9.5',
+silly testEngine   dependencies: {},
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.30',
+silly testEngine   _nodeVersion: 'v0.4.11',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/andrewhill/workspace/NEEMO/app/node_modules/oauth/package.json
+verbose loadDefaults oauth@0.9.5
+silly testEngine { name: 'redis',
+silly testEngine   version: '0.6.7',
+silly testEngine   description: 'Redis client library',
+silly testEngine   author: { name: 'Matt Ranney', email: 'mjr@ranney.com' },
+silly testEngine   contributors: 
+silly testEngine    [ { name: 'Rick Olson' },
+silly testEngine      { name: 'Tim-Smart' },
+silly testEngine      { name: 'TJ Holowaychuk' },
+silly testEngine      { name: 'Orion Henry' },
+silly testEngine      { name: 'Hank Sims' },
+silly testEngine      { name: 'Aivo Paas' },
+silly testEngine      { name: 'Paul Carey' },
+silly testEngine      { name: 'Pieter Noordhuis' },
+silly testEngine      { name: 'Andy Ray' },
+silly testEngine      { name: 'Vladimir Dronnikov' },
+silly testEngine      { name: 'Dave Hoover' } ],
+silly testEngine   main: './index.js',
+silly testEngine   scripts: { test: 'node ./test.js' },
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/mranney/node_redis.git' },
+silly testEngine   _id: 'redis@0.6.7',
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: {},
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.30',
+silly testEngine   _nodeVersion: 'v0.4.11',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/andrewhill/workspace/NEEMO/app/node_modules/redis/package.json
+verbose loadDefaults redis@0.6.7
+silly testEngine { name: 'redis-client',
+silly testEngine   description: 'Redis client for Node.js',
+silly testEngine   version: '0.3.5',
+silly testEngine   keywords: [ 'redis', 'node', 'client' ],
+silly testEngine   author: 
+silly testEngine    { name: 'Brian Hammond',
+silly testEngine      email: 'brian@fictorial.com' },
+silly testEngine   contributors: 
+silly testEngine    [ { name: 'Brian Hammond', url: 'http://fictorial.com' },
+silly testEngine      { name: 'Brit Gardner', url: 'http://britg.com' },
+silly testEngine      { name: 'Corey Donohoe', url: 'http://www.atmos.org' },
+silly testEngine      { name: 'Elliott Cable',
+silly testEngine        url: 'http://elliottcable.name/' },
+silly testEngine      { name: 'Jake McGraw', url: 'http://jakemcgraw.com' },
+silly testEngine      { name: 'James Herdman',
+silly testEngine        url: 'http://jherdman.github.com' },
+silly testEngine      { name: 'Justin Tulloss',
+silly testEngine        url: 'http://justin.harmonize.fm/' },
+silly testEngine      { name: 'Nikhil',
+silly testEngine        url: 'http://kodeclutz.blogspot.com' },
+silly testEngine      { name: 'technoweenie', url: 'rick' },
+silly testEngine      { name: 'Donovan Hide',
+silly testEngine        url: 'http://availableimagination.com' },
+silly testEngine      { name: 'Philip Hofstetter',
+silly testEngine        url: 'http://www.gnegg.ch/' },
+silly testEngine      { name: 'Chris Winberry',
+silly testEngine        url: 'http://tautologistics.com/' },
+silly testEngine      { name: 'Brian McKinney',
+silly testEngine        url: 'http://twitter.com/tritonrc' },
+silly testEngine      { name: 'Alberto Piai',
+silly testEngine        url: 'http://github.com/brainlock' } ],
+silly testEngine   licenses: [ 'MIT' ],
+silly testEngine   repositories: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'http://github.com/fictorial/redis-node-client.git' },
+silly testEngine   bugs: { url: 'http://github.com/fictorial/redis-node-client/issues' },
+silly testEngine   directories: { lib: './lib', test: './test' },
+silly testEngine   os: [ 'linux', 'darwin' ],
+silly testEngine   dependencies: {},
+silly testEngine   engines: { node: '>0.1.90' },
+silly testEngine   main: './lib/redis-client',
+silly testEngine   _id: 'redis-client@0.3.5',
+silly testEngine   devDependencies: {},
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.30',
+silly testEngine   _nodeVersion: 'v0.4.11',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/andrewhill/workspace/NEEMO/app/node_modules/redis-client/package.json
+verbose loadDefaults redis-client@0.3.5
+silly testEngine { name: 'socket.io',
+silly testEngine   version: '0.8.4',
+silly testEngine   description: 'Real-time apps made cross-browser & easy with a WebSocket-like API',
+silly testEngine   homepage: 'http://socket.io',
+silly testEngine   keywords: 
+silly testEngine    [ 'websocket',
+silly testEngine      'socket',
+silly testEngine      'realtime',
+silly testEngine      'socket.io',
+silly testEngine      'comet',
+silly testEngine      'ajax' ],
+silly testEngine   author: 
+silly testEngine    { name: 'Guillermo Rauch',
+silly testEngine      email: 'guillermo@learnboost.com' },
+silly testEngine   contributors: 
+silly testEngine    [ { name: 'Guillermo Rauch', email: 'rauchg@gmail.com' },
+silly testEngine      { name: 'Arnout Kazemier',
+silly testEngine        email: 'info@3rd-eden.com' },
+silly testEngine      { name: 'Vladimir Dronnikov',
+silly testEngine        email: 'dronnikov@gmail.com' },
+silly testEngine      { name: 'Einar Otto Stangvik',
+silly testEngine        email: 'einaros@gmail.com' } ],
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/LearnBoost/socket.io.git' },
+silly testEngine   dependencies: 
+silly testEngine    { 'socket.io-client': '0.8.4',
+silly testEngine      policyfile: '0.0.4',
+silly testEngine      redis: '0.6.6' },
+silly testEngine   devDependencies: 
+silly testEngine    { expresso: '0.7.7',
+silly testEngine      should: '0.0.4',
+silly testEngine      assertvanish: '0.0.3-1' },
+silly testEngine   main: 'index',
+silly testEngine   engines: { node: '>= 0.4.0' },
+silly testEngine   _id: 'socket.io@0.8.4',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.30',
+silly testEngine   _nodeVersion: 'v0.4.11',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/andrewhill/workspace/NEEMO/app/node_modules/socket.io/package.json
+verbose loadDefaults socket.io@0.8.4
+silly testEngine { name: 'socket.io-client',
+silly testEngine   description: 'Socket.IO client for the browser and node.js',
+silly testEngine   version: '0.8.4',
+silly testEngine   main: './lib/io.js',
+silly testEngine   browserify: './dist/socket.io.js',
+silly testEngine   homepage: 'http://socket.io',
+silly testEngine   keywords: 
+silly testEngine    [ 'websocket',
+silly testEngine      'socket',
+silly testEngine      'realtime',
+silly testEngine      'socket.io',
+silly testEngine      'comet',
+silly testEngine      'ajax' ],
+silly testEngine   author: 
+silly testEngine    { name: 'Guillermo Rauch',
+silly testEngine      email: 'guillermo@learnboost.com' },
+silly testEngine   contributors: 
+silly testEngine    [ { name: 'Guillermo Rauch', email: 'rauchg@gmail.com' },
+silly testEngine      { name: 'Arnout Kazemier',
+silly testEngine        email: 'info@3rd-eden.com' },
+silly testEngine      { name: 'Vladimir Dronnikov',
+silly testEngine        email: 'dronnikov@gmail.com' },
+silly testEngine      { name: 'Einar Otto Stangvik',
+silly testEngine        email: 'einaros@gmail.com' } ],
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/LearnBoost/socket.io-client.git' },
+silly testEngine   dependencies: 
+silly testEngine    { 'uglify-js': '1.0.6',
+silly testEngine      'websocket-client': '1.0.0',
+silly testEngine      xmlhttprequest: '1.2.2' },
+silly testEngine   devDependencies: 
+silly testEngine    { expresso: '0.7.7',
+silly testEngine      express: '2.3.11',
+silly testEngine      jade: '0.12.1',
+silly testEngine      stylus: '0.13.3',
+silly testEngine      'socket.io': '0.8.4',
+silly testEngine      'socket.io-client': '0.8.4' },
+silly testEngine   engines: { node: '>= 0.4.0' },
+silly testEngine   _id: 'socket.io-client@0.8.4',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.30',
+silly testEngine   _nodeVersion: 'v0.4.11',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/andrewhill/workspace/NEEMO/app/node_modules/socket.io-client/package.json
+verbose loadDefaults socket.io-client@0.8.4
+silly testEngine { name: 'step',
+silly testEngine   version: '0.0.4',
+silly testEngine   description: 'A simple control-flow library for node.JS that makes parallel execution, serial execution, and error handling painless.',
+silly testEngine   engine: [ 'node >=0.2.0' ],
+silly testEngine   author: { name: 'Tim Caswell', email: 'tim@creationix.com' },
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/creationix/step.git' },
+silly testEngine   main: 'lib/step',
+silly testEngine   _id: 'step@0.0.4',
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: {},
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.30',
+silly testEngine   _nodeVersion: 'v0.4.11',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/andrewhill/workspace/NEEMO/app/node_modules/step/package.json
+verbose loadDefaults step@0.0.4
+silly testEngine { name: 'supervisor',
+silly testEngine   version: '0.1.3',
+silly testEngine   description: 'A supervisor program for running nodejs programs',
+silly testEngine   author: { name: 'Isaac Z. Schlueter', email: 'i@izs.me' },
+silly testEngine   contributors: 
+silly testEngine    [ { name: 'Brian Ehmann', email: 'behmann@gmail.com' },
+silly testEngine      { name: 'David Taylor',
+silly testEngine        email: 'david@zensatellite.com' } ],
+silly testEngine   main: 'lib/supervisor.js',
+silly testEngine   bin: 
+silly testEngine    { 'node-supervisor': 'lib/cli-wrapper.js',
+silly testEngine      supervisor: 'lib/cli-wrapper.js' },
+silly testEngine   engines: { node: '~0.2.3 || 0.3 || 0.4 || 0.5' },
+silly testEngine   preferGlobal: true,
+silly testEngine   _id: 'supervisor@0.1.3',
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: {},
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.30',
+silly testEngine   _nodeVersion: 'v0.4.11',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/andrewhill/workspace/NEEMO/app/node_modules/supervisor/package.json
+verbose loadDefaults supervisor@0.1.3
+silly testEngine { name: 'underscore',
+silly testEngine   description: 'JavaScript\'s functional programming helper library.',
+silly testEngine   homepage: 'http://documentcloud.github.com/underscore/',
+silly testEngine   keywords: [ 'util', 'functional', 'server', 'client', 'browser' ],
+silly testEngine   author: 
+silly testEngine    { name: 'Jeremy Ashkenas',
+silly testEngine      email: 'jeremy@documentcloud.org' },
+silly testEngine   contributors: [],
+silly testEngine   dependencies: {},
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/documentcloud/underscore.git' },
+silly testEngine   main: 'underscore.js',
+silly testEngine   version: '1.1.7',
+silly testEngine   _id: 'underscore@1.1.7',
+silly testEngine   devDependencies: {},
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.30',
+silly testEngine   _nodeVersion: 'v0.4.11',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/andrewhill/workspace/NEEMO/app/node_modules/underscore/package.json
+verbose loadDefaults underscore@1.1.7
+verbose from cache /Users/andrewhill/workspace/NEEMO/app/package.json
+verbose into /Users/andrewhill/workspace/NEEMO/app [ 'connect' ]
+verbose cache add connect
+verbose cache add [ 'connect', null ]
+silly cache add: name, spec, args [ undefined, 'connect', [ 'connect', null ] ]
+verbose parsed url { pathname: 'connect', href: 'connect' }
+info addNamed [ 'connect', '' ]
+verbose addNamed [ null, '' ]
+verbose GET connect
+verbose raw, before any munging connect
+verbose url resolving [ 'https://registry.npmjs.org/', './connect' ]
+verbose url resolved https://registry.npmjs.org/connect
+verbose etag "GAQZAY9T3IYYQ226BSBKW29O"
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.1.0 (Erlang OTP/R14B03)',
+silly get cb     etag: '"GAQZAY9T3IYYQ226BSBKW29O"',
+silly get cb     date: 'Thu, 06 Oct 2011 02:54:37 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag connect from cache
+verbose GET connect/2.0.0alpha1
+verbose raw, before any munging connect/2.0.0alpha1
+verbose url resolving [ 'https://registry.npmjs.org/',
+verbose url resolving   './connect/2.0.0alpha1' ]
+verbose url resolved https://registry.npmjs.org/connect/2.0.0alpha1
+verbose etag "GAQZAY9T3IYYQ226BSBKW29O"
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.1.0 (Erlang OTP/R14B03)',
+silly get cb     etag: '"GAQZAY9T3IYYQ226BSBKW29O"',
+silly get cb     date: 'Thu, 06 Oct 2011 02:54:38 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag connect/2.0.0alpha1 from cache
+verbose bin dist [ '0.4-ares1.7.4-ev4.4-openssl0.9.8r-v83.1.8.26-darwin-11.1.0',
+verbose bin dist   { shasum: '6b84cf337f4c3bc888839b2bc3e6b38b932139a4',
+verbose bin dist     tarball: 'http://registry.npmjs.org/connect/-/connect-2.0.0alpha1.tgz' } ]
+silly testEngine { name: 'connect',
+silly testEngine   version: '2.0.0alpha1',
+silly testEngine   description: 'High performance middleware framework',
+silly testEngine   keywords: [ 'framework', 'web', 'middleware', 'connect', 'rack' ],
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/senchalabs/connect.git' },
+silly testEngine   author: 
+silly testEngine    { name: 'TJ Holowaychuk',
+silly testEngine      email: 'tj@vision-media.ca',
+silly testEngine      url: 'http://tjholowaychuk.com' },
+silly testEngine   dependencies: { qs: '>= 0.3.1', mime: '>= 0.0.1' },
+silly testEngine   devDependencies: { expresso: '0.7.6', koala: '0.1.2', should: '0.2.1' },
+silly testEngine   main: 'index',
+silly testEngine   engines: { node: '>= 0.5.0 < 0.7.0' },
+silly testEngine   _id: 'connect@2.0.0alpha1',
+silly testEngine   _engineSupported: false,
+silly testEngine   _npmVersion: '1.0.30',
+silly testEngine   _nodeVersion: 'v0.4.11',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/andrewhill/.npm/connect/2.0.0alpha1/package/package.json
+verbose loadDefaults connect@2.0.0alpha1
+silly resolved [ { name: 'connect',
+silly resolved     version: '2.0.0alpha1',
+silly resolved     description: 'High performance middleware framework',
+silly resolved     keywords: [ 'framework', 'web', 'middleware', 'connect', 'rack' ],
+silly resolved     repository: 
+silly resolved      { type: 'git',
+silly resolved        url: 'git://github.com/senchalabs/connect.git' },
+silly resolved     author: 
+silly resolved      { name: 'TJ Holowaychuk',
+silly resolved        email: 'tj@vision-media.ca',
+silly resolved        url: 'http://tjholowaychuk.com' },
+silly resolved     dependencies: { qs: '>= 0.3.1', mime: '>= 0.0.1' },
+silly resolved     devDependencies: { expresso: '0.7.6', koala: '0.1.2', should: '0.2.1' },
+silly resolved     main: 'index',
+silly resolved     engines: { node: '>= 0.5.0 < 0.7.0' },
+silly resolved     _id: 'connect@2.0.0alpha1',
+silly resolved     _engineSupported: false,
+silly resolved     _npmVersion: '1.0.30',
+silly resolved     _nodeVersion: 'v0.4.11',
+silly resolved     _defaultsLoaded: true } ]
+info into /Users/andrewhill/workspace/NEEMO/app connect@2.0.0alpha1
+info installOne connect@2.0.0alpha1
+verbose installOne cb connect@2.0.0alpha1
+ERR! Unsupported
+ERR! Not compatible with your version of node/npm: connect@2.0.0alpha1
+ERR! Required: {"node":">= 0.5.0 < 0.7.0"}
+ERR! Actual:   {"npm":"1.0.30","node":"0.4.11"}
+ERR! 
+ERR! System Darwin 11.1.0
+ERR! command "node" "/usr/local/bin/npm" "install" "connect"
+ERR! cwd /Users/andrewhill/workspace/NEEMO/app
+ERR! node -v v0.4.11
+ERR! npm -v 1.0.30
+verbose exit [ 1, true ]

@@ -24,6 +24,15 @@ Neemo.modules.DataLayer = function(neemo) {
           that._radial_selector.handleClick(data.getEvent());
         }
       );
+      var that = this
+      , bus = this._bus;
+      bus.addHandler(
+        'ChangeRegion',
+        function(data){
+          neemo.log.info('Clearing annotations');
+          that._radial_selector.clearAnnotations();
+        }
+      );
     },
     _bindDisplay: function(display, text) {
       var that = this;
@@ -69,6 +78,8 @@ Neemo.modules.DataLayer = function(neemo) {
         this.selectedOption;
         this.selectedSector;
         this.coordinates = {};
+        
+        this._annotations = [];
     },
     start: function(){
         that = this;
@@ -122,6 +133,13 @@ Neemo.modules.DataLayer = function(neemo) {
         }
 
     },
+    clearAnnotations: function(){
+        while(this._annotations.length > 0){
+            var t = this._annotations.pop();
+            t.empty();
+            t = null;
+        }
+    },
     handleClick: function(e) {
 
         // Coordinates of the user's click event
@@ -151,7 +169,9 @@ Neemo.modules.DataLayer = function(neemo) {
         var selection = new neemo.ui.Annotation.Engine(this._bus, this._api, opt);
         selection.start(selectedRegion);
         selection.enableSubmit();
-
+        
+        this._annotations.push(selection);
+        
         this.closeRadialSelector();
     },
   

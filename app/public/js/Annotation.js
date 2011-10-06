@@ -15,6 +15,10 @@ Neemo.modules.Annotation = function(neemo) {
       this.name = opt.name;
       this.transitionSpeed = 250;
     },
+    empty: function(){
+      this._display.getElement().remove();
+      this._display = null;  
+    },
     _bindEvents: function(){
       var that = this
       , bus = this._bus;
