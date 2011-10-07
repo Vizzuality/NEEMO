@@ -25,7 +25,7 @@ function SelectionWindow(opt){
   this.x = opt.x;
   this.y = opt.y;
   this.name = opt.name;
-  this.$el = $('<div class="selection_window">'+
+  this.$el = $('<div class="annotation">'+
                '<div class="controls">'+
                  '<div class="name">' + this.name + '</div>' +
                  '<a href="#" class="submit">Submit</a>' +

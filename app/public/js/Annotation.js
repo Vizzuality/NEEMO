@@ -107,7 +107,7 @@ Neemo.modules.Annotation = function(neemo) {
       this._super(this._html());
     },
     _html: function() {
-      return   '<div class="selection_window">'+
+      return   '<div class="annotation">'+
                    '<div class="controls">'+
                      '<div class="category"></div>' +
                      '<a href="#" class="submit">Submit</a>'+

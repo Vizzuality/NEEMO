@@ -526,7 +526,7 @@ nav ul {
   letter-spacing:1px;
 }
 
-.selection_window {
+.annotation {
   position:absolute;
   opacity:0;
   width:200px;
@@ -536,19 +536,19 @@ nav ul {
   opacity:.5;
 }
 
-.selection_window.draggable,
-.selection_window.draggable:hover {
+.annotation.draggable,
+.annotation.draggable:hover {
   cursor:move;
 }
 
-.selection_window:hover {
+.annotation:hover {
   border-color:rgba(0,0,0,.8);
 }
-.selection_window:hover .controls {
+.annotation:hover .controls {
   background:rgba(0,0,0,.8);
 }
 
-.selection_window .controls {
+.annotation .controls {
   position:absolute;
   bottom:0;
   left:0;
@@ -558,8 +558,8 @@ nav ul {
   background:rgba(0,0,0,.6);
 }
 
-.selection_window .controls .category,
-.selection_window .controls a {
+.annotation .controls .category,
+.annotation .controls a {
   color:#fff;
   font-family:"EurostileLTStd-Demi";
   font-size:10px;
@@ -574,32 +574,32 @@ nav ul {
   border-radius:3px;
 }
 
-.selection_window .controls a {
+.annotation .controls a {
   display:block;
   background:#000;
 }
 
-.selection_window .controls a:hover {
+.annotation .controls a:hover {
   background:rgba(255,255,255, .3);
 }
 
-.selection_window .controls a.agree,
-.selection_window .controls a.disagree {
+.annotation .controls a.agree,
+.annotation .controls a.disagree {
   float:right;
 }
 
-.selection_window .controls a.agree .icon,
-.selection_window .controls a.disagree .icon {
+.annotation .controls a.agree .icon,
+.annotation .controls a.disagree .icon {
   width:8px;
   height:8px;
   background:url(/images/sprite.png) no-repeat;
 }
 
-.selection_window .controls a.agree .icon {
+.annotation .controls a.agree .icon {
   background-position: -14px 0;
 }
 
-.selection_window .controls a.disagree .icon {
+.annotation .controls a.disagree .icon {
   background-position: -32px 0;
 }
 

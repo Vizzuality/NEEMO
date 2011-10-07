@@ -25,7 +25,7 @@ function SelectionWindow(opt){
   this.x = opt.x;
   this.y = opt.y;
   this.name = opt.name;
-  this.$el = $('<div class="selection_window"></div>');
+  this.$el = $('<div class="annotation"></div>');
   this.transitionSpeed = 250;
 }
 
