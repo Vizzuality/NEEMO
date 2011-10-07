@@ -11,8 +11,7 @@ var   express     = require('express')
     , crypto      = require('crypto')
     , CAS         = require('cas')
     , csa         = {login: 'https://login.zooniverse.org', 
-                     logout: 'https://login.zooniverse.org/logout', 
-                     service: neemo.route_url}
+                     logout: 'https://login.zooniverse.org/logout'}
     , OAuth       = require('oauth').OAuth
     , cartodb     = require('./cartodb')
     , Base64      = require('./Base64')
@@ -20,8 +19,11 @@ var   express     = require('express')
     , store       = new RedisStore();
 
 module.exports = function(opts){
-    var opts = opts || {},
-        cas  = new CAS({base_url: csa.login, service: csa.service});
+    var opts = opts || {};
+    
+    eval(fs.readFileSync('settings.js', encoding="ascii"));
+    csa.service = neemo.route_url;
+    cas  = new CAS({base_url: csa.login, service: csa.service});
         //store       = new express.session.MemoryStore;
         
         

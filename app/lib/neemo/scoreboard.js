@@ -35,8 +35,24 @@ exports.start = function(io, cartodb, store) {
     }
     
     io.of('/scoreboard').on('connection', function (socket) {
-        socket.once('message', function(sid) {
-            console.log(sid);
+        socket.once('message', function(data) {
+            //TODO validate data.auth now
+            /* Send the user their detailed ranking info 
+             * { user_id: 'andrewxhill', user_rank: 1, user_lvl: 11 },
+             */
+            var protected_request = cartodb.api_url,
+                data = JSON.parse(data),
+                query = "SELECT user_id, user_rank, user_lvl, user_score, user_progress FROM neemo_users WHERE user_id = '"+data.username+"' LIMIT 1;",
+                body = {q: query};
+                
+            cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function (error, data, response) {
+                data = JSON.parse(data);
+                socket.emit('user-ranking', {
+                    user_id: data.rows[0].user_id,
+                    user_rank: data.rows[0].user_rank,
+                    user_lvl: data.rows[0].user_lvl
+                });
+            });
         });
         socket.on('join', function (data) {
             var pageSize = 15,
@@ -51,14 +67,6 @@ exports.start = function(io, cartodb, store) {
             cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function (error, data, response) {
                 data = JSON.parse(data);
                 socket.emit('scoreboard-update', data);
-            });
-            /* Send the user their detailed ranking info 
-             * { user_id: 'andrewxhill', user_rank: 1, user_lvl: 11 },
-             */
-            socket.emit('user-ranking', {
-                user_id: 'andrewxhill',
-                user_rank: 1,
-                user_lvl: 11
             });
             
             

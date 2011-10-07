@@ -127,7 +127,8 @@ exports.start = function(io, cartodb, store) {
                     var query = "UPDATE neemo SET downvotes = downvotes + 1 WHERE key = '"+data.key+"' and user_id != '"+data.username+"'; " +
                                   "UPDATE neemo_users SET user_score = user_score - 4 WHERE user_id = '"+data.username+"'; " +
                                   "UPDATE neemo_users SET user_score = user_score - 6 WHERE user_id = '"+data.creator+"'; " +
-                                  "INSERT INTO neemo_activity (user_id, action, title, points, target_key) VALUES ('"+data.username+"', 'vote', 'downvote', -4, '"+data.key+"'); " ;
+                                  "INSERT INTO neemo_activity (user_id, action, title, points, target_key) VALUES ('"+data.username+"', 'vote', 'downvote', -4, '"+data.key+"'); " +
+                                  "INSERT INTO neemo_activity (user_id, action, title, points, target_key) VALUES ('"+data.creator+"',  'dispute', 'invalid', -6, '"+data.key+"'); " ;
                 }
                 var body = {q: query}
                 cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function(a,b,c){console.log(b)});

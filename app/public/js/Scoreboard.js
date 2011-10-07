@@ -132,12 +132,14 @@ Scoreboard.modules.socket = function(scoreboard) {
       this.socket = io.connect('/scoreboard');
       //this._bindEvents();
       this._setupSockets();
-      this._sid = document.cookie.split('=',2)[1];
+      this._cookie = document.cookie.split(';');
+      this._socketAuth = this._cookie[0].split('=')[1];
+      this._username = this._cookie[1].split('=')[1];
     },
     _setupSockets: function(){
       var that = this;
       this.socket.on('connect', function (client) {
-        that.socket.send(that.sid);
+        that.socket.send(JSON.stringify({auth: that._socketAuth, username: that._username}));
         scoreboard.log.info('soccket connected!');
         that.socket.emit('join', {page: 1} );
       });
@@ -148,7 +150,7 @@ Scoreboard.modules.socket = function(scoreboard) {
       this.socket.on('scoreboard-update',function(data){
         //{"time":0.002,"total_rows":4,"rows":[{"user_id":"unknooooown","user_rank":4,"user_lvl":1},{"user_id":"anon","user_rank":3,"user_lvl":2},{"user_id":"capndave","user_rank":2,"user_lvl":4},{"user_id":"andrewxhill","user_rank":1,"user_lvl":11}]}
         scoreboard.log.info('new rankings!');
-        that._bus.fireEvent(new scoreboard.events.UpdateRankingList(data));
+        that._bus.fireEvent(new scoreboard.events.UpdateRankingList(data, that._username));
       });
     },
     _bindEvents: function(){
@@ -205,6 +207,7 @@ Scoreboard.modules.UserRank = function(scoreboard) {
         'UpdateUserRank',
         function(data){
           data = data.getData();
+          console.log(data);
           var strString = '' + data.user_rank;
           while(strString.length<4){
             strString = '0' + strString;
@@ -274,31 +277,26 @@ Scoreboard.modules.RankingList = function(scoreboard) {
 
       bus.addHandler(
         'UpdateRankingList',
-        function(data){
-          data = data.getData();
-          var first = true;
-          $(that._display.getElement()).html(null);
+        function(input){
+          var data = input.getData()
+              username = input.getUser();
+          $(that._display.getElement()).empty();
 
           for (i in data.rows){
 
             var u = new scoreboard.ui.RankingList.User();
-            var tmp_pts  = Math.floor(Math.random()*10) + Math.floor(100/data.rows[i].user_rank);
-            var tmp_prog = Math.floor(Math.random()*101);
-
-            tmp_prog = (tmp_prog == 100) ? 99.6 : tmp_prog; // fix to show a nice full progress bar
-
+            
             u.getRankName().text(data.rows[i].user_rank + "#. "+data.rows[i].user_id.toUpperCase());
-            u.getScore().text(tmp_pts + " [LVL."+data.rows[i].user_lvl+"]");
+            u.getScore().text(data.rows[i].user_score + " [LVL."+data.rows[i].user_lvl+"]");
 
             u.getProgress().css({width: 0});
-            u.getProgress().animate({width: tmp_prog + "%"}, 300, 'easeOutQuad');
+            u.getProgress().animate({width: data.rows[i].user_progress + "%"}, 300, 'easeOutQuad');
 
-            if(first){
+            if(username.toUpperCase() == data.rows[i].user_id.toUpperCase() ){
               u.getElement().append('<div class="icon-container">' +
                                     '<div class="icon trophee"></div>' +
                                       '</div>');
               u.getElement().addClass('selected');
-              first = false;
             }
             $(that._display.getElement()).append(u.getElement());
           }
@@ -478,13 +476,17 @@ Scoreboard.modules.events = function(scoreboard) {
   */
   scoreboard.events.UpdateRankingList = scoreboard.events.Event.extend(
     {
-    init: function(data, action) {
+    init: function(data, username, action) {
       this._super('UpdateRankingList', action);
       this._data = data;
+      this._username = username;
     },
 
     getData: function() {
       return this._data;
+    },
+    getUser: function() {
+      return this._username;
     },
   }
   );
