@@ -371,7 +371,7 @@ Neemo.modules.slideshowUtil = function(neemo) {
 
     neemo.slideshowUtil.config = {
         width: 800,
-        margin: -196,
+        margin: -200,
         easingMethod: null,  // 'easeInExpo'
         moving: false
     };

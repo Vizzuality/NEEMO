@@ -57,6 +57,7 @@ Neemo.modules.DataLayer = function(neemo) {
         }
       });
     },
+
     _bindEvents: function(){
       var that = this
       , bus = this._bus;
@@ -110,7 +111,9 @@ Neemo.modules.DataLayer = function(neemo) {
         t.remove();
         t = null;
       }
-
+      this.clearUndefinedAnnotations();
+    },
+    clearUndefinedAnnotations: function() {
       $(".region_undefined").fadeOut(250, function() { $(this).remove();});
     },
     _bindDisplay: function(display, text) {
