@@ -816,8 +816,8 @@ nav ul {
 }
 
 .info ul { clear:both; overflow:hidden; font-family:"EurostileLTStd"; list-style:none; padding:0; margin:0;}
-.info ul li { margin-bottom:10px; font-size:13px; }
-.info ul li p { width:225px; }
+.info ul li { margin-bottom:10px; clear:both; overflow:hidden; font-size:13px; }
+.info ul li p { float:left; width:190px; margin:0; }
 
 .info ul li:nth-child(1) { opacity:1; }
 .info ul li:nth-child(2) { opacity:.6; }
