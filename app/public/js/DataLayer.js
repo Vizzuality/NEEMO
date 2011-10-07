@@ -28,6 +28,13 @@ Neemo.modules.DataLayer = function(neemo) {
 
           var $selectedRegion = $(".image.selected");
 
+          if ((that.mouseX < $selectedRegion.offset().left) || 
+              (that.mouseX > $selectedRegion.offset().left + $selectedRegion.width()) || 
+              (that.mouseY > $selectedRegion.offset().top + $selectedRegion.height()) || 
+                  (that.mouseY < $selectedRegion.offset().top)) {
+            return
+          }
+
           var left = that.mouseX - $selectedRegion.offset().left;
           var top  = that.mouseY - $selectedRegion.offset().top;
 
