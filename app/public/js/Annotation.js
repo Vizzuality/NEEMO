@@ -18,6 +18,7 @@ Neemo.modules.Annotation = function(neemo) {
       this.category = opt.category;
       this.hideCategory = opt.hideCategory;
       this.transitionSpeed = 250;
+      this.key = opt.key;
     },
     empty: function(){
       this._display.getElement().remove();
@@ -35,11 +36,13 @@ Neemo.modules.Annotation = function(neemo) {
       this.$el.find('.close').click(function() { that.remove(); });
 
       this.$el.find('.agree').click(function(){
-        // TODO
+        that._bus.fireEvent(new Neemo.env.events.Vote({type: 'upvote', key: this.key}));
+        that._hideVoting();
       });
 
       this.$el.find('.disagree').click(function(){
-        // TODO
+        that._bus.fireEvent(new Neemo.env.events.Vote({type: 'downvote', key: this.key}));
+        that._hideVoting();
       });
     },
     remove: function(){
@@ -55,14 +58,17 @@ Neemo.modules.Annotation = function(neemo) {
       this._display = display;
       display.setEngine(this);
     },
+    _hideVoting: function(){
+      this.$el.find('.agree').hide();
+      this.$el.find('.disagree').hide();
+    },
     start: function($region, burn) {
       this._bindDisplay(new neemo.ui.Annotation.Display());
 
       this.$el = $(this._display.getElement());
       this.$el.find('.submit').hide();
       this.$el.find('.close').hide();
-      this.$el.find('.agree').hide();
-      this.$el.find('.disagree').hide();
+      this._hideVoting();
       this.$el.addClass("region_" + this.region);
 
       if (this.hideCategory) this.$el.find('.category').hide();

@@ -149,6 +149,21 @@ Neemo.modules.events = function(neemo) {
   }
   );
   neemo.events.AddPoints.TYPE = 'add_points';
+  
+  neemo.events.Vote = neemo.events.Event.extend(
+    {
+    init: function(data, action) {
+      this._super('Vote', action);
+      this._data = data;
+      console.log('VOTTTEEEEEEEEEEEEEEEEEE');
+    },
+    getData: function() {
+      return this._data;
+    },
+  }
+  );
+  neemo.events.Vote.TYPE = 'vote';
+  
   /**
   * New data submission event.
   */

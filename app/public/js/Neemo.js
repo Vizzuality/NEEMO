@@ -133,6 +133,30 @@ Neemo.modules.socket = function(neemo) {
           that.socket.emit('join', {region: that.region} );
         }
       );
+      /*
+      * Handle up/down votes
+      */
+      bus.addHandler(
+        'Vote',
+        function(event){
+          var data = event.getData();
+          neemo.log.info('User voted on '+data.key);
+          data.username = that._username;
+          data.auth = that._socketAuth;
+          that.socket.emit('submit-vote', data);
+          if (data.type=='upvote'){
+              that._bus.fireEvent(new Neemo.env.events.PointNotice({
+                  title: "you upvoted an existing identification",
+                  points: 1
+              }));
+          } else if (data.type=='downvote'){
+              that._bus.fireEvent(new Neemo.env.events.PointNotice({
+                  title: "you downvoted an existing identification",
+                  points: -2
+              }));
+          }
+        }
+      );
     },
   }
   );
