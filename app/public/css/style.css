@@ -1131,7 +1131,7 @@ nav ul {
 
 #lock_screen { position: absolute; top: 0; left: 0; display: none; width: 100%; height: 100%; opacity: .5; background: #000; z-index: 1900; }
 
-.temp_nav {position:absolute; bottom: 10px; left:50%; margin-left:-110px; width:220px; text-align:center; z-index:2000;}
+.temp_nav { display:none; position:absolute; bottom: 10px; left:50%; margin-left:-110px; width:220px; text-align:center; z-index:2000;}
 .temp_nav a, .temp_nav a:visited {display:block; float:left; background:lightgreen; width:80px; margin-right:10px; padding:10px; text-decoration:none; font-weight:bold; color:#fff;}
 
 /* ==|== non-semantic helper classes ========================================
@@ -1158,8 +1158,6 @@ Please define your styles before this section.
 .clearfix:before, .clearfix:after { content: ""; display: table; }
 .clearfix:after { clear: both; }
 .clearfix { zoom: 1; }
-
-
 
 /* ==|== media queries ======================================================
 PLACEHOLDER Media Queries for Responsive Design.

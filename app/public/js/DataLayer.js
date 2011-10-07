@@ -63,9 +63,21 @@ Neemo.modules.DataLayer = function(neemo) {
       , bus = this._bus;
       bus.addHandler(
         'ImageClick',
-        function(data){
+        function(event){
+          var $image    = $(event.getEvent().target).parent().parent();
+          var $selected = $("#slideshow .selected");
+
           neemo.log.info('Image Click Recieved');
-          that._radial_selector.handleClick(data.getEvent());
+
+          if ($image.hasClass("selected")) {
+            that._radial_selector.handleClick(event.getEvent());
+          } else if ($image.index() >  that._region) {
+            that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that._region + 1}));
+            that._bus.fireEvent(new Neemo.env.events.HideSelector());
+          } else if ($image.index() >= 0){
+            that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that._region - 1}));
+            that._bus.fireEvent(new Neemo.env.events.HideSelector());
+          }
         }
       );
 

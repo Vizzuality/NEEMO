@@ -153,9 +153,9 @@ Neemo.modules.Slideshow = function(neemo) {
           }
 
           $(Region.getImage()).click(function(e) {
-            if($(this).parent().parent('.selected').length > 0){
-              that._bus.fireEvent(new Neemo.env.events.ImageClick(e));
-            }
+            //if($(this).parent().parent('.selected').length > 0){
+            that._bus.fireEvent(new Neemo.env.events.ImageClick(e));
+            //}
           });
           Region.start();
           this._regions[id] = Region;
