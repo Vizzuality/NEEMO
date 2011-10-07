@@ -16,6 +16,7 @@ Neemo.modules.Annotation = function(neemo) {
       this.width = opt.width ? opt.width : 160;
       this.height = opt.height ? opt.height : 100;
       this.category = opt.category;
+      this.hideCategory = opt.hideCategory;
       this.transitionSpeed = 250;
     },
     empty: function(){
@@ -63,9 +64,12 @@ Neemo.modules.Annotation = function(neemo) {
       this.$el.find('.agree').hide();
       this.$el.find('.disagree').hide();
       this.$el.addClass("region_" + this.region);
+
+      if (this.hideCategory) this.$el.find('.category').hide();
       this.setCategory(this.category);
 
       this._bindEvents();
+
       var that = this;
       // We create the selection window and place it over the image
       $region.append(this.$el);
