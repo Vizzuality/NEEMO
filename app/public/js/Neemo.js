@@ -96,6 +96,9 @@ Neemo.modules.socket = function(neemo) {
       });
       this.socket.on('region-new-data', function (data) {
         if(data.region == that.region){
+            if (data.username == that._username){
+                data.mine = true;
+            }
             that._bus.fireEvent(new Neemo.env.events.AddPoints(data));
         }
         //neemo.log.info('socket update received');
