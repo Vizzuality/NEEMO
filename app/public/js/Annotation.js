@@ -72,7 +72,7 @@ Neemo.modules.Annotation = function(neemo) {
       if (!burn){
           this.$el.addClass("draggable");
           this.$el.draggable({ handle:"controls", containment: 'parent', stop: function(e) { that.onDragEnd(); } });
-          this.$el.resizable({ minWidth: 80, minHeight: 18, handles: 'nw, se' });
+          this.$el.resizable({ containment: 'parent', minWidth: 80, minHeight: 18, handles: 'nw, se' });
       }
     },
     clear: function($region){
