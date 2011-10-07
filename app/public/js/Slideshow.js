@@ -28,10 +28,12 @@ Neemo.modules.Slideshow = function(neemo) {
         if (e.keyCode == 39) { // right arrow
           if (that._nextButton == 1){
             that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that._region + 1}));
+            that._bus.fireEvent(new Neemo.env.events.HideSelector());
           }
         } else if (e.keyCode == 37) { // left arrow
           if (that._previousButton == 1){
             that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that._region - 1}));
+            that._bus.fireEvent(new Neemo.env.events.HideSelector());
           }
         }
       });
@@ -369,7 +371,7 @@ Neemo.modules.slideshowUtil = function(neemo) {
 
     neemo.slideshowUtil.config = {
         width: 800,
-        margin: -196,
+        margin: -200,
         easingMethod: null,  // 'easeInExpo'
         moving: false
     };
