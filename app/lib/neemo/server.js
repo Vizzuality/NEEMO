@@ -12,7 +12,7 @@ var   express     = require('express')
     , CAS         = require('cas')
     , csa         = {login: 'https://login.zooniverse.org', 
                      logout: 'https://login.zooniverse.org/logout', 
-                     service: 'http://10.52.252.154:4000'}
+                     service: 'http://87.216.186.246:4000'}
     , OAuth       = require('oauth').OAuth
     , cartodb     = require('./cartodb')
     , Base64      = require('./Base64')

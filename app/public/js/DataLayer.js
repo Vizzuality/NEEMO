@@ -24,12 +24,29 @@ Neemo.modules.DataLayer = function(neemo) {
       });
 
       $(document).keyup(function(e) {
-        console.log(that);
         if (e.keyCode >= 49 && e.keyCode <= 51) {
-          var $el = that._radial_selector.$element;
-          var left = that.mouseX - ($el.width() / 2);
-          var top = that.mouseY - ($el.height() / 2);
-          that._radial_selector.openRadialSelector(left,top);
+
+          var $selectedRegion = $(".image.selected");
+
+          var left = that.mouseX - $selectedRegion.offset().left;
+          var top  = that.mouseY - $selectedRegion.offset().top;
+
+          if (e.keyCode == 49) {
+            categoryName = "gorgonian";
+          }
+          else if (e.keyCode == 50) {
+            categoryName = "coral";
+          }
+          else if (e.keyCode == 51) {
+            categoryName = "barrel";
+          }
+          else if (e.keyCode == 52) {
+            categoryName = "other";
+          }
+
+          var selection = new neemo.ui.Annotation.Engine(that._bus, that._api, {x:left, y:top, category: categoryName });
+          selection.start($selectedRegion);
+          selection.enableSubmit();
         }
       });
     },
