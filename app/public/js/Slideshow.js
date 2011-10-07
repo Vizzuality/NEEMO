@@ -137,7 +137,7 @@ Neemo.modules.Slideshow = function(neemo) {
       this._bindKeyboard();
     },
     _repositionPanels: function() {
-      var left = $("#slideshow").offset().left - ($(".info").width() + 137);
+      var left = $("#slideshow div.selected").offset().left - ($(".info").width() + 20 );
       if (left > 0) $(".info").stop().animate({left:left }, 500);
     },
     addRegion: function(url, id){

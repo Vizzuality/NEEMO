@@ -454,11 +454,12 @@ nav ul {
 }
 
 .info #rank-box {
-  position:relative;
+  position:absolute;
   background:none;
   right:0;
+  bottom:0;
   left:-13px;
-  top:183px;
+  top:auto;
   opacity:.5;
 }
 
