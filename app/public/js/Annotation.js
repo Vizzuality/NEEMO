@@ -19,18 +19,18 @@ Neemo.modules.Annotation = function(neemo) {
     },
     empty: function(){
       this._display.getElement().remove();
-      this._display = null;  
+      this._display = null;
     },
     _bindEvents: function(){
       var that = this
       , bus = this._bus;
-      
+
       this.$el.find('.submit').click(function(){
         that._bus.fireEvent(new Neemo.env.events.SubmitData({category: that.name, x: that.x, y: that.y, width: that.$el.width(), height: that.$el.height()}));
         that.remove();
         //this.$el.animate({width:200, height:200, opacity:1, left:left, top:top}, 200);
       });
-      
+
     },
     remove: function(){
         this.$el.draggable("destroy");
@@ -47,14 +47,14 @@ Neemo.modules.Annotation = function(neemo) {
     },
     start: function($region, burn) {
       this._bindDisplay(new neemo.ui.Annotation.Display());
-      
+
       this.$el = $(this._display.getElement());
       this.$el.find('.submit').hide();
       this.$el.find('.close').hide();
       this.$el.find('.agree').hide();
       this.$el.find('.disagree').hide();
       this.setName(this.name);
-      
+
       this._bindEvents();
       var that = this;
       // We create the selection window and place it over the image
@@ -64,13 +64,14 @@ Neemo.modules.Annotation = function(neemo) {
       var left = this.x - (this.width / 2);
       var top  = this.y - (this.height / 2);
 
-      console.log("Drawing a selection for a " + this.name  + " "  + left + " " + top );
+      //console.log("Drawing a selection for a " + this.name  + " "  + left + " " + top );
       this.$el.css({left:0, top:0, height:0, width:0}); // initial position
-      
+
       // Now we just move the window to its place
       this.$el.animate({width:this.width, height:this.height, opacity:1, left:left, top:top}, 200);
-      
+
       if (!burn){
+          this.$el.addClass("draggable");
           this.$el.draggable({ handle:"controls", containment: 'parent', stop: function(e) { that.onDragEnd(); } });
           this.$el.resizable({ minWidth: 80, minHeight: 18, handles: 'nw, se' });
       }
@@ -86,7 +87,7 @@ Neemo.modules.Annotation = function(neemo) {
     },
     onDragEnd: function(){
       this.updateCoordinates();
-      console.log(this.name, this.x, this.y);
+      //console.log(this.name, this.x, this.y);
     },
     enableSubmit: function(){
       this.$el.find('.submit').show();

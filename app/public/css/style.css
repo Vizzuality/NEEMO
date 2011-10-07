@@ -534,11 +534,14 @@ nav ul {
   border:2px solid rgba(0,0,0,.6);
   z-index:2000;
   opacity:.5;
+}
+
+.selection_window.draggable,
+.selection_window.draggable:hover {
   cursor:move;
 }
 
 .selection_window:hover {
-  cursor:move;
   border-color:rgba(0,0,0,.8);
 }
 .selection_window:hover .controls {
