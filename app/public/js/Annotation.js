@@ -19,6 +19,7 @@ Neemo.modules.Annotation = function(neemo) {
       this.hideCategory = opt.hideCategory;
       this.transitionSpeed = 250;
       this.key = opt.key;
+      this.username = opt.username;
     },
     empty: function(){
       this._display.getElement().remove();
@@ -36,12 +37,12 @@ Neemo.modules.Annotation = function(neemo) {
       this.$el.find('.close').click(function() { that.remove(); });
 
       this.$el.find('.agree').click(function(){
-        that._bus.fireEvent(new Neemo.env.events.Vote({type: 'upvote', key: this.key}));
+        that._bus.fireEvent(new Neemo.env.events.Vote({type: 'upvote', key: that.key, creator: that.username}));
         that._hideVoting();
       });
 
       this.$el.find('.disagree').click(function(){
-        that._bus.fireEvent(new Neemo.env.events.Vote({type: 'downvote', key: this.key}));
+        that._bus.fireEvent(new Neemo.env.events.Vote({type: 'downvote', key: that.key, creator: that.username}));
         that._hideVoting();
       });
     },

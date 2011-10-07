@@ -155,7 +155,6 @@ Neemo.modules.events = function(neemo) {
     init: function(data, action) {
       this._super('Vote', action);
       this._data = data;
-      console.log('VOTTTEEEEEEEEEEEEEEEEEE');
     },
     getData: function() {
       return this._data;

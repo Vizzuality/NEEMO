@@ -91,7 +91,7 @@ exports.start = function(io, cartodb, store) {
             });
             
             var protected_request = cartodb.api_url;
-            var query = "SELECT category, click_x, click_y, width, height, region, user_id, upvotes, downvotes FROM neemo WHERE region = '"+data.region+"' ORDER BY created_at DESC LIMIT 10";
+            var query = "SELECT key, category, click_x, click_y, width, height, region, user_id, upvotes FROM neemo WHERE downvotes < 1 and region = '"+data.region+"' ORDER BY created_at DESC LIMIT 10";
             var body = {q: query}
             cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function(error, data, response) {
                 data = JSON.parse(data);
@@ -105,6 +105,7 @@ exports.start = function(io, cartodb, store) {
                         height: data.rows[i].height,
                         region: data.rows[i].region,
                         username: data.rows[i].user_id,
+                        key: data.rows[i].key,
                         stored: true
                     }
                     socket.emit('region-new-data', out);
@@ -114,9 +115,29 @@ exports.start = function(io, cartodb, store) {
         socket.on('leave', function (data) {
             socket.leave('/'+data.region);
         });
+	    socket.on('submit-vote', function (data) {
+            if (validateSession(data.auth)){
+                var protected_request = cartodb.api_url;
+                if (data.type == 'upvote'){
+                    var query = "UPDATE neemo SET upvotes = upvotes + 1 WHERE key = '"+data.key+"' and user_id != '"+data.username+"'; " +
+                                  "UPDATE neemo_users SET user_score = user_score + 1 WHERE user_id = '"+data.username+"'; " +
+                                  "UPDATE neemo_users SET user_score = user_score + 2 WHERE user_id = '"+data.creator+"'; " +
+                                  "INSERT INTO neemo_activity (user_id, action, title, points, target_key) VALUES ('"+data.username+"', 'vote', 'upvote', 1, '"+data.key+"'); " ;
+                } else if (data.type == 'downvote'){
+                    var query = "UPDATE neemo SET downvotes = downvotes + 1 WHERE key = '"+data.key+"' and user_id != '"+data.username+"'; " +
+                                  "UPDATE neemo_users SET user_score = user_score - 4 WHERE user_id = '"+data.username+"'; " +
+                                  "UPDATE neemo_users SET user_score = user_score - 6 WHERE user_id = '"+data.creator+"'; " +
+                                  "INSERT INTO neemo_activity (user_id, action, title, points, target_key) VALUES ('"+data.username+"', 'vote', 'downvote', -4, '"+data.key+"'); " ;
+                }
+                var body = {q: query}
+                cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function(a,b,c){console.log(b)});
+            }
+        });
 	    socket.on('submit-data', function (data) {
             if (validateSession(data.auth)){
-                //rpub.publish( 'poi-emit', JSON.stringify( data ));
+                //TODO create key from secret and username, store username in the object
+                //then we can validate votes on annotations to ensure that votes aren't 
+                //coming from the creator
                 var key = [(new Date()).getTime(), socket.id].join('');
                 var protected_request = cartodb.api_url;
                 var query = "INSERT INTO neemo (key, category, click_x, click_y, width, height, region, user_id, upvotes, downvotes) VALUES ('"+key+"','"+data.category+"',"+data.x+","+data.y+","+data.width+","+data.height+","+data.region+",'"+data.username+"', 1, 0)";
@@ -126,8 +147,8 @@ exports.start = function(io, cartodb, store) {
                 data.key = key;
                 io.sockets.in(data.region).emit('region-new-data', data);
                 
-                var query = "INSERT INTO neemo_activity (user_id, action, title, points) VALUES " +
-                                "('"+data.username+"','annotation','"+data.category+"',3); "+
+                var query = "INSERT INTO neemo_activity (user_id, action, title, points, target_key) VALUES " +
+                                "('"+data.username+"','annotation','"+data.category+"',3, '"+key+"'); "+
                             "UPDATE neemo_users SET user_score = user_score + 3 WHERE user_id = '"+data.username+"'; ";
                 var body = {q: query}
                 cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null);
