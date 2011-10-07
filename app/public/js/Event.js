@@ -122,6 +122,18 @@ Neemo.modules.events = function(neemo) {
   );
   neemo.events.RegionOverview.TYPE = 'region_overview';
 
+  neemo.events.HideSelector = neemo.events.Event.extend(
+    {
+    init: function(data, action) {
+      this._super('HideSelector', action);
+      this._data = data;
+    },
+    getData: function() {
+      return this._data;
+    },
+  }
+  );
+  neemo.events.HideSelector.TYPE = 'hide_selector';
   /**
      * Add point event.
 */
@@ -153,7 +165,7 @@ Neemo.modules.events = function(neemo) {
   }
   );
   neemo.events.DataSubmit.TYPE = 'data_submit';
-  
+
   /**
   * New data creation event.
   */
@@ -170,7 +182,7 @@ Neemo.modules.events = function(neemo) {
   }
   );
   neemo.events.ImageClick.TYPE = 'image_click';
-  
+
   /**
   * New data submission event.
   */
@@ -187,7 +199,7 @@ Neemo.modules.events = function(neemo) {
   }
   );
   neemo.events.SubmitData.TYPE = 'submit_data';
-  
+
   /**
   * New user point update.
   */
@@ -204,7 +216,7 @@ Neemo.modules.events = function(neemo) {
   }
   );
   neemo.events.PointNotice.TYPE = 'point_notice';
-  
+
   /**
   * The event bus.
   */

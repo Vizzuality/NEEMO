@@ -43,6 +43,7 @@ Neemo.modules.Slideshow = function(neemo) {
         'ChangeRegion',
         function(event){
           neemo.log.info('Change Region happened, I should flip images');
+
           var old_region = that._region;
           that._region = event.getRegion();
 
@@ -93,12 +94,15 @@ Neemo.modules.Slideshow = function(neemo) {
       this._nav.getNextButton().click(function(){
           if (that._nextButton == 1){
               that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that._region + 1}));
+              that._bus.fireEvent(new Neemo.env.events.HideSelector());
+
           }
         }
       );
       this._nav.getPreviousButton().click(function(){
           if (that._previousButton == 1){
               that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that._region - 1}));
+              that._bus.fireEvent(new Neemo.env.events.HideSelector());
           }
         }
       );
