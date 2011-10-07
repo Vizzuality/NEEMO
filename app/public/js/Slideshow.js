@@ -21,6 +21,21 @@ Neemo.modules.Slideshow = function(neemo) {
       this._nextButton = 1; //used to enable (1) and disable (0) the nav buttons
     },
 
+    _bindKeyboard: function() {
+      var that = this;
+
+      $(document).keyup(function(e) {
+        if (e.keyCode == 39) { // right arrow
+          if (that._nextButton == 1){
+            that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that._region + 1}));
+          }
+        } else if (e.keyCode == 37) { // left arrow
+          if (that._previousButton == 1){
+            that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that._region - 1}));
+          }
+        }
+      });
+    },
     _bindEvents: function(){
       var that = this
       , bus = this._bus;
@@ -115,6 +130,7 @@ Neemo.modules.Slideshow = function(neemo) {
         }));
       this._bindNav(new neemo.ui.Slideshow.Nav());
       this._bindEvents();
+      this._bindKeyboard();
     },
     _repositionPanels: function() {
       var left = $("#slideshow").offset().left - ($(".info").width() + 137);
