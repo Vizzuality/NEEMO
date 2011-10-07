@@ -792,11 +792,10 @@ nav ul {
 
 .depth {
   position:absolute;
-  right:100px;
   top:200px;
   color:#fff;
   text-transform: uppercase;
-  z-index:2000;
+  opacity:0;
 }
 
 .depth .legend {
@@ -805,8 +804,8 @@ nav ul {
   font-size:10px;
 }
 
-.depth .line {
-  top:10px;
+.depth .line-through .line {
+  top:8px;
 }
 
 .depth h2 {
