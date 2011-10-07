@@ -47,7 +47,7 @@ Neemo.modules.UserProfile = function(neemo) {
     newPointNotice: function(data){
       var txt = "+"+data.points;
       if (data.points < 0){
-          txt = "-"+data.points;
+          txt = data.points;
       }
       this._display.getActivity().prepend('<li><div class="point">'+txt+'</div> <p>'+data.title+'</p></li>');
       var lis = this._display.getActivity().find('li');
