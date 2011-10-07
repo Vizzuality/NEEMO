@@ -74,10 +74,10 @@ Neemo.modules.Annotation = function(neemo) {
       var left = this.x - (this.width / 2);
       var top  = this.y - (this.height / 2);
 
-      this.$el.css({left:0, top:0, height:0, width:0}); // initial position
+      this.$el.css({left:left, top:top, width:this.width, height:this.height}); // initial position
 
       // Now we just move the window to its place
-      this.$el.animate({width:this.width, height:this.height, opacity:1, left:left, top:top}, 200);
+      this.$el.animate({width:this.width, height:this.height, opacity:1, left:left, top:top}, 500);
 
       if (!burn){
         this.$el.addClass("draggable");
