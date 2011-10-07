@@ -44,7 +44,7 @@ Neemo.modules.DataLayer = function(neemo) {
             categoryName = "other";
           }
 
-          var selection = new neemo.ui.Annotation.Engine(that._bus, that._api, {x:left, y:top });
+          var selection = new neemo.ui.Annotation.Engine(that._bus, that._api, {x:left, y:top, category:categoryName, hideCategory: true });
           selection.start($selectedRegion);
           selection.enableSubmit();
         }

@@ -40,16 +40,16 @@ Neemo.modules.UserProfile = function(neemo) {
           that.newPointNotice(data);
         }
       );
-            
-            
-            
     },
     newPointNotice: function(data){
       var txt = "+"+data.points;
       if (data.points < 0){
           txt = data.points;
       }
-      this._display.getActivity().prepend('<li><div class="point">'+txt+'</div> <p>'+data.title+'</p></li>');
+      var $point = $('<li style="display:none"><div class="point">'+txt+'</div> <p>'+data.title+'</p></li>');
+      this._display.getActivity().prepend($point);
+      $point.slideDown(150, "easeInOutExpo");
+
       var lis = this._display.getActivity().find('li');
       if (lis.length == 6){
           $(lis[5]).remove();
