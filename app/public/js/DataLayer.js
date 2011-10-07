@@ -15,6 +15,24 @@ Neemo.modules.DataLayer = function(neemo) {
       this._annotations = [];
     },
 
+    _bindKeyboard: function() {
+      var that = this;
+
+      $(document).mousemove(function(e) {
+        that.mouseX = e.pageX;
+        that.mouseY = e.pageY;
+      });
+
+      $(document).keyup(function(e) {
+        console.log(that);
+        if (e.keyCode >= 49 && e.keyCode <= 51) {
+          var $el = that._radial_selector.$element;
+          var left = that.mouseX - ($el.width() / 2);
+          var top = that.mouseY - ($el.height() / 2);
+          that._radial_selector.openRadialSelector(left,top);
+        }
+      });
+    },
     _bindEvents: function(){
       var that = this
       , bus = this._bus;
@@ -25,6 +43,7 @@ Neemo.modules.DataLayer = function(neemo) {
           that._radial_selector.handleClick(data.getEvent());
         }
       );
+
       var that = this
       , bus = this._bus;
       bus.addHandler(
@@ -73,6 +92,7 @@ Neemo.modules.DataLayer = function(neemo) {
       this._radial_selector = new neemo.ui.DataLayer.RadialSelector(this._bus);
       this._radial_selector.start();
       this._bindEvents();
+      this._bindKeyboard();
     },
   }
   );
@@ -82,8 +102,8 @@ Neemo.modules.DataLayer = function(neemo) {
     init: function(bus) {
         this._bus = bus;
         this.selectorID = "radial_selector";
-        this.radial_selector = $("#"+ this.selectorID);
-        this._super(this.radial_selector);
+        this.$element = $("#"+ this.selectorID);
+        this._super(this.$element);
         this.canvasWidth  = 275;
         this.canvasHeight = 275;
 
@@ -168,7 +188,7 @@ Neemo.modules.DataLayer = function(neemo) {
         this.coordinates.x = e.offsetX;
         this.coordinates.y = e.offsetY;
 
-        if (this.radial_selector.hasClass("open")) {
+        if (this.$element.hasClass("open")) {
           this.moveRadialSelector(e);
         } else {
           this.toggleRadialSelector(e);
@@ -215,8 +235,8 @@ Neemo.modules.DataLayer = function(neemo) {
             e.stopPropagation();
         }
 
-        this.radial_selector.removeClass("open");
-        this.radial_selector.fadeOut(300, function() {
+        this.$element.removeClass("open");
+        this.$element.fadeOut(300, function() {
             that.circle.animate({r:0}, 300, '<>');
 
             // We hide each of the sectors
@@ -227,28 +247,47 @@ Neemo.modules.DataLayer = function(neemo) {
     },
 
     moveRadialSelector: function(e) {
-        this.radial_selector.animate({ left: e.clientX - this.radial_selector.width() / 2, top: e.clientY - this.radial_selector.height() / 2 }, 500, "easeOutExpo");
+        this.$element.animate({ left: e.clientX - this.$element.width() / 2, top: e.clientY - this.$element.height() / 2 }, 500, "easeOutExpo");
+    },
+    openAtMousePosition: function() {
+      this.openRadialSelector(left, top);
+    },
+    openAtCenter: function() {
+      var selectedRegion = $(".image.selected");
+      var left = selectedRegion.offset().left + selectedRegion.width() / 2 - (this.$element.width() / 2);
+      var top = selectedRegion.offset().top + selectedRegion.height() / 2 - (this.$element.height() / 2);
+
+      this.openRadialSelector(left, top);
+    },
+    openRadialSelector: function(left, top) {
+      if (!this.$element.hasClass("open")) {
+
+        this.$element.fadeIn(0);
+        this.$element.css({ left: left, top: top }).animate({ opacity: 1 });
+
+        this.circle.animate({opacity:.7, r:30}, 300, '<>');
+
+        for (i = 0; i <= this.sectorNum - 1; i++) {
+          $(this.sectors[i].option.node).delay(1000).animate( {opacity: 1 });
+          this.sectors[i].sector.animate({
+            rotation: (360 - 45 * i) + " " + this.centerX + " " + this.centerY
+          }, 300, '<>');
+        }
+        this.$element.addClass("open");
+
+      }
     },
 
     toggleRadialSelector: function(e) {
-        if (!this.radial_selector.hasClass("open")) {
+      if (!this.$element.hasClass("open")) {
 
-            this.radial_selector.fadeIn(0);
-            this.radial_selector.css({ left: e.clientX - 133, top: e.clientY - 133 }).animate({ opacity: 1 });
+        var left = e.clientX - (this.$element.width() / 2);
+        var top = e.clientY - (this.$element.height() / 2);
+        this.openRadialSelector(left, top);
 
-            this.circle.animate({opacity:.7, r:30}, 300, '<>');
-
-            for (i = 0; i <= this.sectorNum - 1; i++) {
-                $(this.sectors[i].option.node).delay(1000).animate( {opacity: 1 });
-                this.sectors[i].sector.animate({
-                  rotation: (360 - 45 * i) + " " + this.centerX + " " + this.centerY
-                }, 300, '<>');
-            }
-            this.radial_selector.addClass("open");
-
-        } else {
-            this.closeRadialSelector(e);
-        }
+      } else {
+        this.closeRadialSelector(e);
+      }
     }
   }
   );
