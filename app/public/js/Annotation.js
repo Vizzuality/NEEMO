@@ -12,11 +12,11 @@ Neemo.modules.Annotation = function(neemo) {
       this._api = api;
       this.x = opt.x;
       this.y = opt.y;
+      this.region = opt.region;
       this.width = opt.width ? opt.width : 160;
       this.height = opt.height ? opt.height : 100;
       this.category = opt.category;
       this.transitionSpeed = 250;
-      console.log(opt);
     },
     empty: function(){
       this._display.getElement().remove();
@@ -52,6 +52,7 @@ Neemo.modules.Annotation = function(neemo) {
       this.$el.find('.close').hide();
       this.$el.find('.agree').hide();
       this.$el.find('.disagree').hide();
+      this.$el.addClass("region_" + this.region);
       this.setCategory(this.category);
 
       this._bindEvents();

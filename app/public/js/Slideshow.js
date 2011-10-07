@@ -194,7 +194,12 @@ Neemo.modules.Slideshow = function(neemo) {
       this._image = new Image();
       this._image.src = [url, id, '.jpg'].join('');
       this._super(this._html());
-      $(this.getElement()).find('.photo').append(this._image);
+
+      // Adds region_id to the element
+      var $el = $(this.getElement());
+      $el.find('.photo').append(this._image);
+      $el.attr("id", "region_" + this.id);
+
       this._categories = {};
     },
     getImage: function(){

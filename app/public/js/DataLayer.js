@@ -41,7 +41,7 @@ Neemo.modules.DataLayer = function(neemo) {
         function(data){
             data = data.getData();
             if (data.region == that._region){
-                var activeRegion = $(".image.selected");
+                var activeRegion = $("#region_" + data.region);
                 var annotation = new neemo.ui.Annotation.Engine(that._bus, that._api, data);
                 annotation.start(activeRegion, true);
                 annotation.enableVote();
@@ -157,14 +157,13 @@ Neemo.modules.DataLayer = function(neemo) {
 
     },
     clearAnnotations: function(){
-        while(this._annotations.length > 0){
-            var t = this._annotations.pop();
-            t.remove();
-            t = null;
-        }
+      while(this._annotations.length > 0){
+        var t = this._annotations.pop();
+        t.remove();
+        t = null;
+      }
     },
     handleClick: function(e) {
-
         // Coordinates of the user's click event
         this.coordinates.x = e.offsetX;
         this.coordinates.y = e.offsetY;
