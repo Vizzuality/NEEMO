@@ -779,6 +779,12 @@ nav ul {
 
 /* INFO PANEL ---------------------------------------------- */
 
+body.ranking .info {
+  top:114px;
+  left:60px;
+  margin:0;
+}
+
 .info {
   position:absolute;
   left:40px;
