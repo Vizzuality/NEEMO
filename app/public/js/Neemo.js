@@ -152,7 +152,7 @@ Neemo.modules.socket = function(neemo) {
           } else if (data.type=='downvote'){
               that._bus.fireEvent(new Neemo.env.events.PointNotice({
                   title: "you downvoted an existing identification",
-                  points: -2
+                  points: -4
               }));
           }
         }
