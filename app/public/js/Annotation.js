@@ -16,6 +16,7 @@ Neemo.modules.Annotation = function(neemo) {
       this.width = opt.width ? opt.width : 160;
       this.height = opt.height ? opt.height : 100;
       this.category = opt.category;
+      this.hideCategory = opt.hideCategory;
       this.transitionSpeed = 250;
     },
     empty: function(){
@@ -63,9 +64,12 @@ Neemo.modules.Annotation = function(neemo) {
       this.$el.find('.agree').hide();
       this.$el.find('.disagree').hide();
       this.$el.addClass("region_" + this.region);
+
+      if (this.hideCategory) this.$el.find('.category').hide();
       this.setCategory(this.category);
 
       this._bindEvents();
+
       var that = this;
       // We create the selection window and place it over the image
       $region.append(this.$el);
@@ -74,10 +78,10 @@ Neemo.modules.Annotation = function(neemo) {
       var left = this.x - (this.width / 2);
       var top  = this.y - (this.height / 2);
 
-      this.$el.css({left:0, top:0, height:0, width:0}); // initial position
+      this.$el.css({left:left, top:top, width:this.width, height:this.height}); // initial position
 
       // Now we just move the window to its place
-      this.$el.animate({width:this.width, height:this.height, opacity:1, left:left, top:top}, 200);
+      this.$el.animate({width:this.width, height:this.height, opacity:1, left:left, top:top}, 500);
 
       if (!burn){
         this.$el.addClass("draggable");

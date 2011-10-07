@@ -44,7 +44,7 @@ Neemo.modules.DataLayer = function(neemo) {
             categoryName = "other";
           }
 
-          var selection = new neemo.ui.Annotation.Engine(that._bus, that._api, {x:left, y:top, category: categoryName });
+          var selection = new neemo.ui.Annotation.Engine(that._bus, that._api, {x:left, y:top });
           selection.start($selectedRegion);
           selection.enableSubmit();
         }
@@ -223,6 +223,8 @@ Neemo.modules.DataLayer = function(neemo) {
 
     addSelectWindow: function(opt) {
         var selectedRegion = $(".image.selected");
+        opt = $.extend(opt, {hideCategory:true});
+        console.log(opt);
         var selection = new neemo.ui.Annotation.Engine(this._bus, this._api, opt);
         selection.start(selectedRegion);
         selection.enableSubmit();
