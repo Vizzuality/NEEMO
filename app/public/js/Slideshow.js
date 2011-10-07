@@ -235,18 +235,12 @@ Neemo.modules.Slideshow = function(neemo) {
       c.html('<span class="count">'+value+'</span>'+name+'');
     },
     incrCategoryValue: function(id, name, value){
-        var c = this._getCategory(id),
-            v = c.find('.count');
-        if (v.length > 0){
-            var new_value = value + parseInt(v.text());
-            c.html('<span class="count">'+new_value+'</span>'+name+'');
-        } else {
-            c.html('<span class="count">'+value+'</span>'+name+'');
-        }
+        var c = this._getCategory(id).find('.count');
+        c.text(value + parseInt(c.text()));
         /* Just a highlighting function I tossed in for now, will remove */
-        v = c.find('.count');
-        $(v).addClass('highlight');
-        $(v).animate({
+        //v = c.find('.count');
+        $(c).addClass('highlight');
+        $(c).animate({
             opacity: 0.95,
         }, 2000, function() {
             $(this).removeClass('highlight');
@@ -267,6 +261,10 @@ Neemo.modules.Slideshow = function(neemo) {
                 '<div class="depth-line"></div>' +
                 '<aside> '+
                     '<ul> '+
+                    '  <li class="coral"><span class="count">0</span>coral</li> '+
+                    '  <li class="barrel"><span class="count">0</span>barrel</li> '+
+                    '  <li class="gorgonian"><span class="count">0</span>gorg.</li> '+
+                    '  <li class="other"><span class="count">0</span>other</li> '+
                     '</ul> '+
                     '<a href="#" class="next"><div class="icon"></div>Next</a> '+
                '</aside>' +
