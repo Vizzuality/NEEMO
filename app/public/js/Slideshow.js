@@ -139,8 +139,14 @@ Neemo.modules.Slideshow = function(neemo) {
       this._bindKeyboard();
     },
     _repositionPanels: function() {
-      var left = $("#slideshow div.selected").offset().left - ($(".info").width() + 20 );
+      var left  = $("#slideshow div.selected").offset().left - ($(".info").width() + 20 );
+
+      var depthLeft = $("#slideshow div.selected").offset().left + ($("#slideshow .selected").width() + 20 );
+      var depthTop = $("#slideshow div.selected").offset().top + 20 ;
+      $(".depth").css({top:depthTop, left:depthLeft });
+
       if (left > 0) $(".info").stop().animate({left:left }, 500);
+      $(".depth").stop().animate({opacity:1}, 500);
     },
     addRegion: function(url, id){
       var that = this;
@@ -153,9 +159,9 @@ Neemo.modules.Slideshow = function(neemo) {
           }
 
           $(Region.getImage()).click(function(e) {
-            if($(this).parent().parent('.selected').length > 0){
-              that._bus.fireEvent(new Neemo.env.events.ImageClick(e));
-            }
+            //if($(this).parent().parent('.selected').length > 0){
+            that._bus.fireEvent(new Neemo.env.events.ImageClick(e));
+            //}
           });
           Region.start();
           this._regions[id] = Region;

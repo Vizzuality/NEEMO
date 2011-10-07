@@ -99,6 +99,7 @@ Neemo.modules.UserProfile = function(neemo) {
               '<span class="level"></span>'+
               '<ul>'+
               '</ul>'+
+              '<a href="/ranking.html">'+
               '<div id="rank-box">'+
               '  <div class="header">'+
               '    <div class="icon trophee"></div>'+
@@ -108,7 +109,8 @@ Neemo.modules.UserProfile = function(neemo) {
               '      <div class="line"></div>'+
               '    </div>'+
               '  </div>'+
-              '</div>';
+              '</div>'+
+              '</a>';
     }
   }
   );
