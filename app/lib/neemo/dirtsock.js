@@ -122,8 +122,13 @@ exports.start = function(io, cartodb, store) {
                 var body = {q: query}
                 cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null);
                 delete data['auth'];
-                console.log(data);
                 io.sockets.in(data.region).emit('region-new-data', data);
+                
+                var query = "INSERT INTO neemo_activity (user_id, action, title, points) VALUES " +
+                                "('"+data.username+"','annotation','"+data.category+"',3); "+
+                            "UPDATE neemo_users SET user_score = user_score + 3 WHERE user_id = '"+data.username+"'; ";
+                var body = {q: query}
+                cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null);
             }
         });
     });
