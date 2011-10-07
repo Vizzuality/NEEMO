@@ -89,7 +89,9 @@ Neemo.modules.DataLayer = function(neemo) {
                 var activeRegion = $("#region_" + data.region);
                 var annotation = new neemo.ui.Annotation.Engine(that._bus, that._api, data);
                 annotation.start(activeRegion, true);
-                annotation.enableVote();
+                if (!data.mine){
+                   annotation.enableVote();
+                }
                 that._annotations.push(annotation);
             }
         }
