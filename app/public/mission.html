@@ -40,12 +40,6 @@
 
           $("aside li").live("click", help.open);
 
-          $(window).resize(function() {
-            var left = $("#slideshow").offset().left - ($(".info").width() + 137);
-            if (left > 0) {
-            $(".info").stop().animate({left:left }, 500);
-            }
-            });
           });
 </script>
 

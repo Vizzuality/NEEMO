@@ -87,6 +87,9 @@ Neemo.modules.Slideshow = function(neemo) {
         }
       );
 
+      setTimeout(this._repositionPanels, 500);
+      $(window).resize(this._repositionPanels);
+
     },
     _bindDisplay: function(display, text) {
       var that = this;
@@ -111,6 +114,10 @@ Neemo.modules.Slideshow = function(neemo) {
         }));
       this._bindNav(new neemo.ui.Slideshow.Nav());
       this._bindEvents();
+    },
+    _repositionPanels: function() {
+      var left = $("#slideshow").offset().left - ($(".info").width() + 137);
+      if (left > 0) $(".info").stop().animate({left:left }, 500);
     },
     addRegion: function(url, id){
       var that = this;
@@ -280,6 +287,7 @@ Neemo.modules.Slideshow = function(neemo) {
       this._super($('<div class="temp_nav">'));
       this.getElement().html(this._html());
       $('body').append(this.getElement());
+
       this._next;
       this._previous;
     },
