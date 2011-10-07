@@ -31,8 +31,14 @@ Neemo.modules.Annotation = function(neemo) {
         that.remove();
       });
 
-      this.$el.find('.close').click(function(){
-        that.remove();
+      this.$el.find('.close').click(function() { that.remove(); });
+
+      this.$el.find('.agree').click(function(){
+        // TODO
+      });
+
+      this.$el.find('.disagree').click(function(){
+        // TODO
       });
     },
     remove: function(){
@@ -74,9 +80,9 @@ Neemo.modules.Annotation = function(neemo) {
       this.$el.animate({width:this.width, height:this.height, opacity:1, left:left, top:top}, 200);
 
       if (!burn){
-          this.$el.addClass("draggable");
-          this.$el.draggable({ handle:"controls", containment: 'parent', stop: function(e) { that.onDragEnd(); } });
-          this.$el.resizable({ containment: 'parent', minWidth: 80, minHeight: 18, handles: 'nw, se' });
+        this.$el.addClass("draggable");
+        this.$el.draggable({ handle:"controls", containment: 'parent', stop: function(e) { that.onDragEnd(); } });
+        this.$el.resizable({ containment: 'parent', minWidth: 80, minHeight: 18, handles: 'nw, se', stop: function(e) { that.onDragEnd(); } });
       }
     },
     clear: function($region){
@@ -90,7 +96,6 @@ Neemo.modules.Annotation = function(neemo) {
     },
     onDragEnd: function(){
       this.updateCoordinates();
-      //console.log(this.category, this.x, this.y);
     },
     enableSubmit: function(){
       this.$el.find('.submit').show();

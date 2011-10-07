@@ -31,8 +31,6 @@ Neemo.modules.Slideshow = function(neemo) {
           var old_region = that._region;
           that._region = event.getRegion();
 
-          //$("#slideshow div.selected").removeClass("selected");
-
           var url = that._base_image_url;
           if (old_region < that._region){
               that.scrollForward(url, event.getRegion());
@@ -126,7 +124,7 @@ Neemo.modules.Slideshow = function(neemo) {
 
           $(Region.getImage()).click(function(e) {
             if($(this).parent().parent('.selected').length > 0){
-                that._bus.fireEvent(new Neemo.env.events.ImageClick(e));
+              that._bus.fireEvent(new Neemo.env.events.ImageClick(e));
             }
           });
           Region.start();
@@ -334,6 +332,7 @@ Neemo.modules.slideshowUtil = function(neemo) {
     /* contain DOM specific functions that don't effect the JS organization of the Display.
      * All used by globally directing functions
      */
+
     neemo.slideshowUtil = {}
 
     neemo.slideshowUtil.config = {
@@ -357,6 +356,7 @@ Neemo.modules.slideshowUtil = function(neemo) {
     };
     neemo.slideshowUtil.backSlideEffect = function(){
         var that = neemo.slideshowUtil.config;
+      console.log(that, this);
         $("#slideshow div.selected").removeClass("selected");
         $("#slideshow div.queued").addClass('selected');
         $("#slideshow div.selected").removeClass("queued");
