@@ -14,8 +14,9 @@ Neemo.modules.Annotation = function(neemo) {
       this.y = opt.y;
       this.width = opt.width ? opt.width : 160;
       this.height = opt.height ? opt.height : 100;
-      this.name = opt.name;
+      this.category = opt.category;
       this.transitionSpeed = 250;
+      console.log(opt);
     },
     empty: function(){
       this._display.getElement().remove();
@@ -26,11 +27,9 @@ Neemo.modules.Annotation = function(neemo) {
       , bus = this._bus;
 
       this.$el.find('.submit').click(function(){
-        that._bus.fireEvent(new Neemo.env.events.SubmitData({category: that.name, x: that.x, y: that.y, width: that.$el.width(), height: that.$el.height()}));
+        that._bus.fireEvent(new Neemo.env.events.SubmitData({category: that.category, x: that.x, y: that.y, width: that.$el.width(), height: that.$el.height()}));
         that.remove();
-        //this.$el.animate({width:200, height:200, opacity:1, left:left, top:top}, 200);
       });
-
     },
     remove: function(){
         this.$el.draggable("destroy");
@@ -53,7 +52,7 @@ Neemo.modules.Annotation = function(neemo) {
       this.$el.find('.close').hide();
       this.$el.find('.agree').hide();
       this.$el.find('.disagree').hide();
-      this.setName(this.name);
+      this.setCategory(this.category);
 
       this._bindEvents();
       var that = this;
@@ -64,7 +63,6 @@ Neemo.modules.Annotation = function(neemo) {
       var left = this.x - (this.width / 2);
       var top  = this.y - (this.height / 2);
 
-      //console.log("Drawing a selection for a " + this.name  + " "  + left + " " + top );
       this.$el.css({left:0, top:0, height:0, width:0}); // initial position
 
       // Now we just move the window to its place
@@ -87,7 +85,7 @@ Neemo.modules.Annotation = function(neemo) {
     },
     onDragEnd: function(){
       this.updateCoordinates();
-      //console.log(this.name, this.x, this.y);
+      //console.log(this.category, this.x, this.y);
     },
     enableSubmit: function(){
       this.$el.find('.submit').show();
@@ -97,8 +95,8 @@ Neemo.modules.Annotation = function(neemo) {
       this.$el.find('.agree').show();
       this.$el.find('.disagree').show();
     },
-    setName: function(name){
-      this.$el.find('.name').text(name);
+    setCategory: function(category){
+      this.$el.find('.category').text(category);
     }
   }
   );
@@ -111,7 +109,7 @@ Neemo.modules.Annotation = function(neemo) {
     _html: function() {
       return   '<div class="selection_window">'+
                    '<div class="controls">'+
-                     '<div class="name"></div>' +
+                     '<div class="category"></div>' +
                      '<a href="#" class="submit">Submit</a>'+
                      '<a href="#" class="close">x</a>' +
                      '<a href="#" class="agree"><div class="icon"></div></a>' +

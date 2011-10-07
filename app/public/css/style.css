@@ -558,7 +558,7 @@ nav ul {
   background:rgba(0,0,0,.6);
 }
 
-.selection_window .controls .name,
+.selection_window .controls .category,
 .selection_window .controls a {
   color:#fff;
   font-family:"EurostileLTStd-Demi";
@@ -709,6 +709,7 @@ nav ul {
   text-transform:uppercase;
   text-align:center;
   background: url(/images/border.png) repeat-x left bottom;
+  cursor:pointer;
 }
 
 #slideshow .image aside ul li .count {
