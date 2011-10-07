@@ -64,6 +64,15 @@ Neemo.modules.DataLayer = function(neemo) {
       var that = this
       , bus = this._bus;
       bus.addHandler(
+        'HideSelector',
+        function(data){
+          that._radial_selector.closeRadialSelector();
+        }
+      );
+
+      var that = this
+      , bus = this._bus;
+      bus.addHandler(
         'ChangeRegion',
         function(data){
           neemo.log.info('Clearing annotations');
