@@ -28,9 +28,9 @@ Neemo.modules.DataLayer = function(neemo) {
 
           var $selectedRegion = $(".image.selected");
 
-          if ((that.mouseX < $selectedRegion.offset().left) || 
-              (that.mouseX > $selectedRegion.offset().left + $selectedRegion.width()) || 
-              (that.mouseY > $selectedRegion.offset().top + $selectedRegion.height()) || 
+          if ((that.mouseX < $selectedRegion.offset().left) ||
+              (that.mouseX > $selectedRegion.offset().left + $selectedRegion.width()) ||
+              (that.mouseY > $selectedRegion.offset().top + $selectedRegion.height()) ||
                   (that.mouseY < $selectedRegion.offset().top)) {
             return
           }
@@ -103,11 +103,13 @@ Neemo.modules.DataLayer = function(neemo) {
       );
     },
     clearAnnotations: function(){
-        while(this._annotations.length > 0){
-            var t = this._annotations.pop();
-            t.remove();
-            t = null;
-        }
+      while(this._annotations.length > 0){
+        var t = this._annotations.pop();
+        t.remove();
+        t = null;
+      }
+
+      $(".region_undefined").fadeOut(250, function() { $(this).remove();});
     },
     _bindDisplay: function(display, text) {
       var that = this;

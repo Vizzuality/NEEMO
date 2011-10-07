@@ -28,10 +28,12 @@ Neemo.modules.Slideshow = function(neemo) {
         if (e.keyCode == 39) { // right arrow
           if (that._nextButton == 1){
             that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that._region + 1}));
+            that._bus.fireEvent(new Neemo.env.events.HideSelector());
           }
         } else if (e.keyCode == 37) { // left arrow
           if (that._previousButton == 1){
             that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that._region - 1}));
+            that._bus.fireEvent(new Neemo.env.events.HideSelector());
           }
         }
       });

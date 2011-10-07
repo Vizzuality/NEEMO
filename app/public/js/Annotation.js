@@ -97,6 +97,7 @@ Neemo.modules.Annotation = function(neemo) {
       }
     },
     clear: function($region){
+      alert('a');
       this.$el.fadeOut(this.transitionSpeed, function() {
         $(this).clear();
       });
