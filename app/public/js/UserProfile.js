@@ -28,8 +28,32 @@ Neemo.modules.UserProfile = function(neemo) {
           var s = ''+data.user_rank;
           while (s.length < 4) s = '0'+s;
           that._display.getRank().text("#"+s);
+          for (i in data.user_latest){
+              that.newPointNotice(data.user_latest[i]);
+          }
         }
       );
+      bus.addHandler(
+        'PointNotice',
+        function(event){
+          data = event.getData();
+          that.newPointNotice(data);
+        }
+      );
+            
+            
+            
+    },
+    newPointNotice: function(data){
+      var txt = "+"+data.points;
+      if (data.points < 0){
+          txt = "-"+data.points;
+      }
+      this._display.getActivity().prepend('<li><div class="point">'+txt+'</div> <p>'+data.title+'</p></li>');
+      var lis = this._display.getActivity().find('li');
+      if (lis.length == 6){
+          $(lis[5]).remove();
+      }
     },
     _bindDisplay: function(display, text) {
       var that = this;
@@ -74,11 +98,6 @@ Neemo.modules.UserProfile = function(neemo) {
               '</div>'+
               '<span class="level"></span>'+
               '<ul>'+
-              '  <li><div class="point">+5</div> <p>you have found a new coral occurence</p></li>'+
-              '  <li><div class="point">+5</div> <p>you have found a new coral occurence</p></li>'+
-              '  <li><div class="point">+1</div> <p>you have confirmed a  coral occurence<p></li>'+
-              '  <li><div class="point">+5</div> <p>you have found a new coral occurence</p></li>'+
-              '  <li><div class="point">+5</div> <p>you have found a new coral occurence</p></li>'+
               '</ul>'+
               '<div id="rank-box">'+
               '  <div class="header">'+

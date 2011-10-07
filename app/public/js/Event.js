@@ -189,6 +189,23 @@ Neemo.modules.events = function(neemo) {
   neemo.events.SubmitData.TYPE = 'submit_data';
   
   /**
+  * New user point update.
+  */
+  neemo.events.PointNotice = neemo.events.Event.extend(
+    {
+    init: function(data, action) {
+      this._super('PointNotice', action);
+      this._data = data;
+    },
+
+    getData: function() {
+      return this._data;
+    },
+  }
+  );
+  neemo.events.PointNotice.TYPE = 'point_notice';
+  
+  /**
   * The event bus.
   */
   neemo.events.Bus = function() {

@@ -95,7 +95,6 @@ Neemo.modules.socket = function(neemo) {
          that._bus.fireEvent(new Neemo.env.events.RegionOverview(data));
       });
       this.socket.on('region-new-data', function (data) {
-        console.log('new Data!');
         if(data.region == that.region){
             that._bus.fireEvent(new Neemo.env.events.AddPoints(data));
         }
@@ -115,6 +114,10 @@ Neemo.modules.socket = function(neemo) {
           data.username = that._username;
           data.auth = that._socketAuth;
           that.socket.emit('submit-data', data);
+          that._bus.fireEvent(new Neemo.env.events.PointNotice({
+              title: "you have found a new "+data.category+" occurence",
+              points: 3
+          }));
         }
       );
 
