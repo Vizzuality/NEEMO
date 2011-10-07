@@ -7,4 +7,5 @@ cartodb = {
     private_query     : 'SELECT ST_SRID(the_geom) FROM yourtable LIMIT 1',
     consumer_key      : 'your cartodb api key',
     consumer_secret   : 'your cartodb api secret',
+    callback          : "http://yoururl/oauth/callback"
 }

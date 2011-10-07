@@ -1,0 +1,3 @@
+neemo = {
+    secret          : 'yoursupersecret',
+}

@@ -148,6 +148,7 @@ Scoreboard.modules.socket = function(scoreboard) {
       this.socket.on('scoreboard-update',function(data){
         //{"time":0.002,"total_rows":4,"rows":[{"user_id":"unknooooown","user_rank":4,"user_lvl":1},{"user_id":"anon","user_rank":3,"user_lvl":2},{"user_id":"capndave","user_rank":2,"user_lvl":4},{"user_id":"andrewxhill","user_rank":1,"user_lvl":11}]}
         scoreboard.log.info('new rankings!');
+        console.log(data);
         that._bus.fireEvent(new scoreboard.events.UpdateRankingList(data));
       });
     },
