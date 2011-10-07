@@ -11,7 +11,7 @@ exports.start = function(io, cartodb, store) {
     function handleRankings() {
         var protected_request = cartodb.api_url;
         var offset = pageSize * (page - 1)
-        var query = "SELECT user_id, user_rank, user_lvl, poll FROM neemo_scores LIMIT "+pageSize+" OFFSET "+offset+";";
+        var query = "SELECT user_id, user_rank, user_lvl, user_score, user_progress FROM neemo_scores LIMIT "+pageSize+" OFFSET "+offset+";";
         var body = {q: query}
         cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function (error, data, response) {
             data = JSON.parse(data);
@@ -26,7 +26,8 @@ exports.start = function(io, cartodb, store) {
                 var u = {
                     user_id: data.rows[i].user_id,
                     user_rank: data.rows[i].user_rank,
-                    user_lvl: data.rows[i].user_lvl
+                    user_lvl: data.rows[i].user_lvl,
+                    user_lvl: data.rows[i].user_score
                 }
                 output.ranks[data.rows[i].poll] = u;
             }
@@ -41,7 +42,7 @@ exports.start = function(io, cartodb, store) {
             var pageSize = 15,
                 protected_request = cartodb.api_url,
                 offset = pageSize * (data.page - 1),
-                query = "SELECT user_id, user_rank, user_lvl FROM neemo_scores ORDER BY user_rank ASC LIMIT "+pageSize+" OFFSET "+offset+";",
+                query = "SELECT user_id, user_rank, user_lvl, user_score, user_progress FROM neemo_users ORDER BY user_rank ASC LIMIT "+pageSize+" OFFSET "+offset+";",
                 body = {q: query};
             
             socket.join("scoreboard-"+data.page);
