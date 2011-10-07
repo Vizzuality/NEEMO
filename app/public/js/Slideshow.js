@@ -43,17 +43,16 @@ Neemo.modules.Slideshow = function(neemo) {
         'RegionOverview',
         function(data){
             data = data.getData();
-            var t = '' + data.meters_left;
+            var t = '' + data.meters;
             while (t.length < 5) t = '0'+t;
 
             $('.depth h2').text(t);
 
-            if (that._regions[data.region_id]){
-                var Region = that._regions[data.region_id];
-                for (i in data.categories){
-                    if (data.categories[i].count > 0){
-                        Region.setCategoryValue(data.categories[i].id, data.categories[i].name, data.categories[i].count);
-                    }
+            if (that._regions[data.region]){
+                var Region = that._regions[data.region];
+                //Region.resetCounts();
+                for (i in data.annotations){
+                    Region.setCategoryValue(data.annotations[i].name, data.annotations[i].name, data.annotations[i].total);
                 }
             }
         }
@@ -64,7 +63,9 @@ Neemo.modules.Slideshow = function(neemo) {
             data = data.getData();
             if (that._regions[data.region]){
                 var Region = that._regions[data.region];
-                Region.incrCategoryValue(data.category, data.category, 1);
+                if (! data.stored){
+                    Region.incrCategoryValue(data.category, data.category, 1);
+                }
             }
         }
       );
@@ -218,8 +219,8 @@ Neemo.modules.Slideshow = function(neemo) {
       this._image.onload = function() {
       }
     },
-    _getCategory: function(id){
-      var x = $(this.getElement()).find('.' + id);
+    _getCategoryCount: function(id){
+      var x = $(this.getElement()).find('.' + id +' .count');
       if (x.length == 0){
         x = this._addCategory(id);
       }
@@ -231,11 +232,11 @@ Neemo.modules.Slideshow = function(neemo) {
       return newCategory
     },
     setCategoryValue: function(id, name, value){
-      var c = this._getCategory(id);
-      c.html('<span class="count">'+value+'</span>'+name+'');
+      var c = this._getCategoryCount(id);
+      c.text(value);
     },
     incrCategoryValue: function(id, name, value){
-        var c = this._getCategory(id).find('.count');
+        var c = this._getCategoryCount(id);
         c.text(value + parseInt(c.text()));
         /* Just a highlighting function I tossed in for now, will remove */
         //v = c.find('.count');
@@ -250,6 +251,11 @@ Neemo.modules.Slideshow = function(neemo) {
     focus: function(){
       $("#slideshow div.selected").removeClass("selected");
       $(this.getElement()).addClass('selected');
+      this.resetCounts();
+    },
+    resetCounts: function(){
+        console.log('reset');
+        $(this.getElement()).find('.count').each().text(0);
     },
     queue: function(){
         $("#slideshow div.queued").removeClass("queued");

@@ -47,7 +47,7 @@ exports.start = function(io, cartodb, store) {
                             user_pts: 1,
                             user_progress: 1,
                             user_latest: [
-                                {points: "+1", title: "Welcome to NEEMO!"}
+                                {points: 1, title: "welcome to neemo!"}
                             ]
                         };
                         socket.emit('user-metadata', user_profile);
@@ -62,7 +62,7 @@ exports.start = function(io, cartodb, store) {
                             user_pts: result.rows[0].user_score,
                             user_progress: result.rows[0].user_progress,
                             user_latest: [
-                                {points: "+0", title: "Welcome back to NEEMO!"}
+                                {points: 0, title: "welcome back to neemo!"}
                             ]
                         }
                         socket.emit('user-metadata', user_profile);
@@ -71,10 +71,25 @@ exports.start = function(io, cartodb, store) {
             }
         });
         socket.on('join', function (data) {
+            socket.leave((data.region-1));
+            socket.leave((data.region+1));
             socket.join(data.region);
             /* Send a CartoDB SQL request here
              *
              */
+            //TODO: Create a view on CartoDB that gives updated summary stats for each region
+            //placeholder
+            socket.emit('region-metadata', {
+                region: data.region,
+                meters: (400 - (4*data.region)),
+                annotations: [
+                    {name: 'gorgonian', total: 8 + Math.floor(Math.random()*10)},
+                    {name: 'coral', total: 15 + Math.floor(Math.random()*10)},
+                    {name: 'barrel', total: 10 + Math.floor(Math.random()*10)},
+                    {name: 'other', total: 10 + Math.floor(Math.random()*10)}
+                ]
+            });
+            
             var protected_request = cartodb.api_url;
             var query = "SELECT category, click_x, click_y, width, height, region, user_id, upvotes, downvotes FROM neemo WHERE region = '"+data.region+"' ORDER BY created_at DESC LIMIT 10";
             var body = {q: query}
@@ -89,14 +104,15 @@ exports.start = function(io, cartodb, store) {
                         width: data.rows[i].width,
                         height: data.rows[i].height,
                         region: data.rows[i].region,
-                        username: data.rows[i].user_id 
+                        username: data.rows[i].user_id,
+                        stored: true
                     }
                     socket.emit('region-new-data', out);
                 }
             });
 	    });
         socket.on('leave', function (data) {
-            socket.leave('/'+data.region)
+            socket.leave('/'+data.region);
         });
 	    socket.on('submit-data', function (data) {
             if (validateSession(data.auth)){
