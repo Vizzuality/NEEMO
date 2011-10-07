@@ -295,9 +295,9 @@ nav {
   z-index:2000;
 }
 
-body.ranking nav {
+/*body.ranking nav {
   margin: 0 0 0 -300px;
-}
+} */
 
 nav a {
   display:block;
