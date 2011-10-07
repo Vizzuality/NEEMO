@@ -134,7 +134,7 @@ jQuery.fn.helpShortcuts = function(opt) {
     var c = $asideLi.attr("class");
     var $species = $el.find("div." + c).parents("li")
 
-    if ($species.index() > 0) {
+    if ($species.index() >= 0) {
       $el.find(".inner").scrollTo($species.index() * panelWidth, speed, {easing:easingMethod} );
       _updateHeader($species);
     }

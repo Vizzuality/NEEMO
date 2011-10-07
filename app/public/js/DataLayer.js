@@ -76,7 +76,7 @@ Neemo.modules.DataLayer = function(neemo) {
     },
   }
   );
-  
+
   neemo.ui.DataLayer.RadialSelector = neemo.ui.Display.extend(
     {
     init: function(bus) {
@@ -86,7 +86,7 @@ Neemo.modules.DataLayer = function(neemo) {
         this._super(this.radial_selector);
         this.canvasWidth  = 275;
         this.canvasHeight = 275;
-        
+
         this.sectorNum = 8;
         this.sector;
         this.sectors = [];
@@ -101,7 +101,7 @@ Neemo.modules.DataLayer = function(neemo) {
         this.selectedOption;
         this.selectedSector;
         this.coordinates = {};
-        
+
         this._annotations = [];
     },
     start: function(){
@@ -116,12 +116,12 @@ Neemo.modules.DataLayer = function(neemo) {
         this.options = [
             { action: function(e) { that.selectOption(e, "barrel"); }, text: "BARREL\nSPONGES", angle: 0, cX: that.centerX - 50, cY: 0},
             { action: function(e) { that.selectOption(e, "coral"); }, text: "CORAL HEAD", angle: 315, cX: this.centerX - 80, cY: that.cy - 50},
-            { action: function(e) { that.selectOption(e, "gorgonians"); }, text: "GORGONIANS", angle: -90, cX: 0, cY: that.cy - 75}, null, null,
+            { action: function(e) { that.selectOption(e, "gorgonian"); }, text: "GORGONIAN", angle: -90, cX: 0, cY: that.cy - 75}, null, null,
             //{ action: that.closeRadialSelector(), text: "CLOSE", angle: 315, cX: -60, cY: 60}, null,
             { action: function(){that.closeRadialSelector()}, text: "CLOSE", angle: 315, cX: -60, cY: 60}, null,
             { action: function(e) { that.selectOption(e, "other"); }, text: "OTHER", angle: 45, cX: 60, cY: 60}, null
         ];
-        
+
 
         /* Drawing of the radial selector */
         for (i = 0; i <= this.sectorNum - 1; i++) {
@@ -175,27 +175,27 @@ Neemo.modules.DataLayer = function(neemo) {
           this.toggleRadialSelector(e);
         }
     },
-    
+
     /* Sector events */
     onFocusSector: function(event) {
         this.animate({ opacity: this.sectorOpacityActive}, 250);
     },
-  
+
     onBlurSector: function(event) {
         this.animate({ opacity: this.sectorOpacity}, 250);
     },
-  
+
     addSelectWindow: function(opt) {
         var selectedRegion = $(".image.selected");
         var selection = new neemo.ui.Annotation.Engine(this._bus, this._api, opt);
         selection.start(selectedRegion);
         selection.enableSubmit();
-        
+
         this._annotations.push(selection);
-        
+
         this.closeRadialSelector();
     },
-  
+
     selectOption: function(e, name) {
         e.preventDefault();
         e.stopPropagation();

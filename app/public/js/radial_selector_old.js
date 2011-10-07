@@ -74,7 +74,7 @@ $(function() {
   var options = [
     { action: function(e) { selectOption(e, "barrel"); }, text: "BARREL\nSPONGES", angle: 0, cX: centerX - 50, cY: 0},
     { action: function(e) { selectOption(e, "coral"); }, text: "CORAL HEAD", angle: 315, cX: centerX - 80, cY: cy - 50},
-    { action: function(e) { selectOption(e, "gorgonians"); }, text: "GORGONIANS", angle: -90, cX: 0, cY: cy - 75}, null, null,
+    { action: function(e) { selectOption(e, "gorgonian"); }, text: "GORGONIANS", angle: -90, cX: 0, cY: cy - 75}, null, null,
     { action: closeRadialSelector, text: "CLOSE", angle: 315, cX: -60, cY: 60}, null,
     { action: function(e) { selectOption(e, "other"); }, text: "OTHER", angle: 45, cX: 60, cY: 60}, null
   ];
