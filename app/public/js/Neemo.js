@@ -78,6 +78,7 @@ Neemo.modules.socket = function(neemo) {
       this._cookie = document.cookie.split(';');
       this._socketAuth = this._cookie[0].split('=')[1];
       this._username = this._cookie[1].split('=')[1];
+      this._first = true;
     },
     _setupSockets: function(){
       var that = this;
@@ -88,7 +89,9 @@ Neemo.modules.socket = function(neemo) {
       this.socket.on('user-metadata',function(data){
         neemo.log.info('recieved user profile for: ' + data.user_id);
         that._id = data.user_id;
-        that._bus.fireEvent(new Neemo.env.events.UpdateUserProfile(data));
+        if (that._first) {
+            that._bus.fireEvent(new Neemo.env.events.UpdateUserProfile(data));
+        }
       });
       this.socket.on('region-metadata', function (data) {
          neemo.log.info('socket metadata received');
