@@ -30,12 +30,16 @@ Neemo.modules.Annotation = function(neemo) {
         that._bus.fireEvent(new Neemo.env.events.SubmitData({category: that.category, x: that.x, y: that.y, width: that.$el.width(), height: that.$el.height()}));
         that.remove();
       });
+
+      this.$el.find('.close').click(function(){
+        that.remove();
+      });
     },
     remove: function(){
         this.$el.draggable("destroy");
         this.$el.resizable("destroy");
         if(this._display){
-            $(this._display.getElement()).remove();
+            $(this._display.getElement()).fadeOut(this.transitionSpeed, function() { $(this).remove();});
         }
         this._display = null;
     },
