@@ -18,7 +18,7 @@ Neemo.modules.Slideshow = function(neemo) {
       this._regions = {};
       this._forwardBuffer = 4;
       this._min = 1;
-      this._max = 8;
+      this._max = window.tracks[this._track_key].length - 1;
       this._previousButton = 1; //used to enable (1) and disable (0) the nav buttons
       this._nextButton = 1; //used to enable (1) and disable (0) the nav buttons
     },
@@ -68,7 +68,8 @@ Neemo.modules.Slideshow = function(neemo) {
         'RegionOverview',
         function(data){
             data = data.getData();
-            var t = '' + data.meters;
+            
+            var t = '' + (4*(window.tracks[that._track_key].length - (data.region+1) ));
             while (t.length < 5) t = '0'+t;
 
             $('.depth h2').text(t);
@@ -242,11 +243,11 @@ Neemo.modules.Slideshow = function(neemo) {
       this.id = id;
       this._bus = bus;
       this._image = new Image();
+      this._track_key = 1;
       //this._image.src = [url, id, '.jpg'].join('');
       
-              //update use region_key to increment the url in the tracks track object
-      console.log( [url, window.tracks[this._track_key][id]].join(''));
-      this._image.src = [url, tracksthis._track_key1][id]].join('');
+      //update use region_key to increment the url in the tracks track object
+      this._image.src = [url, window.tracks[this._track_key][id]].join('');
       this._super(this._html());
 
       // Adds region_id to the element
@@ -415,7 +416,6 @@ Neemo.modules.slideshowUtil = function(neemo) {
     };
     neemo.slideshowUtil.backSlideEffect = function(){
         var that = neemo.slideshowUtil.config;
-      console.log(that, this);
         $("#slideshow div.selected").removeClass("selected");
         $("#slideshow div.queued").addClass('selected');
         $("#slideshow div.selected").removeClass("queued");

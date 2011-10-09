@@ -32,8 +32,7 @@ module.exports = function(opts){
     var cas_middleware = function(req, res, next){
         var ticket = req.param('ticket'),
             route  = req.url;
-        
-        if (route.split('.ht').length > 1){
+        if (route.split('.ht').length > 1 || route == '/'){
             if (req.session){
                 res.cookie('socketAuth', req.session.sid, { expires: new Date(Date.now() + 900000), httpOnly: false });
                 res.cookie('neemoUser', req.session.username, { expires: new Date(Date.now() + 900000), httpOnly: false });

@@ -76,7 +76,8 @@ Neemo.modules.socket = function(neemo) {
       this.socket = io.connect();
       this._bindEvents();
       this._setupSockets();
-      this._cookie = document.cookie.split(';');
+      this._cookie = document.cookie.split('; ');
+      
       for (i in this._cookie){
           var tmp = this._cookie[i].split('=');
           if (tmp[0]=='socketAuth'){
@@ -101,14 +102,15 @@ Neemo.modules.socket = function(neemo) {
         if (that._first) {
             that._bus.fireEvent(new Neemo.env.events.UpdateUserProfile(data));
         }
-        if (that._region==-1){
+        if (that.region==-1){
             that.region == data.region;
             that.intRegion = window.tracks[1].indexOf(data.region);
-            this._bus.fireEvent(new neemo.events.ChangeRegion({region: intRegion}));
+            that._bus.fireEvent(new neemo.events.ChangeRegion({region: that.intRegion}));
         }
       });
       this.socket.on('region-metadata', function (data) {
          neemo.log.info('socket metadata received');
+         data.region = window.tracks[1].indexOf(data.region);
          that._bus.fireEvent(new Neemo.env.events.RegionOverview(data));
       });
       this.socket.on('region-new-data', function (data) {
