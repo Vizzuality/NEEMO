@@ -148,7 +148,7 @@ exports.start = function(io, cartodb, store) {
                 //coming from the creator
                 var key = [(new Date()).getTime(), socket.id].join('');
                 var protected_request = cartodb.api_url;
-                var query = "INSERT INTO neemo (key, category, click_x, click_y, width, height, region, user_id, upvotes, downvotes) VALUES ('"+key+"','"+data.category+"',"+data.x+","+data.y+","+data.width+","+data.height+","+data.region+",'"+data.username+"', 1, 0)";
+                var query = "INSERT INTO neemo (key, category, click_x, click_y, width, height, region, user_id, upvotes, downvotes) VALUES ('"+key+"','"+data.category+"',"+data.x+","+data.y+","+data.width+","+data.height+",'"+data.region+"','"+data.username+"', 1, 0)";
                 var body = {q: query}
                 cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null);
                 delete data['auth'];

@@ -110,7 +110,8 @@ Neemo.modules.socket = function(neemo) {
       });
       this.socket.on('region-metadata', function (data) {
          neemo.log.info('socket metadata received');
-         data.region = window.tracks[1].indexOf(data.region);
+         //data.region = window.tracks[1].indexOf(data.region);
+         data.region = that.intRegion;
          that._bus.fireEvent(new Neemo.env.events.RegionOverview(data));
       });
       this.socket.on('region-new-data', function (data) {
