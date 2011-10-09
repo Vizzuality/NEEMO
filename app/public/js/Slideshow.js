@@ -345,8 +345,7 @@ Neemo.modules.Slideshow = function(neemo) {
         $(this.getElement()).find('.'+id).removeAttr("disabled");
     },
     _html: function() {
-      return  '<a href="#" class="previous">Previous</a>' +
-                    '<a href="#" class="next">Next</a>';
+      return  false;
     }
   }
   );

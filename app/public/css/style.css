@@ -223,6 +223,7 @@ body {
 
 body.home {
   background:#071230 url(/images/home_bkg.png) no-repeat;
+  _background:-webkit-radial-gradient(30% 30%, closest-corner, #3EA99F, #29526E, #081331)
 }
 
 @font-face {
@@ -289,6 +290,11 @@ header h1.logo {
   background:url(/images/logo.png) no-repeat;
 }
 
+body.home nav {
+  left:55px;
+  margin:0;
+
+}
 nav {
   position:absolute;
   top:27px;
