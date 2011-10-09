@@ -134,8 +134,10 @@ Neemo.modules.Annotation = function(neemo) {
                      '<div class="category"></div>' +
                      '<a href="#" class="submit">Submit</a>'+
                      '<a href="#" class="close">x</a>' +
+                    '<div class="vote">'+
                      '<a href="#" class="agree"><div class="icon"></div></a>' +
                      '<a href="#" class="disagree"><div class="icon"></div></a>' +
+                    '</div>'+
                    '</div>' +
                '</div>';
     }

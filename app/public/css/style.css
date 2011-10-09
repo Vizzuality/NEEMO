@@ -604,9 +604,19 @@ nav ul {
   background:rgba(255,255,255, .3);
 }
 
+.annotation .controls .vote {
+  position:absolute;
+  bottom:0;
+  right:0;
+  width:31px;
+  overflow:hidden;
+}
+
+.annotation .controls .vote a:last-child {
+  margin:0;
+}
 .annotation .controls a.agree,
 .annotation .controls a.disagree {
-  float:right;
 }
 
 .annotation .controls a.agree .icon,
@@ -980,6 +990,33 @@ body.ranking .info {
   margin:0 28px 0 0;
 }
 
+.help .slideshow {
+
+  clear:both;
+  overflow:hidden;
+  position:relative;
+  float:left;
+  width:171px;
+  height:171px;
+  margin:0 28px 0 0;
+}
+
+.help .slideshow .slideshow_inner {
+  clear:both;
+  overflow:hidden;
+  width:171px;
+  height:171px;
+}
+
+.help .slideshow .slideshow_inner .photos {
+  width:3000px;
+}
+
+.help .slideshow .slideshow_inner img {
+  display:block;
+  float:left;
+}
+
 .help .icon.gorgonian {
   background-position: 0 -74px;
 }
@@ -994,9 +1031,6 @@ body.ranking .info {
 
 .help .icon.other {
   background-position: -172px -246px;
-}
-
-.help .species .nav.previous {
 }
 
 .help .species .nav.previous {
