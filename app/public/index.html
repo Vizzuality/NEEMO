@@ -26,8 +26,16 @@
     <script src="/js/helpers.js"></script>
     <script type="text/javascript">
       $(document).ready(function() {
-          console.log(document.cookie);
+		  
 
+	      var cookie = document.cookie.split('; ');
+	      for (i in cookie){
+	          var tmp = cookie[i].split('=');
+	          if (tmp[0]=='neemoUser'){
+				$('.mission a').text('GO TO MISSION');
+				$('.join h1').text('CONTINUE MISSION');
+	          }
+	      }
           $("nav").navigationHover();
 
           });
