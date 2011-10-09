@@ -11,7 +11,9 @@ Neemo.modules.Slideshow = function(neemo) {
       var that = this;
       this._bus = bus;
       this._api = api;
-      this._base_image_url = '/regions/';
+      this._base_image_url = 'http://neemo.org.s3.amazonaws.com/';
+      this._region_key = 0;
+      this._track_key = 1;
       this._region = 0;
       this._regions = {};
       this._forwardBuffer = 4;
@@ -27,11 +29,13 @@ Neemo.modules.Slideshow = function(neemo) {
       $(document).keyup(function(e) {
         if (e.keyCode == 39) { // right arrow
           if (that._nextButton == 1){
+              //update use region_key to increment the url in the tracks track object
             that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that._region + 1}));
             that._bus.fireEvent(new Neemo.env.events.HideSelector());
           }
         } else if (e.keyCode == 37) { // left arrow
           if (that._previousButton == 1){
+              //update use region_key to increment the url in the tracks track object
             that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that._region - 1}));
             that._bus.fireEvent(new Neemo.env.events.HideSelector());
           }
@@ -46,6 +50,7 @@ Neemo.modules.Slideshow = function(neemo) {
         function(event){
           neemo.log.info('Change Region happened, I should flip images');
 
+              //update use region_key to increment the url in the tracks track object
           var old_region = that._region;
           that._region = event.getRegion();
 
@@ -66,6 +71,7 @@ Neemo.modules.Slideshow = function(neemo) {
 
             $('.depth h2').text(t);
 
+              //update use region_key to increment the url in the tracks track object
             if (that._regions[data.region]){
                 var Region = that._regions[data.region];
                 //Region.resetCounts();
@@ -79,6 +85,7 @@ Neemo.modules.Slideshow = function(neemo) {
         'AddPoints',
         function(data){
             data = data.getData();
+              //update use region_key to increment the url in the tracks track object
             if (that._regions[data.region]){
                 var Region = that._regions[data.region];
                 if (! data.stored){
@@ -95,6 +102,7 @@ Neemo.modules.Slideshow = function(neemo) {
       );
       this._nav.getNextButton().click(function(){
           if (that._nextButton == 1){
+              //update use region_key to increment the url in the tracks track object
               that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that._region + 1}));
               that._bus.fireEvent(new Neemo.env.events.HideSelector());
 
@@ -103,6 +111,7 @@ Neemo.modules.Slideshow = function(neemo) {
       );
       this._nav.getPreviousButton().click(function(){
           if (that._previousButton == 1){
+              //update use region_key to increment the url in the tracks track object
               that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that._region - 1}));
               that._bus.fireEvent(new Neemo.env.events.HideSelector());
           }
@@ -154,6 +163,8 @@ Neemo.modules.Slideshow = function(neemo) {
           var Region = new neemo.ui.Slideshow.Region(url, id, this._bus);
 
           this._display.addRegion(Region.getElement());
+          
+              //update use region_key to increment the url in the tracks track object
           if (id < this._max){
               Region.enableNextButton();
           }
@@ -168,6 +179,9 @@ Neemo.modules.Slideshow = function(neemo) {
       }
     },
     _toggleButtons: function(id){
+        
+              //update use region_key to increment the url in the tracks track object
+              
       if (id == this._min){
           this._previousButton = 0;
       } else if (id == this._min + 1) {
@@ -226,7 +240,11 @@ Neemo.modules.Slideshow = function(neemo) {
       this.id = id;
       this._bus = bus;
       this._image = new Image();
-      this._image.src = [url, id, '.jpg'].join('');
+      //this._image.src = [url, id, '.jpg'].join('');
+      
+              //update use region_key to increment the url in the tracks track object
+      console.log( [url, window.tracks[this._track_key][id]].join(''));
+      this._image.src = [url, tracksthis._track_key1][id]].join('');
       this._super(this._html());
 
       // Adds region_id to the element

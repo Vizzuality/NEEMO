@@ -26,6 +26,7 @@ module.exports = function(opts){
     cas  = new CAS({base_url: csa.login, service: csa.service});
         //store       = new express.session.MemoryStore;
         
+    //console.log(existingtracks)
         
     /* forces CSA signin to do anything fun */
     var cas_middleware = function(req, res, next){
@@ -101,16 +102,6 @@ module.exports = function(opts){
                 }
             })
     );
-    /*
-    app.use(express.cookieParser());
-    app.use(express.session({ 
-        secret: "string",  //TODO use a real secret
-        store: store,
-        cookie: { 
-            maxAge: 60*60*24*30*1000
-        }
-    }));
-    */
     app.use('/js', express.static('./public/js'));
     app.use('/images', express.static('./public/images'));
     app.use('/css', express.static('./public/css'));
@@ -122,6 +113,43 @@ module.exports = function(opts){
 
     cartodb.start(function(){
         require('./dirtsock').start(io.listen(app), this, store);
+        
+        /*
+        eval(fs.readFileSync('./config/uploadtracks.js', encoding="ascii"));
+        doc = {};
+        var track = 1;
+        var protected_request = this.api_url;
+        var dirr, mis, query, region, filee, tra;
+        for (i in existingtracks){
+            dirr = existingtracks[i].directory,
+            mis = '20110503_Neemo2';
+            query = "";
+            region = 1;
+            regions = []
+            for (k in existingtracks[i].files) {
+                filee = existingtracks[i].files[k];
+                url = dirr+'/'+filee;
+                regions.push(url);
+                //query = query + "INSERT INTO neemo_regions (image_url, original_mission, original_directory, original_file, track, region) VALUES " +
+                //                    "('"+url+"','"+mis+"','"+dirr+"','"+filee+"',"+track+","+region+"); ";
+                region++;
+            }
+            doc[track] = regions;
+            //body = {q: query}
+            //this.oa.post(protected_request, this.access_key, this.access_secret, body, null);
+            console.log(track);
+            console.log(region);
+            track++;
+        }
+        
+        fs.writeFile("./public/regions/tracks.js", "var tracks = " + JSON.stringify(doc), function(err) {
+            if(err) {
+                sys.puts(err);
+            } else {
+                sys.puts("The file was saved!");
+            }
+        }); 
+        */
     });
     return app;
 };

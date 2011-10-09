@@ -35,7 +35,7 @@ Neemo.modules.app = function(neemo) {
   neemo.app.Instance = Class.extend(
     {
     init: function(config) {
-      this._region = config.region;
+      this._region = -1;
       neemo.log.enabled = config ? config.logging: false;
       this._bus = new neemo.events.Bus();
       //this.ui = new neemo.ui.Engine(config, this._bus);
@@ -54,7 +54,6 @@ Neemo.modules.app = function(neemo) {
 
     run: function() {
       neemo.log.info('App is now running!');
-      this._bus.fireEvent(new neemo.events.ChangeRegion({region: this._region}));
     },
 
     getBus: function() {
@@ -71,14 +70,24 @@ Neemo.modules.socket = function(neemo) {
     init: function(bus) {
       this._id = null;
       this.region = -1;
+      this.intRegion=-1;
+      this.track = 1;
       this._bus = bus;
       this.socket = io.connect();
       this._bindEvents();
       this._setupSockets();
       this._cookie = document.cookie.split(';');
-      this._socketAuth = this._cookie[0].split('=')[1];
-      this._username = this._cookie[1].split('=')[1];
+      for (i in this._cookie){
+          var tmp = this._cookie[i].split('=');
+          if (tmp[0]=='socketAuth'){
+              this._socketAuth = tmp[1];
+          } else if (tmp[0]=='neemoUser'){
+              this._username = tmp[1];
+          }
+      }
+      
       this._first = true;
+      this._tracks =  window.tracks;
     },
     _setupSockets: function(){
       var that = this;
@@ -92,6 +101,11 @@ Neemo.modules.socket = function(neemo) {
         if (that._first) {
             that._bus.fireEvent(new Neemo.env.events.UpdateUserProfile(data));
         }
+        if (that._region==-1){
+            that.region == data.region;
+            that.intRegion = window.tracks[1].indexOf(data.region);
+            this._bus.fireEvent(new neemo.events.ChangeRegion({region: intRegion}));
+        }
       });
       this.socket.on('region-metadata', function (data) {
          neemo.log.info('socket metadata received');
@@ -102,6 +116,7 @@ Neemo.modules.socket = function(neemo) {
             if (data.username == that._username){
                 data.mine = true;
             }
+            data.region = that.intRegion;
             that._bus.fireEvent(new Neemo.env.events.AddPoints(data));
         }
         //neemo.log.info('socket update received');
@@ -135,8 +150,9 @@ Neemo.modules.socket = function(neemo) {
         function(event){
           neemo.log.info('region changed from '+that.region+' to '+event.getRegion());
           that.socket.emit('leave', {region: that.region});
-          that.region = event.getRegion();
-          that.socket.emit('join', {region: that.region} );
+          that.intRegion = event.getRegion();
+          that.region = window.tracks[1][that.intRegion];
+          that.socket.emit('join', {region: that.region, track: that.track} );
         }
       );
       /*

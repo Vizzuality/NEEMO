@@ -207,7 +207,6 @@ Scoreboard.modules.UserRank = function(scoreboard) {
         'UpdateUserRank',
         function(data){
           data = data.getData();
-          console.log(data);
           var strString = '' + data.user_rank;
           while(strString.length<4){
             strString = '0' + strString;

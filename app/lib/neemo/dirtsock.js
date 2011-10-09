@@ -33,11 +33,13 @@ exports.start = function(io, cartodb, store) {
             if (validateSession(data.auth)){
                 //perform a create or get here!
                 var protected_request = cartodb.api_url;
-                var query = "SELECT user_id, user_lvl, user_rank, user_score, user_progress FROM neemo_users WHERE user_id = '"+data.username+"' LIMIT 1;";
+                var query = "SELECT user_id, user_lvl, user_rank, user_score, user_progress, track, region FROM neemo_users WHERE user_id = '"+data.username+"' LIMIT 1;";
                 var body = {q: query}
                 cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function (error, result, response) {
                     //console.log('\n== CartoDB result for NEEMO get "' + query + '" ==');
                     //console.log(result + '\n');
+                    var default_region = "201105031339/frame000018_0.jpg",
+                        default_track 1;
                     result = JSON.parse(result);
                     if (result.total_rows == 0){
                         user_profile = {
@@ -46,12 +48,14 @@ exports.start = function(io, cartodb, store) {
                             user_lvl: 1,
                             user_pts: 1,
                             user_progress: 1,
+                            track: default_track,
+                            region: default_region,
                             user_latest: [
                                 {points: 1, title: "welcome to neemo!"}
                             ]
                         };
                         socket.emit('user-metadata', user_profile);
-                        var q2 = "INSERT INTO neemo_users (user_id, user_lvl, user_rank, user_score, user_progress) VALUES ('"+data.username+"', 1, (SELECT count(*)+1 FROM neemo_users), 0, 1)";
+                        var q2 = "INSERT INTO neemo_users (user_id, user_lvl, user_rank, user_score, user_progress, track, region) VALUES ('"+data.username+"', 1, (SELECT count(*)+1 FROM neemo_users), 0, 1, "+default_track+", '"+default_region+"')";
                         var b2 = {q: q2};
                         cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, b2, null);
                     } else {
@@ -61,6 +65,8 @@ exports.start = function(io, cartodb, store) {
                             user_lvl: result.rows[0].user_lvl,
                             user_pts: result.rows[0].user_score,
                             user_progress: result.rows[0].user_progress,
+                            track: result.rows[0].track,
+                            region: result.rows[0].region,
                             user_latest: [
                                 {points: 0, title: "welcome back to neemo!"}
                             ]
