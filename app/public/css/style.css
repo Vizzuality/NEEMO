@@ -221,6 +221,10 @@ body {
   background: -o-linear-gradient(#29526E, #3EA99F, #081331);
 }
 
+body.home {
+  background:#071230 url(/images/home_bkg.png) no-repeat;
+}
+
 @font-face {
   font-family: 'EurostileLTStd';
   src: url('/fonts/EurostileLTStd.eot');
