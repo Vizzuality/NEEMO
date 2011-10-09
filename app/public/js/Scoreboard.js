@@ -285,12 +285,18 @@ Scoreboard.modules.RankingList = function(scoreboard) {
           for (i in data.rows){
 
             var u = new scoreboard.ui.RankingList.User();
-            
+
             u.getRankName().text(data.rows[i].user_rank + "#. "+data.rows[i].user_id.toUpperCase());
             u.getScore().text(data.rows[i].user_score + " [LVL."+data.rows[i].user_lvl+"]");
 
             u.getProgress().css({width: 0});
-            u.getProgress().animate({width: data.rows[i].user_progress + "%"}, 300, 'easeOutQuad');
+
+            var progress = data.rows[i].user_progress;
+
+            // A progress smaller than 1.3 looks bad, so we fix it
+            progress = (progress < 1.3 && progress > 0) ?  1.3 : progress;
+
+            u.getProgress().animate({width: progress + "%"}, 300, 'easeOutQuad');
 
             if(username.toUpperCase() == data.rows[i].user_id.toUpperCase() ){
               u.getElement().append('<div class="icon-container">' +
