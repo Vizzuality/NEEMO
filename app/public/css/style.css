@@ -752,7 +752,7 @@ nav ul {
 
 
 .rays {position:absolute; left:0px; top:0px; background:url('/images/rays.png') no-repeat; width:386px; height:570px;}
-.diagrams {position:absolute; left:-5px; top:-115px; background:url('/images/diagrams.png') no-repeat; width:795px; height:795px;}
+.diagrams {position:absolute; left:-5px; top:-115px; background:url('/images/diagrams.png') no-repeat; width:795px; height:795px; z-index:-1}
 
 /* PROGRESS BAR ---------------------------------------------- */
 
@@ -1141,6 +1141,7 @@ body.ranking .info {
 #content {
   position:relative;
   margin-top:150px;
+  z-index:100;
 }
 
 #content .top {
@@ -1148,9 +1149,31 @@ body.ranking .info {
   overflow:hidden;
   padding:60px 0 12px 79px;
 }
-#content .top .join {
+#content .top img.join {
   display:block;
-  margin-bottom:172px;
+  margin: 0 0 26px 0;
+}
+
+#content .top a.join {
+  display:block;
+  margin-bottom:70px;
+  background:rgba(0,0,0,.5);
+  padding:19px 17px 10px 17px;
+  float:left;
+
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+#content .top a.join h1 {
+  padding:0; margin:0;
+  font-size:35px;
+  font-family: 'EurostileLTStd-Demi';
+  letter-spacing:1px;
+  color:#fff;
+  line-height:normal;
+  text-shadow: 0px 0px 6px rgba(255,255,255, .3);
 }
 
 #content .bottom {
