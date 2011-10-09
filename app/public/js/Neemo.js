@@ -155,7 +155,7 @@ Neemo.modules.socket = function(neemo) {
           that.socket.emit('leave', {region: that.region});
           that.intRegion = event.getRegion();
           that.region = window.tracks[1][that.intRegion];
-          that.socket.emit('join', {region: that.region, track: that.track} );
+          that.socket.emit('join', {region: that.region, track: that.track, username: that._username, auth: that.auth} );
         }
       );
       /*

@@ -30,7 +30,6 @@ exports.start = function(io, cartodb, store) {
          */
         socket.once('message', function(data){
             data = JSON.parse(data);
-            console.log(data);
             if (validateSession(data.auth)){
                 //perform a create or get here!
                 var protected_request = cartodb.api_url;
@@ -78,46 +77,52 @@ exports.start = function(io, cartodb, store) {
             }
         });
         socket.on('join', function (data) {
-            socket.leave((data.region-1));
-            socket.leave((data.region+1));
-            socket.join(data.region);
-            /* Send a CartoDB SQL request here
-             *
-             */
-            //TODO: Create a view on CartoDB that gives updated summary stats for each region
-            //placeholder
-            socket.emit('region-metadata', {
-                region: data.region,
-                meters: (400 - (4*data.region)),
-                annotations: [
-                    {name: 'gorgonian', total: 8 + Math.floor(Math.random()*10)},
-                    {name: 'coral', total: 15 + Math.floor(Math.random()*10)},
-                    {name: 'barrel', total: 10 + Math.floor(Math.random()*10)},
-                    {name: 'other', total: 10 + Math.floor(Math.random()*10)}
-                ]
-            });
-            
-            var protected_request = cartodb.api_url;
-            var query = "SELECT key, category, click_x, click_y, width, height, region, user_id, upvotes FROM neemo WHERE downvotes < 1 and region = '"+data.region+"' ORDER BY created_at DESC LIMIT 10";
-            var body = {q: query}
-            cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function(error, data, response) {
-                data = JSON.parse(data);
-                for (i in data.rows){
-                    
-                    var out = { 
-                        category: data.rows[i].category,
-                        x: data.rows[i].click_x,
-                        y: data.rows[i].click_y,
-                        width: data.rows[i].width,
-                        height: data.rows[i].height,
-                        region: data.rows[i].region,
-                        username: data.rows[i].user_id,
-                        key: data.rows[i].key,
-                        stored: true
+            console.log(data);
+                socket.leave((data.region-1));
+                socket.leave((data.region+1));
+                socket.join(data.region);
+                /* Send a CartoDB SQL request here
+                 *
+                 */
+                //TODO: Create a view on CartoDB that gives updated summary stats for each region
+                //placeholder
+                socket.emit('region-metadata', {
+                    region: data.region,
+                    meters: (400 - (4*data.region)),
+                    annotations: [
+                        {name: 'gorgonian', total: 8 + Math.floor(Math.random()*10)},
+                        {name: 'coral', total: 15 + Math.floor(Math.random()*10)},
+                        {name: 'barrel', total: 10 + Math.floor(Math.random()*10)},
+                        {name: 'other', total: 10 + Math.floor(Math.random()*10)}
+                    ]
+                });
+        
+                var protected_request = cartodb.api_url;
+                var query = "SELECT key, category, click_x, click_y, width, height, region, user_id, upvotes FROM neemo WHERE downvotes < 1 and region = '"+data.region+"' ORDER BY created_at DESC LIMIT 10";
+                var body = {q: query}
+                cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function(error, data, response) {
+                    data = JSON.parse(data);
+                    for (i in data.rows){
+                
+                        var out = { 
+                            category: data.rows[i].category,
+                            x: data.rows[i].click_x,
+                            y: data.rows[i].click_y,
+                            width: data.rows[i].width,
+                            height: data.rows[i].height,
+                            region: data.rows[i].region,
+                            username: data.rows[i].user_id,
+                            key: data.rows[i].key,
+                            stored: true
+                        }
+                        socket.emit('region-new-data', out);
                     }
-                    socket.emit('region-new-data', out);
-                }
-            });
+                });
+                var query = "UPDATE neemo_users SET region = '"+data.region+"' WHERE user_id = '"+data.username+"'";
+                console.log(query);
+                var body = {q: query}
+                cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function(a,b,d){console.log(b)});
+            
 	    });
         socket.on('leave', function (data) {
             socket.leave('/'+data.region);

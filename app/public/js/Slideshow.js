@@ -217,8 +217,20 @@ Neemo.modules.Slideshow = function(neemo) {
            i++;
        }
     },
+    bufferBack: function(url, id){
+      /* should buffer the images forward so they will be in place when scroll
+       * probably a step process
+       * n -> x would all be loaded and queued
+       * n -> x-v would then be displayed
+       */
+       var i = id - 1;
+       if (i > 0){
+           this.addRegion(url, i);
+       }
+    },
     scrollForward: function(url, id){
       var that = this;
+      this.bufferBack(url, id);
       this.addRegion(url,id);
       this.queueRegion(id);
       this.bufferForward(url, id);
