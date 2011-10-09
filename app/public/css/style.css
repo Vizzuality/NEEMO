@@ -752,6 +752,7 @@ nav ul {
 
 
 .rays {position:absolute; left:0px; top:0px; background:url('/images/rays.png') no-repeat; width:386px; height:570px;}
+.diagrams {position:absolute; left:-5px; top:-115px; background:url('/images/diagrams.png') no-repeat; width:795px; height:795px;}
 
 /* PROGRESS BAR ---------------------------------------------- */
 
@@ -1147,7 +1148,7 @@ body.ranking .info {
 #content .bottom {
   clear:both;
   overflow:hidden;
-  padding:60px 0 92px 79px;
+  padding:60px 0 12px 79px;
 }
 
 #content .bottom h2 {
@@ -1172,6 +1173,7 @@ body.ranking .info {
   font-family: 'EurostileLTStd';
   line-height:22px;
   letter-spacing:1px;
+  margin-bottom:81px;
 }
 
 .breadcrumb {
@@ -1210,12 +1212,12 @@ footer ul li {
 }
 
 footer ul li a { display:block; margin: 0 20px 0 0; background:url(/images/sprite.png) no-repeat; text-indent:-99999px;}
-footer ul li a.nasa       { width: 85px; height: 70px;  background-position: 0px -877px; }
-footer ul li a.delaware   { width: 108px; height: 46px; margin-top:13px; background-position: -87px -877px; }
-footer ul li a.google     { width: 175px; height: 72px; background-position: -198px -877px; }
-footer ul li a.noar       { width: 70px; height: 70px;  background-position: -377px -877px; }
-footer ul li a.zooniverse { width: 168px; height: 34px; margin-top: 15px; background-position: -450px -877px; }
-footer ul li a.vizzuality { width: 122px; height: 65px; margin-top:-5px; background-position: -622px -877px; }
+footer ul li a.nasa       { width: 85px;  height: 70px; margin: 0 32px 0 0; background-position: 0px -877px; }
+footer ul li a.delaware   { width: 108px; height: 46px; margin: 13px 44px 0 0; background-position: -87px -877px; }
+footer ul li a.google     { width: 175px; height: 72px; margin: 0 44px 0 0; background-position: -198px -877px; }
+footer ul li a.noar       { width: 70px;  height: 70px; margin: 0 40px 0 0; background-position: -377px -877px; }
+footer ul li a.zooniverse { width: 168px; height: 34px; margin: 15px 42px 0 0; background-position: -450px -877px; }
+footer ul li a.vizzuality { width: 122px; height: 65px; margin: -5px 0 0 0; background-position: -622px -877px; }
 
 /* ==|== non-semantic helper classes ========================================
 Please define your styles before this section.
