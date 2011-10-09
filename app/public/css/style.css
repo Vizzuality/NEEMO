@@ -1178,10 +1178,60 @@ body.ranking .info {
 
 .breadcrumb {
   width:100%;
-  height:116px;
+  height:117px;
   background:#333;
+  text-transform:uppercase;
+  padding: 20px 0;
+  background:url(/images/breadcrumb.png) repeat-x 100px;
+}
+.breadcrumb ul {
+  list-style:none;
+  margin: 32px 0 0 79px; padding:0;
 
 }
+.breadcrumb ul li {
+  display: -moz-inline-stack; /* FF2*/
+  display: inline-block;
+  vertical-align: top; /* BASELINE CORRECCIÓN*/
+  zoom: 1; *display: inline; /* IE */
+  color:#fff;
+  font-size:13px;
+  font-family: 'EurostileLTStd';
+  letter-spacing:1px;
+}
+
+.breadcrumb ul li .action {
+  margin-top:15px;
+  float:left;
+}
+
+.breadcrumb ul li.login {
+  margin: 0 100px 0 0;
+}
+.breadcrumb ul li.login .action {
+  width:136px;
+}
+
+.breadcrumb ul li.spot {
+  margin: 0 60px 0 0;
+}
+
+.breadcrumb ul li.spot .action {
+  width:153px;
+}
+
+.breadcrumb ul li.points .action {
+  width:253px;
+}
+.breadcrumb ul li a {
+  text-decoration:underline;
+  font-family: 'EurostileLTStd';
+}
+
+.breadcrumb ul li .icon { float:left; margin-right:14px; width:61px; height:61px; background:url(/images/sprite.png) no-repeat; }
+.breadcrumb ul li .icon.turbine { background-position: 0px -799px; }
+.breadcrumb ul li .icon.radar   { background-position: -74px -799px; }
+.breadcrumb ul li .icon.trophee { background-position: -148px -799px; }
 
 footer {
   background:#fff;
