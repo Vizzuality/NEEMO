@@ -1140,11 +1140,19 @@ body.ranking .info {
 
 #content {
   position:relative;
+  margin-top:150px;
 }
 
 #content .top {
-  height:200px;
+  clear:both;
+  overflow:hidden;
+  padding:60px 0 12px 79px;
 }
+#content .top .join {
+  display:block;
+  margin-bottom:172px;
+}
+
 #content .bottom {
   clear:both;
   overflow:hidden;
@@ -1198,11 +1206,23 @@ body.ranking .info {
 }
 
 .breadcrumb ul li .action {
-  margin-top:15px;
+  margin-top:13px;
   float:left;
   font-size:17px;
   font-family: 'EurostileLTStd';
   letter-spacing:1px;
+  line-height:20px;
+}
+
+.breadcrumb ul li.login .action {
+  margin-top:10px;
+}
+
+.breadcrumb ul li .action a {
+  border-bottom: 1px solid #fff;
+  line-height:23px;
+  font-family: 'EurostileLTStd';
+  color:#fff;
 }
 
 .breadcrumb ul li.login {
@@ -1221,10 +1241,6 @@ body.ranking .info {
 
 .breadcrumb ul li.points .action {
   width:253px;
-}
-.breadcrumb ul li a {
-  text-decoration:underline;
-  font-family: 'EurostileLTStd';
 }
 
 .breadcrumb ul li .icon { float:left; margin-right:14px; width:61px; height:61px; background:url(/images/sprite.png) no-repeat; }
