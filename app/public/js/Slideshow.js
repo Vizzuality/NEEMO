@@ -27,7 +27,9 @@ Neemo.modules.Slideshow = function(neemo) {
       var that = this;
 
       $(document).keyup(function(e) {
-        if (e.keyCode == 39) { // right arrow
+        if (e.keyCode == 40) { // down arrow
+           window.location = "ranking.html";
+        } else if (e.keyCode == 39) { // right arrow
           if (that._nextButton == 1){
               //update use region_key to increment the url in the tracks track object
             that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that._region + 1}));
@@ -363,8 +365,7 @@ Neemo.modules.Slideshow = function(neemo) {
         $(this.getElement()).find('.'+id).removeAttr("disabled");
     },
     _html: function() {
-      return  '<a href="#" class="previous">Previous</a>' +
-                    '<a href="#" class="next">Next</a>';
+      return  false;
     }
   }
   );

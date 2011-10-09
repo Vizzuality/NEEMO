@@ -2,17 +2,98 @@
 <html>
   <head>
     <meta charset="utf-8">
-<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-<link rel="stylesheet" href="/css/style.css" />
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-	<script>
-	$(document).ready(function(){
-		console.log(document.cookie);
-	});
-	
-	</script>
-</head>
-<body style="color: white; font-size: 32px">
-  Nothing to see here, <a href="/mission.html">check out the mission</a>
-</body>
-</html>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="/css/style.css" />
+
+    <script src="http://www.google.com/jsapi"></script>
+    <script>google.load("jquery", "1.6.2");</script>
+    <script>google.load("jqueryui", "1.8.16");</script>
+    <script src="/js/libs/raphael-min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/libs/underscore-min.js"></script>
+    <script src="/js/libs/backbone-min.js"></script>
+    <script src="/js/libs/class.js"></script>
+    <script src="/js/libs/plugins.js"></script>
+    <script src="/js/Neemo.js"></script>
+    <script src="/js/Event.js"></script>
+    <script src="/js/Slideshow.js"></script>
+    <script src="/js/DataLayer.js"></script>
+    <script src="/js/Annotation.js"></script>
+    <script src="/js/UserProfile.js"></script>
+    <script src="/js/helpers.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+          console.log(document.cookie);
+
+          $("nav").navigationHover();
+
+          });
+        </script>
+
+      </head>
+      <body class="home">
+
+        <nav>
+        <ul>
+          <li class="index selected"><a href="#">NEEMO PROJECT</a></li>
+          <li class="about"><a href="/about.html">ABOUT THE PROJECT</a></li>
+          <li class="ranking"><a href="/ranking.html">RANKING</a></li>
+          <li class="mission"><a href="/mission.html">JOIN THE MISSION</a></li>
+        </ul>
+        <div class="bar"></div>
+        </nav>
+
+        <div class="shade"></div>
+        <div id="content">
+          <div class="top">
+
+            <img src="/images/join.png" class="join" />
+            <a href="mission.html" class="join"><h1>JOIN THE MISSION</h1></a>
+          </div>
+
+          <div class="breadcrumb">
+            <ul>
+              <li class="login"><div class="icon turbine"></div> <div class="action"><a href="#">Log in</a> or <a href="#">create your account</a></div></li>
+              <li class="spot"><div class="icon radar"></div> <div class="action">Spot things on the images</div></li>
+              <li class="points"><div class="icon trophee"></div> <div class="action">Get points and become the best explorer</div></li>
+
+            </ul>
+          </div>
+
+          <div class="bottom">
+            <div class="column">
+              <h2>RESEARCHING MARINE LIFE</h2>
+              <p>NASA Astronauts and Engineers are living on an underwater base for 10 days to research marine life and prepare explorers for missions to far-off planetary destinations in a project called NEEMO-15.</p>
+
+              <h2>MORE ABOUT THE PROJECT</h2>
+              <p>NASA is sending a crew of astronauts and engineers to the National Marine Sanctuary in Key Largo, Florida to live in an underwater base for 10 days to research marine life and prepare explorers for missions to far-off planetary destinations in a project called NEEMO-15 (NASA Extreme Environment Mission Operations). As part of their research, the crew will capture thousands of images of marine life and features – and we need your help to analyze and understand them!</p>
+            </div>
+
+            <div class="column">
+              <h2>WE NEED PEOPLE LIKE YOU</h2>
+              <p>During the mission, NASA is collecting thousands of images of underwater life and features. We need your help to analyze those images and help us prepare the next generation of explorers!</p>
+            </div>
+          </div>
+        </div>
+
+        <footer>
+        <div class="inner">
+          <h2>NEEMO-15 COLLABORATORS</h2>
+          <ul>
+            <li><a href="#" class="nasa">NASA</a></li>
+            <li><a href="#" class="delaware">University of Delaware</a></li>
+            <li><a href="#" class="google">Google</a></li>
+            <li><a href="#" class="noar">NOAR</a></li>
+            <li><a href="#" class="zooniverse">Zooniverse</a></li>
+            <li><a href="#" class="vizzuality">Vizzuality</a></li>
+          </ul>
+        </div>
+
+        </footer>
+        <div class="rays"></div>
+        <div class="diagrams"></div>
+      </body>
+    </html>

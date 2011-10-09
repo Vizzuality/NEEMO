@@ -107,11 +107,13 @@ jQuery.fn.helpShortcuts = function(opt) {
   var $el = $(".help"),
   id = "helpInfo",
   panelWidth = 485,
+  imageWidth = 171,
   speed  = (opt && opt.speed) || 200,
   easingMethod = (opt && opt.easingMethod) || "easeOutExpo";
 
   function _updateHeader($species) {
-    var name = $species.find(".icon").attr("class").replace("icon ", "");
+    console.log($species);
+    var name = $species.attr("class");
     $el.find("h3").html("What is a " + name + "?");
   }
 
@@ -132,7 +134,9 @@ jQuery.fn.helpShortcuts = function(opt) {
 
   function _select($asideLi) {
     var c = $asideLi.attr("class");
-    var $species = $el.find("div." + c).parents("li")
+    console.log(c);
+    var $species = $el.find("li." + c);
+    console.log($species, $el.find(".inner"));
 
     if ($species.index() >= 0) {
       $el.find(".inner").scrollTo($species.index() * panelWidth, speed, {easing:easingMethod} );
@@ -147,7 +151,26 @@ jQuery.fn.helpShortcuts = function(opt) {
     });
 
     $el.find(".close").click(_close);
-    $el.find(".more-info, .nav").click(function() {
+
+    $el.find(".nav").click(function() {
+      var direction = "+=";
+      var distance = imageWidth;
+
+      if ($(this).hasClass("previous")) {
+        $species = $(this).parents("li").prev("li");
+        direction = "-=";
+      }
+//       else {
+//         if ($(this).parent().find(".slideshow_inner .photos").offset().left - distance < 0){
+//           $(this).hide();
+//         }
+//       }
+//
+      $(this).parent().find(".slideshow_inner").scrollTo(direction + distance, speed, {easing:easingMethod} );
+
+    });
+
+    $el.find(".more-info").click(function() {
       var $species = $(this).parents("li").next("li");
       var direction = "+=";
       var distance = panelWidth;
@@ -229,7 +252,7 @@ jQuery.fn.helpShortcuts = function(opt) {
        });
 
        var sel = function() { select($currentOption, speed);}
-       setTimeout(sel, 200);
+       setTimeout(sel, 500);
      }
 
      $(this).mouseleave(function(e){
