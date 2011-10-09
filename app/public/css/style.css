@@ -305,9 +305,9 @@ nav {
   z-index:2000;
 }
 
-/*body.ranking nav {
+body.ranking nav {
   margin: 0 0 0 -300px;
-} */
+}
 
 nav a {
   display:block;
@@ -368,8 +368,8 @@ nav ul {
   position:absolute;
   left:50%;
   top:100px;
-  width:500px;
-  margin-left:-285px;
+  width:530px;
+  margin-left:-290px;
   text-align:left;
 }
 
@@ -436,11 +436,13 @@ nav ul {
   margin:0; padding:0;
   color:#fff;
   font-size:21px;
+  font-family:"EurostileLTStd-Demi";
 }
 
 #ranking ul li .score {
+  margin: 0 3px 0 0;
   float:right;
-  font-family:"EurostileLTStd";
+  font-family:"EurostileLTStd-Bold";
   font-weight:bold;
   color:rgba(0,0,0, .3);
   font-size:17px;
@@ -449,7 +451,7 @@ nav ul {
 
 #ranking ul li .progress-bar {
   margin-top:5px;
-  width:476px;
+  width:503px;
 }
 
 /* RANK BOX ---------------------------------------------- */
@@ -865,6 +867,9 @@ body.ranking .info {
   font-family:"EurostileLTStd";
   color:rgba(255,255,255, .5);
 }
+.info h2 {
+  font-family:"EurostileLTStd-Demi";
+}
 
 .line-through {
   float:left;
@@ -1174,15 +1179,13 @@ body.ranking .info {
 }
 
 #content .top a.join {
-  display:block;
-  margin-bottom:70px;
-  background:rgba(0,0,0,.5);
-  padding:19px 17px 10px 17px;
   float:left;
-
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
+  margin-bottom:50px;
+  padding:17px 14px 7px 14px;
+  background:rgba(0,0,0,.5);
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
 }
 
 #content .top a.join h1 {

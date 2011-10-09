@@ -229,7 +229,7 @@ jQuery.fn.helpShortcuts = function(opt) {
        });
 
        var sel = function() { select($currentOption, speed);}
-       setTimeout(sel, 200);
+       setTimeout(sel, 500);
      }
 
      $(this).mouseleave(function(e){
