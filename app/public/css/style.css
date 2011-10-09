@@ -1136,8 +1136,86 @@ body.ranking .info {
 
 #lock_screen { position: absolute; top: 0; left: 0; display: none; width: 100%; height: 100%; opacity: .5; background: #000; z-index: 1900; }
 
-.temp_nav { display:none; position:absolute; bottom: 10px; left:50%; margin-left:-110px; width:220px; text-align:center; z-index:2000;}
-.temp_nav a, .temp_nav a:visited {display:block; float:left; background:lightgreen; width:80px; margin-right:10px; padding:10px; text-decoration:none; font-weight:bold; color:#fff;}
+
+#content {
+  position:relative;
+}
+
+#content .top {
+  height:200px;
+}
+#content .bottom {
+  clear:both;
+  overflow:hidden;
+  padding:60px 0 92px 79px;
+}
+
+#content .bottom h2 {
+  font-size:21px;
+  font-family: 'EurostileLTStd-Bold';
+  text-transform:uppercase;
+  color:rgba(0,0,0,.35);
+}
+
+#content .bottom .column {
+  margin: 0 64px 0 0;
+  float:left;
+}
+#content .bottom .column:last-child {
+  margin:0;
+}
+
+#content .bottom p {
+  width:444px;
+  font-size:19px;
+  color:rgba(255,255,255, .8);
+  font-family: 'EurostileLTStd';
+  line-height:22px;
+  letter-spacing:1px;
+}
+
+.breadcrumb {
+  width:100%;
+  height:116px;
+  background:#333;
+
+}
+
+footer {
+  background:#fff;
+  width:100%;
+}
+
+footer .inner {
+  padding:63px 0 68px 81px;
+}
+
+footer h2 {
+  margin: 0 0 26px 0;
+  font-size:21px;
+  color:#081331;
+  font-family: 'EurostileLTStd-Demi';
+}
+
+footer ul {
+  margin:0; padding:0;
+  list-style:none;
+}
+
+footer ul li {
+  display: -moz-inline-stack; /* FF2*/
+  display: inline-block;
+  vertical-align: top; /* BASELINE CORRECCIÓN*/
+  zoom: 1; *display: inline; /* IE */
+}
+
+footer ul li a { display:block; margin: 0 20px 0 0; background:url(/images/sprite.png) no-repeat; text-indent:-99999px;}
+footer ul li a.nasa       { width: 85px; height: 70px;  background-position: 0px -877px; }
+footer ul li a.delaware   { width: 108px; height: 46px; margin-top:13px; background-position: -87px -877px; }
+footer ul li a.google     { width: 175px; height: 72px; background-position: -198px -877px; }
+footer ul li a.noar       { width: 70px; height: 70px;  background-position: -377px -877px; }
+footer ul li a.zooniverse { width: 168px; height: 34px; margin-top: 15px; background-position: -450px -877px; }
+footer ul li a.vizzuality { width: 122px; height: 65px; margin-top:-5px; background-position: -622px -877px; }
 
 /* ==|== non-semantic helper classes ========================================
 Please define your styles before this section.
