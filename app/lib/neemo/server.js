@@ -98,12 +98,12 @@ module.exports = function(){
                 }
             })
     );
-    app.use('/js', express.static('./public/js'));
-    app.use('/images', express.static('./public/images'));
-    app.use('/css', express.static('./public/css'));
+    app.use('/js', express.static(global.settings.app_root + '/public/js'));
+    app.use('/images', express.static(global.settings.app_root + '/public/images'));
+    app.use('/css', express.static(global.settings.app_root + '/public/css'));
     app.use(cas_middleware);
-    app.use('/regions', express.static('./public/regions'));
-    app.use(express.static('./public'));
+    app.use('/regions', express.static(global.settings.app_root + '/public/regions'));
+    app.use(express.static(global.settings.app_root + '/public'));
     app.use(express.bodyParser());
     app.use(express.logger({buffer:true, format:'[:remote-addr :date] \033[90m:method\033[0m \033[36m:url\033[0m \033[90m:status :response-time ms -> :res[Content-Type]\033[0m'}));
 
