@@ -49,6 +49,7 @@ Neemo.modules.Annotation = function(neemo) {
     remove: function(){
         this.$el.draggable("destroy");
         this.$el.resizable("destroy");
+
         if(this._display){
             $(this._display.getElement()).fadeOut(this.transitionSpeed, function() { $(this).remove();});
         }
@@ -88,7 +89,8 @@ Neemo.modules.Annotation = function(neemo) {
       this.$el.css({left:left, top:top, width:this.width, height:this.height}); // initial position
 
       // Now we just move the window to its place
-      this.$el.animate({width:this.width, height:this.height, opacity:.4, left:left, top:top}, 500);
+      this.$el.animate({width:this.width, height:this.height, opacity:.2, left:left, top:top}, 500);
+      this.$el.show(250);
 
       if (!burn){
         this.$el.addClass("draggable");
@@ -129,7 +131,7 @@ Neemo.modules.Annotation = function(neemo) {
       this._super(this._html());
     },
     _html: function() {
-      return   '<div class="annotation">'+
+      return   '<div class="annotation" style="display:none">'+
                    '<div class="controls">'+
                      '<div class="category"></div>' +
                      '<a href="#" class="submit">Submit</a>'+
