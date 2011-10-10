@@ -2,5 +2,5 @@
 cd /home/ubuntu/NEEMO/
 `git pull`
 cd /home/ubuntu/NEEMO/app
-`sudo killall node`
+`sudo killall node > /dev/null`
 `sudo node app.js production`
