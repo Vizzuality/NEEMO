@@ -71,10 +71,10 @@ Neemo.modules.DataLayer = function(neemo) {
 
           if ($image.hasClass("selected")) {
             that._radial_selector.handleClick(event.getEvent());
-          } else if ($image.index() >  that._region) {
+          } else if ($image.index() > $selected.index()) {
             that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that._region + 1}));
             that._bus.fireEvent(new Neemo.env.events.HideSelector());
-          } else if ($image.index() >= 0){
+          } else if ($image.index() < $selected.index()){
             that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that._region - 1}));
             that._bus.fireEvent(new Neemo.env.events.HideSelector());
           }
