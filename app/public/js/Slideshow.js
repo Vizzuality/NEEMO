@@ -124,7 +124,7 @@ Neemo.modules.Slideshow = function(neemo) {
         }
       );
 
-      setTimeout(this._repositionPanels, 500);
+      //setTimeout(this._repositionPanels, 500);
       setTimeout(500, function() {$(window).resize(this._repositionPanels)});;
 
     },
