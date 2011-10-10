@@ -210,30 +210,30 @@ Neemo.modules.DataLayer = function(neemo) {
                 option.rotate(this.options[i].angle);
                 option.click(this.options[i].action);
 
-                var sectorSVG2 = this.svg.path(this.sectorPath);
+                var sectorHover = this.svg.path(this.sectorPath);
 
                 // Event binding
-                sectorSVG2.hover(this.onFocusSector, this.onBlurSector);
-                sectorSVG2.click(this.options[i].action);
+                sectorHover.hover(this.onFocusSector, this.onBlurSector);
+                sectorHover.click(this.options[i].action);
 
             } else {
                 var attr = { fill: "#000", stroke: "none", opacity: this.sectorOpacityDisabled };
                 var sectorSVG = this.svg.path(this.sectorPath);
-                var sectorSVG2 = this.svg.path(this.sectorPath);
+                var sectorHover = this.svg.path(this.sectorPath);
 
                 // If there's no option, there's no action
                 sectorSVG.click(function(e) { e.preventDefault(); e.stopPropagation(); });
-                sectorSVG2.click(function(e) { e.preventDefault(); e.stopPropagation(); });
+                sectorHover.click(function(e) { e.preventDefault(); e.stopPropagation(); });
             }
 
-            sectorSVG2.attr(attr2);
-            sectorSVG2.translate(this.cx, this.cy);
-            sectorSVG2.rotate(0, this.centerX, this.centerY);
+            sectorHover.attr(attr2);
+            sectorHover.translate(this.cx, this.cy);
+            sectorHover.rotate(0, this.centerX, this.centerY);
 
             sectorSVG.attr(attr);
             sectorSVG.translate(this.cx, this.cy);
             sectorSVG.rotate(0, this.centerX, this.centerY);
-            this.sectors.push({ sector2:sectorSVG2, sector:sectorSVG, option: option});
+            this.sectors.push({ hover:sectorHover, sector:sectorSVG, option: option});
         }
 
     },
@@ -325,7 +325,7 @@ Neemo.modules.DataLayer = function(neemo) {
 
           $(this.sectors[i].option.node).delay(1000).animate( {opacity: 1 });
 
-          this.sectors[i].sector2.animate({
+          this.sectors[i].hover.animate({
             rotation: (360 - 45 * i) + " " + this.centerX + " " + this.centerY
           }, 300, '<>');
 
