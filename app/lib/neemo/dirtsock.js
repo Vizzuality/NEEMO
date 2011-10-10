@@ -32,8 +32,12 @@ exports.start = function(io, cartodb, store) {
             data = JSON.parse(data);
             if (validateSession(data.auth)){
                 //perform a create or get here!
-                var protected_request = cartodb.api_url;
-                var query = "SELECT user_id, user_lvl, user_rank, user_score, user_progress, track, region FROM neemo_users WHERE user_id = '"+data.username+"' LIMIT 1;";
+                var protected_request = cartodb.api_url,
+                    query = "SELECT neemo_ranks.user_rank, neemo_users.user_id, neemo_users.user_lvl, neemo_users.user_score, neemo_users.user_progress, neemo_users.track, neemo_users.region FROM " + 
+                         "(SELECT row_number() OVER(ORDER BY user_score DESC) AS user_rank, user_score FROM neemo_users GROUP BY user_score) " +
+                         "as neemo_ranks, neemo_users WHERE neemo_users.user_score = neemo_ranks.user_score and user_id = '"+data.username+"' LIMIT 1;";
+                         
+                //var query = "SELECT user_id, user_lvl, user_rank, user_score, user_progress, track, region FROM neemo_users WHERE user_id = '"+data.username+"' LIMIT 1;";
                 var body = {q: query}
                 cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function (error, result, response) {
                     //console.log('\n== CartoDB result for NEEMO get "' + query + '" ==');
@@ -77,6 +81,8 @@ exports.start = function(io, cartodb, store) {
             }
         });
         socket.on('join', function (data) {
+                var protected_request = cartodb.api_url,
+                    query = "SELECT category, count(*) as count FROM neemo GROUP BY category";
             console.log(data);
                 socket.leave((data.region-1));
                 socket.leave((data.region+1));
@@ -86,17 +92,21 @@ exports.start = function(io, cartodb, store) {
                  */
                 //TODO: Create a view on CartoDB that gives updated summary stats for each region
                 //placeholder
-                socket.emit('region-metadata', {
-                    region: data.region,
-                    meters: (400 - (4*data.region)),
-                    annotations: [
-                        {name: 'gorgonian', total: 8 + Math.floor(Math.random()*10)},
-                        {name: 'coral', total: 15 + Math.floor(Math.random()*10)},
-                        {name: 'barrel', total: 10 + Math.floor(Math.random()*10)},
-                        {name: 'other', total: 10 + Math.floor(Math.random()*10)}
-                    ]
+                    
+                //var query = "SELECT user_id, user_lvl, user_rank, user_score, user_progress, track, region FROM neemo_users WHERE user_id = '"+data.username+"' LIMIT 1;";
+                var body = {q: query}
+                cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function (error, result, response) {
+                    var annot = [];
+                    for (i in result.rows){
+                        annot.push({name: result.rows[i].category, total: result.rows[i].count});
+                    }
+                    socket.emit('region-metadata', {
+                        region: data.region,
+                        meters: (400 - (4*data.region)),
+                        annotations: annot
+                    });
                 });
-        
+                
                 var protected_request = cartodb.api_url;
                 var query = "SELECT key, category, click_x, click_y, width, height, region, user_id, upvotes FROM neemo WHERE downvotes < 1 and region = '"+data.region+"' ORDER BY created_at DESC LIMIT 10";
                 var body = {q: query}

@@ -42,7 +42,9 @@ exports.start = function(io, cartodb, store) {
              */
             var protected_request = cartodb.api_url,
                 data = JSON.parse(data),
-                query = "SELECT user_id, user_rank, user_lvl, user_score, user_progress FROM neemo_users WHERE user_id = '"+data.username+"' LIMIT 1;",
+                query = "SELECT neemo_ranks.user_rank, neemo_users.user_id, neemo_users.user_lvl, neemo_users.user_score, neemo_users.user_progress FROM " + 
+                         "(SELECT row_number() OVER(ORDER BY user_score DESC) AS user_rank, user_score FROM neemo_users GROUP BY user_score) " +
+                         "as neemo_ranks, neemo_users WHERE neemo_users.user_score = neemo_ranks.user_score and user_id = '"+data.username+"' LIMIT 1;",
                 body = {q: query};
                 
             cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function (error, data, response) {
@@ -58,7 +60,10 @@ exports.start = function(io, cartodb, store) {
             var pageSize = 15,
                 protected_request = cartodb.api_url,
                 offset = pageSize * (data.page - 1),
-                query = "SELECT user_id, user_rank, user_lvl, user_score, user_progress FROM neemo_users ORDER BY user_rank ASC LIMIT "+pageSize+" OFFSET "+offset+";",
+                query = "SELECT neemo_ranks.user_rank, neemo_users.user_id, neemo_users.user_lvl, neemo_users.user_score, neemo_users.user_progress FROM " + 
+                         "(SELECT row_number() OVER(ORDER BY user_score DESC) AS user_rank, user_score FROM neemo_users GROUP BY user_score) " +
+                         "as neemo_ranks, neemo_users WHERE neemo_users.user_score = neemo_ranks.user_score " +
+                         "ORDER BY neemo_ranks.user_rank ASC LIMIT "+pageSize+" OFFSET "+offset+";",
                 body = {q: query};
             
             socket.join("scoreboard-"+data.page);
