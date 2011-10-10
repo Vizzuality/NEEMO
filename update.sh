@@ -2,6 +2,6 @@
 cd /home/ubuntu/NEEMO/
 exec git pull
 cd /home/ubuntu/NEEMO/app
-exec sudo killall node > /dev/null 2>&1 
+exec sudo killall node
 
 
