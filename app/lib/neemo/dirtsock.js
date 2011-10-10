@@ -82,7 +82,8 @@ exports.start = function(io, cartodb, store) {
         });
         socket.on('join', function (data) {
                 var protected_request = cartodb.api_url,
-                    query = "SELECT category, count(*) as count FROM neemo GROUP BY category AND region=='"+data.region+"'";
+                    query = "SELECT category, count(*) as count FROM neemo WHERE region='"+data.region+"' GROUP BY category";
+                    console.log(query);
             console.log(data);
                 socket.leave((data.region-1));
                 socket.leave((data.region+1));
@@ -97,10 +98,10 @@ exports.start = function(io, cartodb, store) {
                 var body = {q: query}
                 cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function (error, result, response) {
                     var annot = [];
+                    result = JSON.parse(result);
                     for (i in result.rows){
                         annot.push({name: result.rows[i].category, total: result.rows[i].count});
                     }
-                    console.log(annot);
                     socket.emit('region-metadata', {
                         region: data.region,
                         meters: (400 - (4*data.region)),
@@ -108,8 +109,7 @@ exports.start = function(io, cartodb, store) {
                     });
                 });
                 
-                var protected_request = cartodb.api_url;
-                var query = "SELECT key, category, click_x, click_y, width, height, region, user_id, upvotes FROM neemo WHERE downvotes < 1 and region = '"+data.region+"' ORDER BY created_at DESC LIMIT 10";
+                query = "SELECT key, category, click_x, click_y, width, height, region, user_id, upvotes FROM neemo WHERE downvotes < 1 and region = '"+data.region+"' ORDER BY created_at DESC LIMIT 10";
                 var body = {q: query}
                 cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function(error, data, response) {
                     data = JSON.parse(data);
@@ -130,7 +130,6 @@ exports.start = function(io, cartodb, store) {
                     }
                 });
                 var query = "UPDATE neemo_users SET region = '"+data.region+"' WHERE user_id = '"+data.username+"'";
-                console.log(query);
                 var body = {q: query}
                 cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function(a,b,d){console.log(b)});
             
