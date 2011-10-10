@@ -401,7 +401,7 @@ Neemo.modules.Slideshow = function(neemo) {
     },
     addRegion: function(region, prepend){
         if (prepend){
-            $(this.getElement()).find("#start").after($(region));
+            $(this.getElement()).prepend($(region));
         } else {
             $(this.getElement()).append($(region));
         }
