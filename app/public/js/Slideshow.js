@@ -12,7 +12,7 @@ Neemo.modules.Slideshow = function(neemo) {
       this._bus = bus;
       this._api = api;
       this._base_image_url = 'http://neemo.org.s3.amazonaws.com/';
-      this._region_key = 0;
+      this._region_key = -1;
       this._track = -1;
       this._region = 0;
       this._regions = {};
@@ -60,7 +60,7 @@ Neemo.modules.Slideshow = function(neemo) {
           }
 
           var url = that._base_image_url;
-          if (old_region < that._region){
+          if (old_region < that._region || old_region == -1){
               that.scrollForward(url, event.getRegion());
           }else{
               that.scrollBack(url, event.getRegion());
@@ -460,9 +460,9 @@ Neemo.modules.slideshowUtil = function(neemo) {
     neemo.slideshowUtil.showDepthLine = function() {
       $("#slideshow div.selected .depth-line").animate({opacity:1}, 200);
       var depth = $(".depth h2").html();
-      $("#slideshow div.selected .depth-line").append('<div class="depth1">00'+(depth-3)+'</div>');
+      $("#slideshow div.selected .depth-line").append('<div class="depth1">00'+(depth-1)+'</div>');
       $("#slideshow div.selected .depth-line").append('<div class="depth2">00'+(depth-2)+'</div>');
-      $("#slideshow div.selected .depth-line").append('<div class="depth3">00'+(depth-1)+'</div>');
+      $("#slideshow div.selected .depth-line").append('<div class="depth3">00'+(depth-3)+'</div>');
     };
 
     neemo.slideshowUtil.hideDepthLine = function(callback) {
