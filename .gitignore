@@ -3,3 +3,4 @@ node_modules
 app/cartodb_settings.js
 app/node_modules
 app/settings.js
+*/nohup.out

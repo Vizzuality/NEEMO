@@ -1,0 +1,25 @@
+NEEMO is now being served out of: http://localhost:8080
+
+== Consumer Tokens ==
+consumer key :J39kX9otGAp9zwFhZG8QuuajqAZXJ4HsXXvErEaF
+consumer secret :BIZd2v7zgE6lmry7WIj2tjfMvFo1r4Madxv9PlkZ
+
+== Request Tokens ==
+request key :KPZcqsuPx419dxdzgL272MHJnHR0BRc6u3eYyhkA
+request secret :Vpxnt0E6581Psjji0fj5yCpFI336C2p6XdJ3WhrZ
+
+Requesting access tokens via XAuth...
+...XAuth successful!
+
+== Access Tokens ==
+access key:RJj4duqegIIFHPdTZkJ6wDZVfRhQslCRt7wbA7LC
+access secret :pnBek8bf28g13S3mn6gvuzksY0n0iTs2jdOyhXr1
+
+== CartoDB result for GET "SELECT ST_SRID(the_geom) FROM fisheryclosure LIMIT 1" ==
+{"time":0.026,"total_rows":1,"rows":[{"st_srid":4326}]}
+
+
+== CartoDB result for POST "SELECT ST_SRID(the_geom) FROM fisheryclosure LIMIT 1" ==
+{"time":0.024,"total_rows":1,"rows":[{"st_srid":4326}]}
+
+   [36minfo  -[39m socket.io started
