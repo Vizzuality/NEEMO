@@ -5,8 +5,8 @@ var ENV = process.argv[2];
 if (ENV != 'development' && ENV != 'production') {
   console.error("\n./app [environment]");
   console.error("environments: [development, production]");
-  console.error("default environment set to: [development]");
-  ENV = 'development';
+  console.error("default environment set to: [production]");
+  ENV = 'production';
   //process.exit(1);
 }
 
