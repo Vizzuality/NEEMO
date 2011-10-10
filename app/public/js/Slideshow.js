@@ -450,10 +450,15 @@ Neemo.modules.slideshowUtil = function(neemo) {
 
     neemo.slideshowUtil.showDepthLine = function() {
       $("#slideshow div.selected .depth-line").animate({opacity:1}, 200);
+      var depth = $(".depth h2").html();
+      $("#slideshow div.selected .depth-line").append('<div class="depth1">00'+(depth-3)+'</div>');
+      $("#slideshow div.selected .depth-line").append('<div class="depth2">00'+(depth-2)+'</div>');
+      $("#slideshow div.selected .depth-line").append('<div class="depth3">00'+(depth-1)+'</div>');
     };
 
     neemo.slideshowUtil.hideDepthLine = function(callback) {
       if ($("#slideshow div.selected .depth-line").length > 0){
+      $("#slideshow div.selected .depth-line div").remove();
         $("#slideshow div.selected .depth-line").animate({opacity:0}, 200, callback);
       }   else {
         callback();
