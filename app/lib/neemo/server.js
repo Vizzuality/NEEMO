@@ -75,10 +75,10 @@ module.exports = function(){
                         req.session.cookie.expires = new Date(Date.now() + 3600000);
                         req.session.cookie.maxAge = 3600000;
                         store.set(req.session.sid , JSON.stringify({loggedin: status, username: username}));
-                    } 
-                    res.redirect('/mission.html');
-                    
-                    
+                        res.redirect('/mission.html');
+                    }  else {
+                        res.redirect('/');
+                    }
                   }
                 });
             } else {

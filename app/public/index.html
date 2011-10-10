@@ -31,7 +31,7 @@
 	      var cookie = document.cookie.split('; ');
 	      for (i in cookie){
 	          var tmp = cookie[i].split('=');
-	          if (tmp[0]=='neemoUser'){
+	          if (tmp[0]=='neemoUser' && tmp[1] != 'undefined'){
 				$('.mission a').text('GO TO MISSION');
 				$('.join h1').text('CONTINUE MISSION');
 	          }
