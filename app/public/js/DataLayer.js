@@ -201,7 +201,7 @@ Neemo.modules.DataLayer = function(neemo) {
             if (this.options[i]) {
 
                 var attr = { cursor:"hand", fill: "#000", stroke: "none", opacity: this.sectorOpacity };
-                var attr2 = { cursor:"hand", fill: "#000", stroke: "none", opacity: .1 };
+                var attr2 = { cursor:"hand", fill: "#000", stroke: "none", opacity: 0 };
 
                 var sectorSVG  = this.svg.path(this.sectorPath);
 
