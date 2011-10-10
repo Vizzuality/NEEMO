@@ -637,7 +637,7 @@ nav ul {
 
 #slideshow {
   width:9999px;
-  margin-left:-90px;
+  margin-left:-290px;
   left:50%;
   height:610px;
   position:absolute;
@@ -1268,7 +1268,7 @@ a.button {
 #content .bottom {
   clear:both;
   overflow:hidden;
-  padding:20px 0 12px 79px;
+  padding:20px 0 32px 79px;
 }
 
 #content .bottom h2 {

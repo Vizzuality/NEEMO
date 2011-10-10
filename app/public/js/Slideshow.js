@@ -58,7 +58,7 @@ Neemo.modules.Slideshow = function(neemo) {
               that._track = event.getTrack();
               that._max = window.tracks[that._track].length;
           }
-          
+
           var url = that._base_image_url;
           if (old_region < that._region || old_region == -1){
               that.scrollForward(url, event.getRegion());
@@ -71,7 +71,7 @@ Neemo.modules.Slideshow = function(neemo) {
         'RegionOverview',
         function(data){
             data = data.getData();
-            
+
             var t = '' + (4*(window.tracks[that._track].length - (data.region+1) ));
             while (t.length < 5) t = '0'+t;
 
@@ -124,8 +124,8 @@ Neemo.modules.Slideshow = function(neemo) {
         }
       );
 
-      setTimeout(this._repositionPanels, 500);
-      $(window).resize(this._repositionPanels);
+      //setTimeout(this._repositionPanels, 500);
+      setTimeout(500, function() {$(window).resize(this._repositionPanels)});;
 
     },
     _bindDisplay: function(display, text) {
@@ -154,7 +154,7 @@ Neemo.modules.Slideshow = function(neemo) {
       this._bindKeyboard();
     },
     _repositionPanels: function() {
-      var left  = $("#slideshow div.selected").offset().left - ($(".info").width() + 20 );
+      var left  = $("#slideshow .selected").offset().left - ($(".info").width() + 20 );
 
       var depthLeft = $("#slideshow div.selected").offset().left + ($("#slideshow .selected").width() + 20 );
       var depthTop = $("#slideshow div.selected").offset().top + 20 ;
@@ -169,7 +169,7 @@ Neemo.modules.Slideshow = function(neemo) {
           var Region = new neemo.ui.Slideshow.Region(url, id, this._bus, this._track);
 
           this._display.addRegion(Region.getElement(), prepend);
-          
+
               //update use region_key to increment the url in the tracks track object
           if (id < this._max){
               Region.enableNextButton();
@@ -185,9 +185,9 @@ Neemo.modules.Slideshow = function(neemo) {
       }
     },
     _toggleButtons: function(id){
-        
+
               //update use region_key to increment the url in the tracks track object
-              
+
       if (id == this._min){
           this._previousButton = 0;
       } else if (id == this._min + 1) {
@@ -262,7 +262,7 @@ Neemo.modules.Slideshow = function(neemo) {
       this._image = new Image();
       this._track = track;
       //this._image.src = [url, id, '.jpg'].join('');
-      
+
       //update use region_key to increment the url in the tracks track object
       this._image.src = [url, window.tracks[this._track][id]].join('');
       this._super(this._html());
