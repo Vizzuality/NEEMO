@@ -169,7 +169,7 @@ Neemo.modules.DataLayer = function(neemo) {
         this.sectorPath = "M230.301,135.651c3.62,8.709,3.48,18.071,0.301,26.23l93.729,36.011c12.09-31.82,11.98-68.321-3.16-101.931l-0.21-0.46L230.301,135.651z";
         this.sectorOpacity = .40;
         this.sectorOpacityDisabled = .25;
-        this.sectorOpacityActive = .5;
+        this.sectorOpacityActive = .3;
         this.selectedOption;
         this.selectedSector;
         this.coordinates = {};
@@ -201,30 +201,39 @@ Neemo.modules.DataLayer = function(neemo) {
             if (this.options[i]) {
 
                 var attr = { cursor:"hand", fill: "#000", stroke: "none", opacity: this.sectorOpacity };
+                var attr2 = { cursor:"hand", fill: "#000", stroke: "none", opacity: .1 };
 
-                var sectorSVG = this.svg.path(this.sectorPath);
-
-                // Event binding
-                //sectorSVG.hover(onFocusSector, onBlurSector);
-                sectorSVG.click(this.options[i].action);
+                var sectorSVG  = this.svg.path(this.sectorPath);
 
                 var option = this.svg.text(this.centerX, this.centerY, this.options[i].text).attr({ opacity:0, cursor:"hand", fill: "#fff" });
                 option.translate(this.options[i].cX, this.options[i].cY);
                 option.rotate(this.options[i].angle);
                 option.click(this.options[i].action);
 
+                var sectorSVG2 = this.svg.path(this.sectorPath);
+
+                // Event binding
+                sectorSVG2.hover(this.onFocusSector, this.onBlurSector);
+                sectorSVG2.click(this.options[i].action);
+
             } else {
                 var attr = { fill: "#000", stroke: "none", opacity: this.sectorOpacityDisabled };
                 var sectorSVG = this.svg.path(this.sectorPath);
+                var sectorSVG2 = this.svg.path(this.sectorPath);
 
                 // If there's no option, there's no action
                 sectorSVG.click(function(e) { e.preventDefault(); e.stopPropagation(); });
+                sectorSVG2.click(function(e) { e.preventDefault(); e.stopPropagation(); });
             }
+
+            sectorSVG2.attr(attr2);
+            sectorSVG2.translate(this.cx, this.cy);
+            sectorSVG2.rotate(0, this.centerX, this.centerY);
 
             sectorSVG.attr(attr);
             sectorSVG.translate(this.cx, this.cy);
             sectorSVG.rotate(0, this.centerX, this.centerY);
-            this.sectors.push({ sector:sectorSVG, option: option});
+            this.sectors.push({ sector2:sectorSVG2, sector:sectorSVG, option: option});
         }
 
     },
@@ -246,26 +255,21 @@ Neemo.modules.DataLayer = function(neemo) {
           this.toggleRadialSelector(e);
         }
     },
-
-    /* Sector events */
     onFocusSector: function(event) {
-        this.animate({ opacity: this.sectorOpacityActive}, 250);
+      this.animate({ opacity: that.sectorOpacityActive}, 250);
     },
-
     onBlurSector: function(event) {
-        this.animate({ opacity: this.sectorOpacity}, 250);
+      this.animate({ opacity: .1}, 250);
     },
-
     addSelectWindow: function(opt) {
-        var selectedRegion = $(".image.selected");
-        opt = $.extend(opt, {hideCategory:true});
-        var selection = new neemo.ui.Annotation.Engine(this._bus, this._api, opt);
-        selection.start(selectedRegion);
-        selection.enableSubmit();
-        this._annotations.push(selection);
-        this.closeRadialSelector();
+      var selectedRegion = $(".image.selected");
+      opt = $.extend(opt, {hideCategory:true});
+      var selection = new neemo.ui.Annotation.Engine(this._bus, this._api, opt);
+      selection.start(selectedRegion);
+      selection.enableSubmit();
+      this._annotations.push(selection);
+      this.closeRadialSelector();
     },
-
     selectOption: function(e, category) {
         e.preventDefault();
         e.stopPropagation();
@@ -273,7 +277,6 @@ Neemo.modules.DataLayer = function(neemo) {
         this.selectedOption = category;
         this.addSelectWindow({x: this.coordinates.x, y: this.coordinates.y, category:category});
     },
-
     /* This function should be called on changing the region */
     clearSelection: function() {
     // TODO
@@ -319,13 +322,19 @@ Neemo.modules.DataLayer = function(neemo) {
         this.circle.animate({opacity:.7, r:30}, 300, '<>');
 
         for (i = 0; i <= this.sectorNum - 1; i++) {
+
           $(this.sectors[i].option.node).delay(1000).animate( {opacity: 1 });
+
+          this.sectors[i].sector2.animate({
+            rotation: (360 - 45 * i) + " " + this.centerX + " " + this.centerY
+          }, 300, '<>');
+
           this.sectors[i].sector.animate({
             rotation: (360 - 45 * i) + " " + this.centerX + " " + this.centerY
           }, 300, '<>');
+
         }
         this.$element.addClass("open");
-
       }
     },
 
