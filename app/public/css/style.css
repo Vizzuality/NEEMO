@@ -469,9 +469,8 @@ nav ul {
   position:absolute;
   background:none;
   right:0;
-  bottom:0;
   left:-13px;
-  top:auto;
+  top:490px;
   opacity:.5;
 }
 
@@ -834,7 +833,6 @@ body.ranking .info {
   width:230px;
   color:#fff;
   z-index:1000;
-  height:500px;
   top:50%;
   margin-top:-250px;
 }
@@ -1222,10 +1220,10 @@ body.ranking .info {
   position:absolute;
   top:0; left:0;
   width:100%;
-  height:634px;
+  height:609px;
   z-index:-2;
-
 }
+
 #content .top {
   clear:both;
   overflow:hidden;
