@@ -132,9 +132,16 @@ Scoreboard.modules.socket = function(scoreboard) {
       this.socket = io.connect('/scoreboard');
       //this._bindEvents();
       this._setupSockets();
-      this._cookie = document.cookie.split(';');
-      this._socketAuth = this._cookie[0].split('=')[1];
-      this._username = this._cookie[1].split('=')[1];
+      this._cookie = document.cookie.split('; ');
+      for (i in this._cookie){
+          var tmp = this._cookie[i].split('=');
+          if (tmp[0]=='socketAuth'){
+              this._socketAuth = tmp[1];
+          } else if (tmp[0]=='neemoUser'){
+              this._username = tmp[1];
+          }
+      }
+      
     },
     _setupSockets: function(){
       var that = this;
