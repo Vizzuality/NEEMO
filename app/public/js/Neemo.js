@@ -71,7 +71,7 @@ Neemo.modules.socket = function(neemo) {
       this._id = null;
       this.region = -1;
       this.intRegion=-1;
-      this.track = 1;
+      this.track = -1;
       this._bus = bus;
       this.socket = io.connect();
       this._bindEvents();
@@ -103,9 +103,10 @@ Neemo.modules.socket = function(neemo) {
             that._bus.fireEvent(new Neemo.env.events.UpdateUserProfile(data));
         }
         if (that.region==-1){
-            that.region == data.region;
-            that.intRegion = window.tracks[1].indexOf(data.region);
-            that._bus.fireEvent(new neemo.events.ChangeRegion({region: that.intRegion}));
+            that.region = data.region;
+            that.track = data.track;
+            that.intRegion = window.tracks[that.track].indexOf(data.region);
+            that._bus.fireEvent(new neemo.events.ChangeRegion({region: that.intRegion, track: that.track}));
         }
       });
       this.socket.on('region-metadata', function (data) {
@@ -154,7 +155,7 @@ Neemo.modules.socket = function(neemo) {
           neemo.log.info('region changed from '+that.region+' to '+event.getRegion());
           that.socket.emit('leave', {region: that.region});
           that.intRegion = event.getRegion();
-          that.region = window.tracks[1][that.intRegion];
+          that.region = window.tracks[that.track][that.intRegion];
           that.socket.emit('join', {region: that.region, track: that.track, username: that._username, auth: that.auth} );
         }
       );

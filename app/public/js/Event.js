@@ -81,10 +81,15 @@ Neemo.modules.events = function(neemo) {
     init: function(data, action) {
       this._super('ChangeRegion', action);
       this._region = data.region;
+      this._track = data.track;
     },
 
     getRegion: function() {
       return this._region;
+    },
+
+    getTrack: function() {
+      return this._track;
     }
   }
   );

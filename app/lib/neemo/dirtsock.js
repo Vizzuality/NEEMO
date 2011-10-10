@@ -39,7 +39,7 @@ exports.start = function(io, cartodb, store) {
                     //console.log('\n== CartoDB result for NEEMO get "' + query + '" ==');
                     //console.log(result + '\n');
                     var default_region = "201105031339/frame000018_0.jpg",
-                        default_track = 1;
+                        default_track = 3;
                     result = JSON.parse(result);
                     if (result.total_rows == 0){
                         user_profile = {

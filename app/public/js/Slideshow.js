@@ -13,12 +13,12 @@ Neemo.modules.Slideshow = function(neemo) {
       this._api = api;
       this._base_image_url = 'http://neemo.org.s3.amazonaws.com/';
       this._region_key = 0;
-      this._track_key = 1;
+      this._track = -1;
       this._region = 0;
       this._regions = {};
       this._forwardBuffer = 4;
-      this._min = 1;
-      this._max = window.tracks[this._track_key].length - 1;
+      this._min = 0;
+      this._max = 10;
       this._previousButton = 1; //used to enable (1) and disable (0) the nav buttons
       this._nextButton = 1; //used to enable (1) and disable (0) the nav buttons
     },
@@ -51,11 +51,14 @@ Neemo.modules.Slideshow = function(neemo) {
         'ChangeRegion',
         function(event){
           neemo.log.info('Change Region happened, I should flip images');
-
-              //update use region_key to increment the url in the tracks track object
+          //update use region_key to increment the url in the tracks track object
           var old_region = that._region;
           that._region = event.getRegion();
-
+          if (that._track == -1){
+              that._track = event.getTrack();
+              that._max = window.tracks[that._track].length;
+          }
+          
           var url = that._base_image_url;
           if (old_region < that._region){
               that.scrollForward(url, event.getRegion());
@@ -69,7 +72,7 @@ Neemo.modules.Slideshow = function(neemo) {
         function(data){
             data = data.getData();
             
-            var t = '' + (4*(window.tracks[that._track_key].length - (data.region+1) ));
+            var t = '' + (4*(window.tracks[that._track].length - (data.region+1) ));
             while (t.length < 5) t = '0'+t;
 
             $('.depth h2').text(t);
@@ -163,7 +166,7 @@ Neemo.modules.Slideshow = function(neemo) {
     addRegion: function(url, id, prepend){
       var that = this;
       if (!(id in this._regions)) {
-          var Region = new neemo.ui.Slideshow.Region(url, id, this._bus);
+          var Region = new neemo.ui.Slideshow.Region(url, id, this._bus, this._track);
 
           this._display.addRegion(Region.getElement(), prepend);
           
@@ -230,6 +233,7 @@ Neemo.modules.Slideshow = function(neemo) {
     },
     scrollForward: function(url, id){
       var that = this;
+      console.log(url);
       this.addRegion(url,id);
       this.queueRegion(id);
       this.bufferForward(url, id);
@@ -241,7 +245,7 @@ Neemo.modules.Slideshow = function(neemo) {
     },
     scrollBack: function(url, id){
         //this.bufferBack(url, id);
-        //this.addRegion(url,id);
+        this.addRegion(url,id);
         this.queueRegion(id);
         neemo.slideshowUtil.hideDepthLine(function() {
           neemo.slideshowUtil.hideAside(neemo.slideshowUtil.backSlideEffect);
@@ -252,15 +256,15 @@ Neemo.modules.Slideshow = function(neemo) {
 
   neemo.ui.Slideshow.Region = neemo.ui.Display.extend(
     {
-    init: function(url, id, bus) {
+    init: function(url, id, bus, track) {
       this.id = id;
       this._bus = bus;
       this._image = new Image();
-      this._track_key = 1;
+      this._track = track;
       //this._image.src = [url, id, '.jpg'].join('');
       
       //update use region_key to increment the url in the tracks track object
-      this._image.src = [url, window.tracks[this._track_key][id]].join('');
+      this._image.src = [url, window.tracks[this._track][id]].join('');
       this._super(this._html());
 
       // Adds region_id to the element
@@ -395,7 +399,6 @@ Neemo.modules.Slideshow = function(neemo) {
       this._super($("#slideshow"));
     },
     addRegion: function(region, prepend){
-        console.log(prepend);
         if (prepend){
             $(this.getElement()).prepend($(region));
         } else {
