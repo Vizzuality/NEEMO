@@ -42,7 +42,7 @@ exports.start = function(io, cartodb, store) {
                 cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function (error, result, response) {
                     //console.log('\n== CartoDB result for NEEMO get "' + query + '" ==');
                     //console.log(result + '\n');
-                    var default_region = "201105031339/frame000018_0.jpg",
+                    var default_region = "201105031359/frame001503_0.jpg",
                         default_track = 3;
                     result = JSON.parse(result);
                     if (result.total_rows == 0){
@@ -82,7 +82,7 @@ exports.start = function(io, cartodb, store) {
         });
         socket.on('join', function (data) {
                 var protected_request = cartodb.api_url,
-                    query = "SELECT category, count(*) as count FROM neemo GROUP BY category";
+                    query = "SELECT category, count(*) as count FROM neemo GROUP BY category AND region=='"+data.region+"'";
             console.log(data);
                 socket.leave((data.region-1));
                 socket.leave((data.region+1));
@@ -100,6 +100,7 @@ exports.start = function(io, cartodb, store) {
                     for (i in result.rows){
                         annot.push({name: result.rows[i].category, total: result.rows[i].count});
                     }
+                    console.log(annot);
                     socket.emit('region-metadata', {
                         region: data.region,
                         meters: (400 - (4*data.region)),
