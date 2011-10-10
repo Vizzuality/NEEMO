@@ -5,4 +5,4 @@ module.exports.redis            = {host: '127.0.0.1',
                                    idleTimeoutMillis: 1,
                                    reapIntervalMillis: 1};
 module.exports.app_root = path.join(__dirname, '../..');
-module.exports.neemo_port   = 8080;
+module.exports.neemo_port   = 80;
