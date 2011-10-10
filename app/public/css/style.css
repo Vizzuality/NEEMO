@@ -685,6 +685,27 @@ nav ul {
   z-index:1000;
   opacity:.3;
   bottom:25px;
+  color:rgba(255,255,255, .6);
+  font-size:10px;
+
+}
+
+#slideshow div.selected .depth-line .depth1 {
+  position:absolute;
+  top:10px;
+  left:18px;
+}
+
+#slideshow div.selected .depth-line .depth2 {
+  position:absolute;
+  top:10px;
+  left:318px;
+}
+
+#slideshow div.selected .depth-line .depth3 {
+  position:absolute;
+  top:10px;
+  left:602px;
 }
 
 #slideshow .image img {
@@ -1269,16 +1290,16 @@ body.ranking .info {
 .breadcrumb {
   width:100%;
   height:117px;
+  padding: 20px 0;
   background:#333;
   text-transform:uppercase;
-  padding: 20px 0;
   background:url(/images/breadcrumb.png) repeat-x 100px;
 }
 .breadcrumb ul {
-  list-style:none;
   margin: 30px 0 0 79px; padding:0;
-
+  list-style:none;
 }
+
 .breadcrumb ul li {
   display: -moz-inline-stack; /* FF2*/
   display: inline-block;
