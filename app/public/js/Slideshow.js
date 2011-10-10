@@ -160,12 +160,12 @@ Neemo.modules.Slideshow = function(neemo) {
       if (left > 0) $(".info").stop().animate({left:left }, 500);
       $(".depth").stop().animate({opacity:1}, 500);
     },
-    addRegion: function(url, id){
+    addRegion: function(url, id, prepend){
       var that = this;
       if (!(id in this._regions)) {
           var Region = new neemo.ui.Slideshow.Region(url, id, this._bus);
 
-          this._display.addRegion(Region.getElement());
+          this._display.addRegion(Region.getElement(), prepend);
           
               //update use region_key to increment the url in the tracks track object
           if (id < this._max){
@@ -225,22 +225,23 @@ Neemo.modules.Slideshow = function(neemo) {
        */
        var i = id - 1;
        if (i > 0){
-           this.addRegion(url, i);
+           this.addRegion(url, i, true);
        }
     },
     scrollForward: function(url, id){
       var that = this;
-      this.bufferBack(url, id);
       this.addRegion(url,id);
       this.queueRegion(id);
       this.bufferForward(url, id);
+      this.bufferBack(url, id);
 
       neemo.slideshowUtil.hideDepthLine(function() {
         neemo.slideshowUtil.hideAside(neemo.slideshowUtil.forwardSlideEffect);
       });
     },
     scrollBack: function(url, id){
-        this.addRegion(url,id);
+        //this.bufferBack(url, id);
+        //this.addRegion(url,id);
         this.queueRegion(id);
         neemo.slideshowUtil.hideDepthLine(function() {
           neemo.slideshowUtil.hideAside(neemo.slideshowUtil.backSlideEffect);
@@ -393,8 +394,13 @@ Neemo.modules.Slideshow = function(neemo) {
       this.config = config;
       this._super($("#slideshow"));
     },
-    addRegion: function(region){
-        $(this.getElement()).append($(region));
+    addRegion: function(region, prepend){
+        console.log(prepend);
+        if (prepend){
+            $(this.getElement()).prepend($(region));
+        } else {
+            $(this.getElement()).append($(region));
+        }
     },
   }
   );
