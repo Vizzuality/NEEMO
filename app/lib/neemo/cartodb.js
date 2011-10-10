@@ -6,7 +6,8 @@ var   sys         = require('sys')
 
 exports.start = function(callback){
     
-    eval(fs.readFileSync('cartodb_settings.js', encoding="ascii"));
+    require(global.settings.app_root + '/cartodb_settings');
+    //eval(fs.readFileSync('cartodb_settings.js', encoding="ascii"));
     
     cartodb.callback = callback;
     
