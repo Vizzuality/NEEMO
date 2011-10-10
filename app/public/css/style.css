@@ -1234,7 +1234,7 @@ body.ranking .info {
   margin: 0 0 26px 0;
 }
 
-#content .top a.join {
+a.button, #content .top a.join {
   float:left;
   margin-bottom:50px;
   padding:17px 14px 7px 14px;
@@ -1242,6 +1242,17 @@ body.ranking .info {
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
+}
+
+a.button {
+  color:#fff;
+  font-size:17px;
+  text-transform:uppercase;
+  font-family: 'EurostileLTStd-Demi';
+  letter-spacing:1px;
+  text-shadow: 0px 0px 6px rgba(255,255,255, .9);
+  background:rgba(0,0,0,.2);
+  padding:12px 14px 7px 14px;
 }
 
 #content .top a.join h1 {
@@ -1257,7 +1268,7 @@ body.ranking .info {
 #content .bottom {
   clear:both;
   overflow:hidden;
-  padding:60px 0 12px 79px;
+  padding:20px 0 12px 79px;
 }
 
 #content .bottom h2 {
@@ -1282,6 +1293,8 @@ body.ranking .info {
   font-family: 'EurostileLTStd';
   line-height:25px;
   letter-spacing:1px;
+}
+#content .bottom p.margin {
   margin-bottom:81px;
 }
 
