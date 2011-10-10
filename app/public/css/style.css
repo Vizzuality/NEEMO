@@ -637,7 +637,7 @@ nav ul {
 
 #slideshow {
   width:9999px;
-  margin-left:-200px;
+  margin-left:-290px;
   left:50%;
   height:610px;
   position:absolute;
@@ -832,7 +832,7 @@ body.ranking .info {
   left:40px;
   width:230px;
   color:#fff;
-  z-index:1000;
+  z-index:2000;
   top:50%;
   margin-top:-250px;
 }

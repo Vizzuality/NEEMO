@@ -212,6 +212,7 @@ Scoreboard.modules.UserRank = function(scoreboard) {
             strString = '0' + strString;
           }
           that._display.getRank().text('#' + strString);
+          that._display.updateUserLink(data.user_id);
         }
       );
 
@@ -233,6 +234,9 @@ Scoreboard.modules.UserRank = function(scoreboard) {
         this._super(this._html());
         $('#rank-box').append(this.getElement());
         this._rank = null;
+      },
+      updateUserLink:function(user_id) {
+        $("#rank-box .footer a").attr("href", "#" + user_id);
       },
       getRank: function(){
         if (! this._rank){
@@ -287,6 +291,7 @@ Scoreboard.modules.RankingList = function(scoreboard) {
 
             u.getRankName().text(data.rows[i].user_rank + "#. "+data.rows[i].user_id.toUpperCase());
             u.getScore().text(data.rows[i].user_score + " [LVL."+data.rows[i].user_lvl+"]");
+            u.getElement().attr("id", data.rows[i].user_id);
 
             u.getProgress().css({width: 0});
 
