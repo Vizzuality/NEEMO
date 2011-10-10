@@ -1,9 +1,9 @@
 #!/bin/sh
 cd /home/ubuntu/NEEMO/
-git pull
+exec git pull
 cd /home/ubuntu/NEEMO/app
-sudo killall node > /dev/null 2>&1 
-sudo node app.js production 
+exec sudo killall node > /dev/null 2>&1 
+exec sudo node app.js production 
 cd /home/ubuntu/NEEMO/
 
 
