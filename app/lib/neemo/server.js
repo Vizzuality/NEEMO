@@ -76,7 +76,7 @@ module.exports = function(){
                         req.session.cookie.maxAge = 3600000;
                         store.set(req.session.sid , JSON.stringify({loggedin: status, username: username}));
                     } 
-                    res.redirect('/');
+                    res.redirect('/mission.html');
                     
                     
                   }
