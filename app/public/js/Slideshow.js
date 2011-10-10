@@ -12,7 +12,7 @@ Neemo.modules.Slideshow = function(neemo) {
       this._bus = bus;
       this._api = api;
       this._base_image_url = 'http://neemo.org.s3.amazonaws.com/';
-      this._region_key = 0;
+      this._region_key = -1;
       this._track = -1;
       this._region = 0;
       this._regions = {};
@@ -60,7 +60,7 @@ Neemo.modules.Slideshow = function(neemo) {
           }
           
           var url = that._base_image_url;
-          if (old_region < that._region){
+          if (old_region < that._region || old_region == -1){
               that.scrollForward(url, event.getRegion());
           }else{
               that.scrollBack(url, event.getRegion());
