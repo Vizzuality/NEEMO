@@ -106,6 +106,9 @@ Neemo.modules.socket = function(neemo) {
             that.region = data.region;
             that.track = data.track;
             that.intRegion = window.tracks[that.track].indexOf(data.region);
+            if(!(that.intRegion !== 0 and that.intRegion > 0)){
+                that.intRegion = 0;
+            }
             that._bus.fireEvent(new neemo.events.ChangeRegion({region: that.intRegion, track: that.track}));
         }
       });
