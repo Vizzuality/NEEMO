@@ -18,15 +18,12 @@ var   express     = require('express')
     , RedisStore  = require('connect-redis')(express)
     , store       = new RedisStore();
 
-module.exports = function(opts){
-    var opts = opts || {};
+module.exports = function(){
     
-    eval(fs.readFileSync('settings.js', encoding="ascii"));
+    require(global.settings.app_root + '/settings');
+    
     csa.service = neemo.route_url;
     cas  = new CAS({base_url: csa.login, service: csa.service});
-        //store       = new express.session.MemoryStore;
-        
-    //console.log(existingtracks)
         
     /* forces CSA signin to do anything fun */
     var cas_middleware = function(req, res, next){
@@ -111,7 +108,7 @@ module.exports = function(opts){
     app.use(express.logger({buffer:true, format:'[:remote-addr :date] \033[90m:method\033[0m \033[36m:url\033[0m \033[90m:status :response-time ms -> :res[Content-Type]\033[0m'}));
 
     cartodb.start(function(){
-        require('./dirtsock').start(io.listen(app), this, store);
+    require('./dirtsock').start(io.listen(app), this, store);
         
         /*
         eval(fs.readFileSync('./config/uploadtracks.js', encoding="ascii"));
