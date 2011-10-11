@@ -5,7 +5,6 @@ var   sys         = require('sys')
     , OAuth       = require('oauth').OAuth;
 
 exports.start = function(callback){
-    
     require(global.settings.app_root + '/cartodb_settings');
     //eval(fs.readFileSync('cartodb_settings.js', encoding="ascii"));
     
