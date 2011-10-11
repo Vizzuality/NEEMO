@@ -227,30 +227,10 @@ body.home {
   _background:-webkit-radial-gradient(30% 30%, closest-corner, #3EA99F, #29526E, #081331)
 }
 
-@font-face {
-  font-family: 'EurostileLTStd';
-  src: url('/fonts/EurostileLTStd.eot');
-  src: local('☺'), url('/fonts/EurostileLTStd.ttf') format('truetype'), url('/fonts/EurostileLTStd.svg') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
 
-@font-face {
-  font-family: 'EurostileLTStd-Demi';
-  src: url('/fonts/EurostileLTStd-Demi.eot');
-  src: local('☺'), url('/fonts/EurostileLTStd-Demi.ttf') format('truetype'), url('/fonts/EurostileLTStd-Demi.svg') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'EurostileLTStd-Bold';
-  src: url('/fonts/EurostileLTStd-Bold.eot');
-  src: local('☺'), url('/fonts/EurostileLTStd-Bold.ttf') format('truetype'), url('/fonts/EurostileLTStd-Bold.svg') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
+@font-face { font-family: 'EurostileLTStd'; src: url("/fonts/EurostileLTStd.eot"); src: local("☺"), url("/fonts/EurostileLTStd.woff") format("woff"), url("/fonts/EurostileLTStd.ttf") format("truetype"), url("/fonts/EurostileLTStd.svg") format("svg"); font-weight: normal; font-style: normal; }
+@font-face { font-family: 'EurostileLTStd-Demi'; src: url("/fonts/EurostileLTStd-Demi.eot"); src: local("☺"), url("/fonts/EurostileLTStd-Demi.woff") format("woff"), url("/fonts/EurostileLTStd-Demi.ttf") format("truetype"), url("/fonts/EurostileLTStd-Demi.svg") format("svg"); font-weight: normal; font-style: normal; }
+@font-face { font-family: 'EurostileLTStd-Bold'; src: url("/fonts/EurostileLTStd-Bold.eot"); src: local("☺"), url("/fonts/EurostileLTStd-Bold.woff") format("woff"), url("/fonts/EurostileLTStd-Bold.ttf") format("truetype"), url("/fonts/EurostileLTStd-Bold.svg") format("svg"); font-weight: bold; font-style: bold; }
 
 .notice {
   position:absolute;
