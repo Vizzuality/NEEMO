@@ -712,7 +712,9 @@ nav ul {
   width:400px;
   height:300px;
   -webkit-transition: all .5s ease-in-out;
-  -webkit-box-shadow: none;
+  -moz-box-shadow:none;
+  -webkit-box-shadow:none;
+  box-shadow:none;
   z-index:100;
   opacity:.3;
 }
@@ -727,7 +729,9 @@ nav ul {
 #slideshow .image.selected img {
   width:800px;
   height:600px;
-  -webkit-box-shadow: 0px 0px 15px #000;
+  -moz-box-shadow:0px 0px 15px #000;
+  -webkit-box-shadow:0px 0px 15px #000;
+  box-shadow:0px 0px 15px #000;
   opacity:1;
 }
 
@@ -815,7 +819,9 @@ nav ul {
   height:8px;
   border-radius:30px;
   margin-bottom:20px;
-  box-shadow: 0px 0px 10px #fff;
+  -moz-box-shadow:0px 0px 10px #ffffff;
+  -webkit-box-shadow:0px 0px 10px #ffffff;
+  box-shadow:0px 0px 10px #ffffff;
   -webkit-transition: width .3s ease-out;
 }
 
