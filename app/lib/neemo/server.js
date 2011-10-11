@@ -90,12 +90,12 @@ module.exports = function(){
     
     var privateKey, certificate, ca;
     // initialize express server
-    privateKey = fs.readFileSync(global.settings.app_root + '/../key.key').toString();
-    certificate = fs.readFileSync(global.settings.app_root + '/../cert.crt').toString();
-    ca = fs.readFileSync(global.settings.app_root + '/../gd.crt').toString();
+    //privateKey = fs.readFileSync(global.settings.app_root + '/../key.key').toString();
+    //certificate = fs.readFileSync(global.settings.app_root + '/../cert.crt').toString();
+    //ca = fs.readFileSync(global.settings.app_root + '/../gd.crt').toString();
     
+    //{key:privateKey,cert:certificate,ca:ca},
     var app = express.createServer(
-            //{key:privateKey,cert:certificate,ca:ca},
             express.cookieParser(),
             express.session({ 
                 secret: "string",  //TODO use a real secret
@@ -117,13 +117,6 @@ module.exports = function(){
     app.use(express.logger({buffer:true, format:'[:remote-addr :date] \033[90m:method\033[0m \033[36m:url\033[0m \033[90m:status :response-time ms -> :res[Content-Type]\033[0m'}));
 
     cartodb.start(function(){
-        /*
-    if (global.settings.name != 'aproduction'){
-        //require('./dirtsock').start(io.listen(app), this, store);
-    } else {
-        require('./dirtsock').start(io.listen(app), this, store);
-    }
-        */
         //require('./dirtsock').start(io.listen(app, {key:privateKey,cert:certificate,ca:ca}), this, store);
         require('./dirtsock').start(io.listen(app), this, store);
         

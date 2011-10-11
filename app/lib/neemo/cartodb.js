@@ -19,7 +19,7 @@ exports.start = function(callback){
                        "HMAC-SHA1");
     
     cartodb.oa = new OAuth(cartodb.request_url, cartodb.access_url, cartodb.consumer_key, cartodb.consumer_secret, "1.0", null, "HMAC-SHA1");
-
+    
     // Request temporary request tokens
     cartodb.oa.getOAuthRequestToken(function(error, request_key, request_secret, results){
         if(error) {
@@ -67,9 +67,11 @@ exports.start = function(callback){
                     // Do a sample POST query
                     var protected_request = cartodb.api_url;
                     var body = {q: cartodb.private_query}
+                    
                     cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function (error, data, response) {
                         sys.puts('\n== CartoDB result for POST "' + cartodb.private_query + '" ==');
                         sys.puts(data + '\n');
+                        
                         cartodb.callback();
                     });
                 }
