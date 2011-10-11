@@ -65,6 +65,28 @@ function _toggleLockScreen(callback) {
   }
 }
 
+function browserReady() {
+  var ua = $.browser;
+
+  // Version checker
+  // IE9+  FF4+  Safari4+  Chrome8+  Opera 11+
+
+  // If browser is a Chrome version
+  var userAgent = navigator.userAgent.toLowerCase();
+  $.browser.chrome = /chrome/.test(navigator.userAgent.toLowerCase());
+
+  if ($.browser.chrome){
+    var userAgent = userAgent.substring(userAgent.indexOf('chrome/') +7);
+    var chrome_version = userAgent.substring(0,userAgent.indexOf('.'));
+    ua.safari = false;
+  }
+
+  if (((ua.msie && ua.version<9) || (ua.mozilla && parseFloat(ua.version.slice(0,3)) < 2) || (ua.safari && parseFloat(ua.version.slice(0,3)) < 400) || (ua.opera && parseFloat(ua.version.slice(0,3)) < 11) || (!ua.safari && chrome_version<10))) {
+    window.location.href = '/old.html';
+  }
+};
+
+
 jQuery.fn.helpShortcuts = function(opt) {
 
   var $el,
