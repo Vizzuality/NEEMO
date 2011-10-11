@@ -73,7 +73,11 @@ Neemo.modules.socket = function(neemo) {
       this.intRegion=-1;
       this.track = -1;
       this._bus = bus;
-      this.socket = io.connect();
+      this.socket = io.connect('', {
+                      'reconnect': true,
+                      'reconnection delay': 5,
+                      'max reconnection attempts': 10
+                    });
       this._bindEvents();
       this._setupSockets();
       this._cookie = document.cookie.split('; ');
@@ -86,7 +90,6 @@ Neemo.modules.socket = function(neemo) {
               this._username = tmp[1];
           }
       }
-
       this._first = true;
       this._tracks =  window.tracks;
     },
@@ -100,6 +103,7 @@ Neemo.modules.socket = function(neemo) {
         neemo.log.info('recieved user profile for: ' + data.user_id);
         that._id = data.user_id;
         if (that._first) {
+            that._first = false;
             that._bus.fireEvent(new Neemo.env.events.UpdateUserProfile(data));
         }
         if (that.region==-1){

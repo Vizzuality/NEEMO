@@ -248,7 +248,7 @@ Neemo.modules.Slideshow = function(neemo) {
         neemo.slideshowUtil.hideDepthLine(function() {
           neemo.slideshowUtil.hideAside(neemo.slideshowUtil.backSlideEffect);
         });
-        this.bufferBack(url, id);
+        //this.bufferBack(url, id);
     },
   }
   );

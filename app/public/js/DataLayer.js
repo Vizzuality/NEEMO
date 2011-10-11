@@ -264,7 +264,6 @@ Neemo.modules.DataLayer = function(neemo) {
       this.animate({ opacity: .1}, 250);
     },
     addSelectWindow: function(opt) {
-        console.log(opt);
       var selectedRegion = $(".image.selected");
       opt = $.extend(opt, {hideCategory:true});
       var selection = new neemo.ui.Annotation.Engine(this._bus, this._api, opt);
