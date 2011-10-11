@@ -194,7 +194,6 @@ Neemo.modules.DataLayer = function(neemo) {
             { action: function(e) { that.selectOption(e, "other"); }, text: "OTHER", angle: 45, cX: 60, cY: 60}, null
         ];
 
-
         /* Drawing of the radial selector */
         for (i = 0; i <= this.sectorNum - 1; i++) {
 
@@ -281,7 +280,6 @@ Neemo.modules.DataLayer = function(neemo) {
     clearSelection: function() {
     // TODO
     },
-
     closeRadialSelector: function(e) {
         var that = this;
         if (e) {
