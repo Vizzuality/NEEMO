@@ -272,12 +272,6 @@ Neemo.modules.DataLayer = function(neemo) {
       selection.enableSubmit();
 
       // If there are other annotations, let's submit them
-      _.each(this._annotations, function(annotation) {
-        annotation._submit();
-        var t = that._annotations.pop();
-        t.remove();
-        t = null;
-      });
 
       this._annotations.push(selection);
       this.closeRadialSelector();
