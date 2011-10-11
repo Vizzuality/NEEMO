@@ -14,9 +14,9 @@ Neemo.modules.Slideshow = function(neemo) {
       this._base_image_url = 'http://neemo.org.s3.amazonaws.com/';
       this._region_key = -1;
       this._track = -1;
-      this._region = 0;
+      this._region = -1;
       this._regions = {};
-      this._forwardBuffer = 4;
+      this._forwardBuffer = 3;
       this._min = 0;
       this._max = 10;
       this._previousButton = 1; //used to enable (1) and disable (0) the nav buttons
@@ -216,7 +216,7 @@ Neemo.modules.Slideshow = function(neemo) {
        * n -> x-v would then be displayed
        */
        var i = id + 1;
-       while (i < id + this._forwardBuffer & i <= this._max){
+       while (i < id + this._forwardBuffer && i <= this._max){
            this.addRegion(url, i);
            i++;
        }
@@ -234,7 +234,6 @@ Neemo.modules.Slideshow = function(neemo) {
     },
     scrollForward: function(url, id){
       var that = this;
-      console.log(url);
       this.addRegion(url,id);
       this.queueRegion(id);
       this.bufferForward(url, id);
