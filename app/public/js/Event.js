@@ -111,6 +111,18 @@ Neemo.modules.events = function(neemo) {
   }
   );
   neemo.events.UpdateUserProfile.TYPE = 'update_user_profile';
+  /**
+     * Update user profile.
+  */
+  neemo.events.NewUser = neemo.events.Event.extend(
+    {
+    init: function(data, action) {
+      this._super('NewUser', action);
+      this._data = data;
+    }
+  }
+  );
+  neemo.events.NewUser.TYPE = 'new_user';
 
 
   neemo.events.RegionOverview = neemo.events.Event.extend(

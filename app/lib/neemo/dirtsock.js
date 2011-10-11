@@ -58,7 +58,8 @@ exports.start = function(io, cartodb, store) {
                             region: default_region,
                             user_latest: [
                                 {points: 1, title: "welcome to neemo!"}
-                            ]
+                            ],
+                            new_user: true
                         };
                         socket.emit('user-metadata', user_profile);
                         var q2 = "INSERT INTO neemo_users (user_id, user_lvl, user_rank, user_score, user_progress, track, region) VALUES ('"+data.username+"', 1, (SELECT count(*)+1 FROM neemo_users), 0, 1, "+default_track+", '"+default_region+"')";
@@ -84,7 +85,7 @@ exports.start = function(io, cartodb, store) {
         });
         socket.on('join', function (data) {
                 var protected_request = cartodb.api_url,
-                    query = "SELECT category, count(*) as count FROM neemo WHERE region='"+data.region+"' GROUP BY category";
+                    query = "SELECT category, count(*) as count FROM neemo WHERE downvotes < 1 AND region='"+data.region+"' GROUP BY category";
                 socket.leave((data.region-1));
                 socket.leave((data.region+1));
                 socket.join(data.region);
@@ -109,7 +110,7 @@ exports.start = function(io, cartodb, store) {
                     });
                 });
                 
-                query = "SELECT key, category, click_x, click_y, width, height, region, user_id, upvotes FROM neemo WHERE downvotes < 1 and region = '"+data.region+"' ORDER BY created_at DESC LIMIT 10";
+                query = "SELECT key, category, click_x, click_y, width, height, region, user_id, upvotes FROM neemo WHERE downvotes < 1 and region = '"+data.region+"' ORDER BY created_at DESC LIMIT 25";
                 var body = {q: query}
                 cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function(error, result, response) {
                     result = JSON.parse(result);

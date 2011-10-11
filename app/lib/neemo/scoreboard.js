@@ -57,7 +57,7 @@ exports.start = function(io, cartodb, store) {
             });
         });
         socket.on('join', function (data) {
-            var pageSize = 15,
+            var pageSize = 500,
                 protected_request = cartodb.api_url,
                 offset = pageSize * (data.page - 1),
                 query = "SELECT neemo_ranks.user_rank, neemo_users.user_id, neemo_users.user_lvl, neemo_users.user_score, neemo_users.user_progress FROM " + 

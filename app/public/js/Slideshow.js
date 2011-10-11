@@ -241,12 +241,12 @@ Neemo.modules.Slideshow = function(neemo) {
       });
     },
     scrollBack: function(url, id){
-        //this.bufferBack(url, id);
-        this.addRegion(url,id);
+        //this.addRegion(url,id);
         this.queueRegion(id);
         neemo.slideshowUtil.hideDepthLine(function() {
           neemo.slideshowUtil.hideAside(neemo.slideshowUtil.backSlideEffect);
         });
+        this.bufferBack(url, id);
     },
   }
   );
