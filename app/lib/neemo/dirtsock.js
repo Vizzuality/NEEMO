@@ -5,18 +5,20 @@ var   Step        = require('step')
     , rpub        = redis.createClient();
 // Sets up the socket server
 exports.start = function(io, cartodb, store) {
-    var validateSession = function(input){
-        var key = "superSecretKey";
-        var data = input.substr(0,44);
-        var hash = input.substr(44,28);
-        
-        var hmac = crypto.createHmac("sha1", key);
-        var hash2 = hmac.update(data);
-        var digest = hmac.digest(encoding="base64");
-        if (digest==data){
+    var validateSession = function(input, username){
+        var hash = input.substr(0,40),
+            data = input.substr(40),
+            shouldbe = {
+                            username: username,
+                            key: neemo.secret,
+                        },
+            s = JSON.stringify(shouldbe);
+        var newhash = crypto.createHmac('sha1', neemo.secret).update(s).digest('hex', encoding="base64");
+        console.log(username);
+        if (newhash==hash){
             return true;
         }else{
-            return true;
+            return false;
         }
     }
     /* Setup main App socket connections and functions
@@ -30,7 +32,7 @@ exports.start = function(io, cartodb, store) {
          */
         socket.once('message', function(data){
             data = JSON.parse(data);
-            if (validateSession(data.auth)){
+            if (validateSession(data.auth, data.username)){
                 //perform a create or get here!
                 var protected_request = cartodb.api_url,
                     query = "SELECT neemo_ranks.user_rank, neemo_users.user_id, neemo_users.user_lvl, neemo_users.user_score, neemo_users.user_progress, neemo_users.track, neemo_users.region FROM " + 
@@ -136,7 +138,7 @@ exports.start = function(io, cartodb, store) {
             socket.leave('/'+data.region);
         });
 	    socket.on('submit-vote', function (data) {
-            if (validateSession(data.auth)){
+            if (validateSession(data.auth, data.username)){
                 var protected_request = cartodb.api_url;
                 if (data.type == 'upvote'){
                     var query = "UPDATE neemo SET upvotes = upvotes + 1 WHERE key = '"+data.key+"' and user_id != '"+data.username+"'; " +
@@ -155,7 +157,7 @@ exports.start = function(io, cartodb, store) {
             }
         });
 	    socket.on('submit-data', function (data) {
-            if (validateSession(data.auth)){
+            if (validateSession(data.auth, data.username)){
                 //TODO create key from secret and username, store username in the object
                 //then we can validate votes on annotations to ensure that votes aren't 
                 //coming from the creator

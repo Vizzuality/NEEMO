@@ -24,11 +24,30 @@ module.exports = function(){
     
     csa.service = neemo.route_url;
     cas  = new CAS({base_url: csa.login, service: csa.service});
-        
+
+
+                  
     /* forces CSA signin to do anything fun */
     var cas_middleware = function(req, res, next){
         var ticket = req.param('ticket'),
             route  = req.url;
+        /*
+        if (route.split('.ht').length > 1 || route == '/'){
+            var crypto = require('crypto')
+              , text = 'andrewxhill'
+              , salt = 'abcdeg'
+              , hash;
+
+            hash = crypto.createHmac('sha1', neemo.secret).update(text).digest('hex', encoding="base64");
+            
+            console.log(hash);
+            
+            //keylen = 28
+            res.cookie('socketAuth', text, { expires: new Date(Date.now() + 900000), httpOnly: false });
+            res.cookie('neemoUser', hash, { expires: new Date(Date.now() + 900000), httpOnly: false });
+            next();
+        }
+        */
         if (route.split('.ht').length > 1 || route == '/'){
             if (req.session){
                 res.cookie('socketAuth', req.session.sid, { expires: new Date(Date.now() + 900000), httpOnly: false });
@@ -59,17 +78,21 @@ module.exports = function(){
                     res.send({error: err});
                   } else {
                     if (status) {
-                        var key = "superSecretKey";
                         var data = {
                             username: username,
+                            key: neemo.secret,
                         }
                         var s = JSON.stringify(data);
+                        /*
                         var hmac = crypto.createHmac("sha1", key);
                         var hash2 = hmac.update(s);
                         var digest = hmac.digest(encoding="base64");
-                        
+                        */
+                        var hash = crypto.createHmac('sha1', neemo.secret).update(s).digest('hex', encoding="base64");
+                        console.log(hash);
+                        console.log(hash.length);
                         //keylen = 28
-                        req.session.sid = s+digest;
+                        req.session.sid = hash + Base64(s);
                         req.session.username = username;
                         req.session.loggedin = true;
                         req.session.cookie.expires = new Date(Date.now() + 3600000);
@@ -85,6 +108,7 @@ module.exports = function(){
                 res.redirect(csa.login + '?service=' + csa.service);
             }
         }
+        
     };
     
     // initialize express server
