@@ -264,11 +264,21 @@ Neemo.modules.DataLayer = function(neemo) {
       this.animate({ opacity: .1}, 250);
     },
     addSelectWindow: function(opt) {
+      var that = this;
       var selectedRegion = $(".image.selected");
       opt = $.extend(opt, {hideCategory:true});
       var selection = new neemo.ui.Annotation.Engine(this._bus, this._api, opt);
       selection.start(selectedRegion);
       selection.enableSubmit();
+
+      // If there are other annotations, let's submit them
+      _.each(this._annotations, function(annotation) {
+        annotation._submit();
+        var t = that._annotations.pop();
+        t.remove();
+        t = null;
+      });
+
       this._annotations.push(selection);
       this.closeRadialSelector();
     },

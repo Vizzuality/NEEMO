@@ -208,24 +208,18 @@ Tables
 table { border-collapse: collapse; border-spacing: 0; }
 td { vertical-align: top; }
 
-
-/* ==|== primary styles =====================================================
-Author:
-========================================================================== */
-
-
 html, body {width:100%; height:100%;}
 body {
   background: #29526E;
   background: -webkit-radial-gradient(circle, #3EA99F, #29526E, #081331);
   background: -moz-radial-gradient(circle, #3EA99F, #29526E, #081331);
   background: -o-linear-gradient(#29526E, #3EA99F, #081331);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#081331', endColorstr='#3EA99F');
 }
 
 body.home {
   background:#071230 url(/images/home_bkg.png) no-repeat;
 }
-
 
 body.old { background:#071230 url(/images/old_home_bkg.png) no-repeat 50% 0%; }
 
@@ -235,31 +229,6 @@ body.old { background:#071230 url(/images/old_home_bkg.png) no-repeat 50% 0%; }
 
 /* Notice for people with old browsers */
 .notice { display:block; background:url(/images/download_chrome.png) no-repeat; position:absolute; top:50%; left:50%; width:540px; height:540px; margin-left:-270px; margin-top:-270px; text-align:center; }
-/*.notice .line1 { margin: 0 auto 27px auto; width:283px; font-family:"EurostileLTStd"; color: rgba(255,255,255,.8); font-size: 19px; }
-.notice .line2 { margin: 0 0 10px 0; font-family:"EurostileLTStd-Demi"; color: #fff; font-size: 48px; line-height: 60px; text-transform:uppercase;}
-.notice .line3 { margin: 0 0 8px 0;  font-family:"EurostileLTStd-Demi"; color: #fff; font-size: 82px; line-height: 60px; text-transform:uppercase;}
-.notice .line4 { margin: 0 0 15px 0; font-family:"EurostileLTStd-Demi"; font-size: 39px; color:rgba(0,0,0,.6); text-transform:uppercase; }
-
-.notice a {
-  text-decoration:none;
-  line-height:20px;
-  padding:7px 14px;
-  background:rgba(0,0,0,.5);
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
-  color:#fff;
-  font-size:17px;
-  font-family:"EurostileLTStd-Demi";
-  text-shadow: 0px 0px 5px #fff;
-  -webkit-transition: all .5s ease-in-out;
-}
-
-.notice a:hover {
-  text-shadow: 0px 0px 20px #fff;
-}
-*/
-
 
 a { text-decoration:none; }
 
@@ -1126,6 +1095,31 @@ nav ul {
   text-shadow: 0px 0px 5px #fff;
 }
 
+/* BASIC HELP ---------------------------------------------- */
+
+.beginners_help_icon {
+  position:absolute;
+  top:20px;
+  right:30px;
+  width:23px;
+  height:19px;
+  background:url(/images/sprite.png) no-repeat -448px 0;
+  z-index:2100;
+  cursor:pointer;
+}
+
+.beginners_diagram {
+  display:none;
+  position:absolute;
+  left:167px;
+  top:50%;
+  margin-top:-261px;
+  width:957px;
+  height:568px;
+  background:url(/images/help.png) no-repeat;
+  z-index:2300;
+}
+
 /* SHORTCUTS ---------------------------------------------- */
 
 .keyboard {
@@ -1148,14 +1142,13 @@ nav ul {
   position:absolute;
   top:50%;
   left:50%;
-  margin-left:-186px;
-  margin-top: -92px;
-
   width:373px;;
   height:185px;
+  margin-left:-186px;
+  margin-top: -92px;
   padding:25px 30px;
   background:url(/images/sprite.png) no-repeat -364px -74px;
-  z-index:2000;
+  z-index:2100;
 }
 
 .shortcuts .header  {
@@ -1232,8 +1225,7 @@ nav ul {
   margin-right:74px;
 }
 
-#lock_screen { position: absolute; top: 0; left: 0; display: none; width: 100%; height: 100%; opacity: .5; background: #000; z-index: 1900; }
-
+#lock_screen { position: absolute; top: 0; left: 0; display: none; width: 100%; height: 100%; opacity: .5; background: #000; z-index: 2000; }
 
 #content {
   position:relative;

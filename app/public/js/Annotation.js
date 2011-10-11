@@ -25,6 +25,10 @@ Neemo.modules.Annotation = function(neemo) {
       this._display.getElement().remove();
       this._display = null;
     },
+    _submit:function() {
+        this._bus.fireEvent(new Neemo.env.events.SubmitData({category: this.category, x: this.x, y: this.y, width: this.$el.width(), height: this.$el.height()}));
+        this.remove();
+    },
     _bindEvents: function(){
       var that = this
       , bus = this._bus;

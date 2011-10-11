@@ -3,7 +3,7 @@
 */
 var GOD = (function() {
   var subscribers = {};
-  var debug = true;
+  var debug = false;
 
   function unsubscribe(event) {
     debug && console.log("Unsubscribe ->", event);
@@ -51,7 +51,7 @@ var GOD = (function() {
   };
 })();
 
-function _toggleLockScreen(callback) {
+function toggleLockScreen(callback) {
   var $lock_screen = $("#lock_screen");
 
   if ($lock_screen.length) {
@@ -102,8 +102,9 @@ jQuery.fn.helpShortcuts = function(opt) {
   function _close(el) {
     GOD.unsubscribe("_close." + id);
     el.fadeOut(speed);
-    _toggleLockScreen();
+    toggleLockScreen();
   }
+
   this.each(function() {
     $el = $(this);
 
@@ -117,11 +118,51 @@ jQuery.fn.helpShortcuts = function(opt) {
       e.preventDefault();
       e.stopPropagation();
       $popover.fadeIn(speed);
-    _toggleLockScreen();
+      toggleLockScreen();
       GOD.subscribe("_close." + id);
       GOD.broadcast("_close." + id);
     });
   });
+}
+
+var BeginnersHelp = function(e, opt){
+
+  var $el = $(".help"),
+  id = "beginnersHelp",
+  speed  = (opt && opt.speed) || 200,
+  easingMethod = (opt && opt.easingMethod) || "easeOutExpo";
+
+  $(window).bind('_close.' + id, function() {
+    _close($el);
+  });
+
+  $(window).bind('NewUser', _open);
+
+  function _open(e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    GOD.subscribe("_close." + id);
+    GOD.broadcast("_close." + id);
+    toggleLockScreen(function() {
+      $(".beginners_diagram").fadeIn(speed);
+    });
+  }
+
+  function _close($el) {
+    GOD.unsubscribe("_close." + id);
+    $el.fadeOut(speed);
+    $(".beginners_diagram").fadeOut(speed, function() {
+      toggleLockScreen();
+    });
+  }
+
+  return {
+    open: _open,
+    close: _close
+  };
 }
 
  var HelpInfo = function(e, opt){
@@ -134,7 +175,6 @@ jQuery.fn.helpShortcuts = function(opt) {
   easingMethod = (opt && opt.easingMethod) || "easeOutExpo";
 
   function _updateHeader($species) {
-    console.log($species);
     var name = $species.attr("class");
     $el.find("h3").html("What is a " + name + "?");
   }
@@ -156,9 +196,7 @@ jQuery.fn.helpShortcuts = function(opt) {
 
   function _select($asideLi) {
     var c = $asideLi.attr("class");
-    console.log(c);
     var $species = $el.find("li." + c);
-    console.log($species, $el.find(".inner"));
 
     if ($species.index() >= 0) {
       $el.find(".inner").scrollTo($species.index() * panelWidth, speed, {easing:easingMethod} );
