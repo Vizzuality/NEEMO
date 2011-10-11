@@ -90,9 +90,9 @@ module.exports = function(){
     
     var privateKey, certificate, ca;
     // initialize express server
-    privateKey = fs.readFileSync('../key.key').toString();
-    certificate = fs.readFileSync('../cert.crt').toString();
-    ca = fs.readFileSync('../gd.crt').toString();
+    privateKey = fs.readFileSync(global.settings.app_root + '/../key.key').toString();
+    certificate = fs.readFileSync(global.settings.app_root + '/../cert.crt').toString();
+    ca = fs.readFileSync(global.settings.app_root + '/../gd.crt').toString();
     
     var app = express.createServer(
             {key:privateKey,cert:certificate,ca:ca},
