@@ -134,7 +134,6 @@ Neemo.modules.Annotation = function(neemo) {
       w=this.$el.css('width');
       var area = h.substring(0,h.length-2)*w.substring(0,w.length-2);
       this.$el.css('z-index',Math.floor((1/area)*400000)+150);
-      console.log(this.$el.css('z-index'));
     }
   }
   );
