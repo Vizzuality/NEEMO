@@ -178,8 +178,9 @@ Neemo.modules.DataLayer = function(neemo) {
         that = this;
         this.svg = Raphael(this.selectorID, this.canvasWidth, this.canvasHeight);
         this.circle = this.svg.circle(this.centerX, this.centerY, 0).attr({ stroke:"#333", "stroke-width":"4px", fill: "none" });
-        this.svg.rect(this.centerX -1, this.centerY - 5, 2, 10).attr({ stroke:"none", fill: "#333" });
-        this.svg.rect(this.centerX-5 , this.centerY -1, 10, 2).attr({ stroke:"none", fill: "#333" });
+        this.closeButton = this.svg.circle(this.centerX, this.centerY, 35).attr({ opacity:0, "stroke":"none", fill: "#000" });
+        this.crossX = this.svg.rect(this.centerX -1, this.centerY - 5, 2, 10).attr({ stroke:"none", fill: "#333" });
+        this.crossY = this.svg.rect(this.centerX-5 , this.centerY -1, 10, 2).attr({ stroke:"none", fill: "#333" });
         //svg.rect(centerX , centerY -1, 10, 2).attr({ stroke:"none", fill: "#333" });
 
         /* Options for the radial selector */
@@ -191,6 +192,10 @@ Neemo.modules.DataLayer = function(neemo) {
             { action: function(){that.closeRadialSelector()}, text: "CLOSE", angle: 315, cX: -60, cY: 60}, null,
             { action: function(e) { that.selectOption(e, "other"); }, text: "OTHER", angle: 45, cX: 60, cY: 60}, null
         ];
+
+        this.closeButton.click(function() { that.closeRadialSelector()});
+        this.crossX.click(function() { that.closeRadialSelector()});
+        this.crossY.click(function() { that.closeRadialSelector()});
 
         /* Drawing of the radial selector */
         for (i = 0; i <= this.sectorNum - 1; i++) {
