@@ -89,6 +89,8 @@ module.exports = function(){
     
     // initialize express server
     var app = express.createServer(
+            {key: fs.readFileSync('../key').toString(),
+             cert: fs.readFileSync('../cert').toString() }
             express.cookieParser(),
             express.session({ 
                 secret: "string",  //TODO use a real secret

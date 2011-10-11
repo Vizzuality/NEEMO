@@ -72,7 +72,7 @@ Neemo.modules.socket = function(neemo) {
       this.intRegion=-1;
       this.track = -1;
       this._bus = bus;
-      this.socket = io.connect('', {
+      this.socket = io.connect('https://localhost', {
                       'reconnect': true,
                       'reconnection delay': 5,
                       'max reconnection attempts': 10
@@ -108,7 +108,13 @@ Neemo.modules.socket = function(neemo) {
         if (that.region==-1){
             that.region = data.region;
             that.track = data.track;
-            that.intRegion = window.tracks[that.track].indexOf(data.region);
+            if (that.region === 0){
+                that.intRegion = 0;
+                that.region = window.tracks[that.track][0];
+            } else {
+                that.intRegion = window.tracks[that.track].indexOf(data.region);
+            }
+            
             if(!(that.intRegion !== 0 && that.intRegion > 0)){
               that.intRegion = 0;
               neemo.slideshowUtil.adjustMargin();
