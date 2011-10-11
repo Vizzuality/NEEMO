@@ -110,6 +110,7 @@ Neemo.modules.events = function(neemo) {
     }
   }
   );
+  
   neemo.events.UpdateUserProfile.TYPE = 'update_user_profile';
   /**
      * Update user profile.
