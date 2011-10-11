@@ -119,9 +119,9 @@ Neemo.modules.socket = function(neemo) {
          data.region = that.intRegion;
          that._bus.fireEvent(new Neemo.env.events.RegionOverview(data));
 
-        // if (data.new_user){
-             //that._bus.fireEvent(new Neemo.env.events.NewUser());
-         //}
+         if (data.new_user){
+           that._bus.fireEvent(new Neemo.env.events.NewUser());
+         }
       });
       this.socket.on('region-new-data', function (data) {
         if(data.region == that.region){
@@ -172,6 +172,7 @@ Neemo.modules.socket = function(neemo) {
       bus.addHandler(
         'NewUser',
         function(data){
+          $(window).trigger("NewUser");
         }
       );
 

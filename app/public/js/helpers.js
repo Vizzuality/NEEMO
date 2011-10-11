@@ -136,9 +136,15 @@ var BeginnersHelp = function(e, opt){
     _close($el);
   });
 
+  $(window).bind('NewUser', function() {
+    _open();
+  });
+
   function _open(e) {
-    e.preventDefault();
-    e.stopPropagation();
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
 
     GOD.subscribe("_close." + id);
     GOD.broadcast("_close." + id);
