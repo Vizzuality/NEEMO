@@ -136,9 +136,7 @@ var BeginnersHelp = function(e, opt){
     _close($el);
   });
 
-  $(window).bind('NewUser', function() {
-    _open();
-  });
+  $(window).bind('NewUser', _open);
 
   function _open(e) {
     if (e) {
@@ -148,15 +146,17 @@ var BeginnersHelp = function(e, opt){
 
     GOD.subscribe("_close." + id);
     GOD.broadcast("_close." + id);
-    toggleLockScreen();
-    $(".beginners_diagram").fadeIn(speed);
+    toggleLockScreen(function() {
+      $(".beginners_diagram").fadeIn(speed);
+    });
   }
 
   function _close($el) {
     GOD.unsubscribe("_close." + id);
     $el.fadeOut(speed);
-    toggleLockScreen();
-    $(".beginners_diagram").fadeOut(speed);
+    $(".beginners_diagram").fadeOut(speed, function() {
+      toggleLockScreen();
+    });
   }
 
   return {
