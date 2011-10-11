@@ -7,6 +7,7 @@ var   express     = require('express')
     , sys         = require('sys')
     , fs          = require("fs")
     , path        = require("path")
+    //, https       = require("https")
     , querystring = require('querystring')
     , crypto      = require('crypto')
     , CAS         = require('cas')
@@ -87,10 +88,14 @@ module.exports = function(){
         
     };
     
+    var privateKey, certificate, ca;
     // initialize express server
+    privateKey = fs.readFileSync('../key.key').toString();
+    certificate = fs.readFileSync('../cert.crt').toString();
+    ca = fs.readFileSync('../gd.crt').toString();
+    
     var app = express.createServer(
-            {key: fs.readFileSync('../key').toString(),
-             cert: fs.readFileSync('../cert').toString() }
+            {key:privateKey,cert:certificate,ca:ca},
             express.cookieParser(),
             express.session({ 
                 secret: "string",  //TODO use a real secret
@@ -100,6 +105,7 @@ module.exports = function(){
                 }
             })
     );
+   
     app.use('/js', express.static(global.settings.app_root + '/public/js'));
     app.use('/images', express.static(global.settings.app_root + '/public/images'));
     app.use('/css', express.static(global.settings.app_root + '/public/css'));
@@ -111,10 +117,17 @@ module.exports = function(){
     app.use(express.logger({buffer:true, format:'[:remote-addr :date] \033[90m:method\033[0m \033[36m:url\033[0m \033[90m:status :response-time ms -> :res[Content-Type]\033[0m'}));
 
     cartodb.start(function(){
-    require('./dirtsock').start(io.listen(app, {secure: true}), this, store);
+        /*
+    if (global.settings.name != 'aproduction'){
+        //require('./dirtsock').start(io.listen(app), this, store);
+    } else {
+        require('./dirtsock').start(io.listen(app), this, store);
+    }
+        */
+        require('./dirtsock').start(io.listen(app, {key:privateKey,cert:certificate,ca:ca}), this, store);
         
         /*
-        eval(fs.readFileSync('./config/uploadtracks.js', encoding="ascii"));
+        eval(fs.readFileSync('./config/newtracks.js', encoding="ascii"));
         doc = {};
         var track = 1;
         var protected_request = this.api_url;

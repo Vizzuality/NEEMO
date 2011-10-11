@@ -72,7 +72,8 @@ Neemo.modules.socket = function(neemo) {
       this.intRegion=-1;
       this.track = -1;
       this._bus = bus;
-      this.socket = io.connect('https://localhost', {
+      this.socket = io.connect('https://cartodb.zooniverse.org', {
+                       secure: true,
                       'reconnect': true,
                       'reconnection delay': 5,
                       'max reconnection attempts': 10
