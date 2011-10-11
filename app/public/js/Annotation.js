@@ -36,6 +36,7 @@ Neemo.modules.Annotation = function(neemo) {
       this.$el.find('.submit').click(function(){
         that._bus.fireEvent(new Neemo.env.events.SubmitData({category: that.category, x: that.x, y: that.y, width: that.$el.width(), height: that.$el.height()}));
         that.remove();
+        that.setZindex();        
       });
 
       this.$el.find('.close').click(function() { that.remove(); });
@@ -101,6 +102,7 @@ Neemo.modules.Annotation = function(neemo) {
         this.$el.draggable({ handle:"controls", containment: 'parent', stop: function(e) { that.onDragEnd(); } });
         this.$el.resizable({ containment: 'parent', minWidth: 80, minHeight: 18, handles: 'nw, se', stop: function(e) { that.onDragEnd(); } });
       }
+      
     },
     clear: function($region){
       alert('a');
@@ -125,6 +127,14 @@ Neemo.modules.Annotation = function(neemo) {
     },
     setCategory: function(category){
       this.$el.find('.category').text(category);
+    },
+    setZindex: function(){
+      h=this.$el.css('height');
+      w=this.$el.css('width');
+      var area = h.substring(0,h.length-2)*w.substring(0,w.length-2);
+      this.$el.css('z-index',Math.floor((1/area)*100000));
+      console.log(Math.floor((1/area)*100000));
+      console.log(this.$el.css('z-index'));
     }
   }
   );
