@@ -95,7 +95,7 @@ module.exports = function(){
     ca = fs.readFileSync(global.settings.app_root + '/../gd.crt').toString();
     
     var app = express.createServer(
-            {key:privateKey,cert:certificate,ca:ca},
+            //{key:privateKey,cert:certificate,ca:ca},
             express.cookieParser(),
             express.session({ 
                 secret: "string",  //TODO use a real secret
@@ -124,7 +124,8 @@ module.exports = function(){
         require('./dirtsock').start(io.listen(app), this, store);
     }
         */
-        require('./dirtsock').start(io.listen(app, {key:privateKey,cert:certificate,ca:ca}), this, store);
+        //require('./dirtsock').start(io.listen(app, {key:privateKey,cert:certificate,ca:ca}), this, store);
+        require('./dirtsock').start(io.listen(app), this, store);
         
         /*
         eval(fs.readFileSync('./config/newtracks.js', encoding="ascii"));
