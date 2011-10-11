@@ -6,4 +6,5 @@ app/settings.js
 app/nohup.out
 key
 cert
-
+key.key
+cert.crt
