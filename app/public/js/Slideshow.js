@@ -154,7 +154,6 @@ Neemo.modules.Slideshow = function(neemo) {
       this._bindKeyboard();
     },
     _repositionPanels: function() {
-    //  console.log($("#slideshow"));
       var left  = $("#slideshow .selected").offset().left - ($(".info").width() + 20 );
 
       var depthLeft = $("#slideshow div.selected").offset().left + ($("#slideshow .selected").width() + 20 );
@@ -186,9 +185,7 @@ Neemo.modules.Slideshow = function(neemo) {
       }
     },
     _toggleButtons: function(id){
-
-              //update use region_key to increment the url in the tracks track object
-
+      //update use region_key to increment the url in the tracks track object
       if (id == this._min){
           this._previousButton = 0;
       } else if (id == this._min + 1) {
@@ -422,6 +419,10 @@ Neemo.modules.slideshowUtil = function(neemo) {
         easingMethod: null,  // 'easeInExpo'
         moving: false
     };
+
+    neemo.slideshowUtil.adjustMargin = function() {
+      $("#slideshow").css("margin-left", "600px");
+    },
     neemo.slideshowUtil.forwardSlideEffect = function() {
         var that = neemo.slideshowUtil.config;
         $("#slideshow div.selected").removeClass("selected");

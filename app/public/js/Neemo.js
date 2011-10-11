@@ -49,7 +49,7 @@ Neemo.modules.app = function(neemo) {
       this.slideshow = new neemo.ui.Slideshow.Engine(this._bus, this._api, config.region);
       this.slideshow.start();
       this.socket = new neemo.socket.Engine(this._bus);
-      
+
     },
 
     run: function() {
@@ -77,7 +77,7 @@ Neemo.modules.socket = function(neemo) {
       this._bindEvents();
       this._setupSockets();
       this._cookie = document.cookie.split('; ');
-      
+
       for (i in this._cookie){
           var tmp = this._cookie[i].split('=');
           if (tmp[0]=='socketAuth'){
@@ -86,7 +86,7 @@ Neemo.modules.socket = function(neemo) {
               this._username = tmp[1];
           }
       }
-      
+
       this._first = true;
       this._tracks =  window.tracks;
     },
@@ -107,7 +107,8 @@ Neemo.modules.socket = function(neemo) {
             that.track = data.track;
             that.intRegion = window.tracks[that.track].indexOf(data.region);
             if(!(that.intRegion !== 0 && that.intRegion > 0)){
-                that.intRegion = 0;
+              that.intRegion = 0;
+              neemo.slideshowUtil.adjustMargin();
             }
             that._bus.fireEvent(new neemo.events.ChangeRegion({region: that.intRegion, track: that.track}));
         }
@@ -229,7 +230,7 @@ Neemo.modules.ui = function(neemo) {
     //to be hooked to jquery specific. this might be a bit much.
     //if so we can just scope jquery and use it fully. what it is
     //nice for is swapping out jquery for another. used example,
-    
+
     getElement: function() {
       return this._element;
     },
