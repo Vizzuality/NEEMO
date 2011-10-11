@@ -159,7 +159,8 @@ Neemo.modules.socket = function(neemo) {
           that.socket.emit('leave', {region: that.region});
           that.intRegion = event.getRegion();
           that.region = window.tracks[that.track][that.intRegion];
-          that.socket.emit('join', {region: that.region, track: that.track, username: that._username, auth: that.auth} );
+          progress = (that.intRegion + 1.0) / window.tracks[that.track].length;
+          that.socket.emit('join', {region: that.region, track: that.track, username: that._username, progress: progress, auth: that.auth} );
         }
       );
       /*

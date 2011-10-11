@@ -34,8 +34,8 @@ exports.start = function(io, cartodb, store) {
                 //perform a create or get here!
                 var protected_request = cartodb.api_url,
                     query = "SELECT neemo_ranks.user_rank, neemo_users.user_id, neemo_users.user_lvl, neemo_users.user_score, neemo_users.user_progress, neemo_users.track, neemo_users.region FROM " + 
-                         "(SELECT row_number() OVER(ORDER BY user_score DESC) AS user_rank, user_score FROM neemo_users GROUP BY user_score) " +
-                         "as neemo_ranks, neemo_users WHERE neemo_users.user_score = neemo_ranks.user_score and user_id = '"+data.username+"' LIMIT 1;";
+                            "(SELECT row_number() OVER(ORDER BY user_score DESC) AS user_rank, user_score FROM neemo_users GROUP BY user_score) " +
+                            "AS neemo_ranks, neemo_users WHERE neemo_users.user_score = neemo_ranks.user_score and user_id = '"+data.username+"' LIMIT 1;";
                          
                 //var query = "SELECT user_id, user_lvl, user_rank, user_score, user_progress, track, region FROM neemo_users WHERE user_id = '"+data.username+"' LIMIT 1;";
                 var body = {q: query}
@@ -83,8 +83,6 @@ exports.start = function(io, cartodb, store) {
         socket.on('join', function (data) {
                 var protected_request = cartodb.api_url,
                     query = "SELECT category, count(*) as count FROM neemo WHERE region='"+data.region+"' GROUP BY category";
-                    console.log(query);
-            console.log(data);
                 socket.leave((data.region-1));
                 socket.leave((data.region+1));
                 socket.join(data.region);
@@ -111,27 +109,27 @@ exports.start = function(io, cartodb, store) {
                 
                 query = "SELECT key, category, click_x, click_y, width, height, region, user_id, upvotes FROM neemo WHERE downvotes < 1 and region = '"+data.region+"' ORDER BY created_at DESC LIMIT 10";
                 var body = {q: query}
-                cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function(error, data, response) {
-                    data = JSON.parse(data);
-                    for (i in data.rows){
+                cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function(error, result, response) {
+                    result = JSON.parse(result);
+                    for (i in result.rows){
                 
                         var out = { 
-                            category: data.rows[i].category,
-                            x: data.rows[i].click_x,
-                            y: data.rows[i].click_y,
-                            width: data.rows[i].width,
-                            height: data.rows[i].height,
-                            region: data.rows[i].region,
-                            username: data.rows[i].user_id,
-                            key: data.rows[i].key,
+                            category: result.rows[i].category,
+                            x: result.rows[i].click_x,
+                            y: result.rows[i].click_y,
+                            width: result.rows[i].width,
+                            height: result.rows[i].height,
+                            region: result.rows[i].region,
+                            username: result.rows[i].user_id,
+                            key: result.rows[i].key,
                             stored: true
                         }
                         socket.emit('region-new-data', out);
                     }
                 });
-                var query = "UPDATE neemo_users SET region = '"+data.region+"' WHERE user_id = '"+data.username+"'";
-                var body = {q: query}
-                cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function(a,b,d){console.log(b)});
+                var q = "UPDATE neemo_users SET user_progress="+data.progress+", region = '"+data.region+"' WHERE user_id = '"+data.username+"'";
+                var b = {q: q}
+                cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, b, null, function(a,b,d){console.log(b)});
             
 	    });
         socket.on('leave', function (data) {
