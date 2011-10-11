@@ -46,9 +46,9 @@ Neemo.modules.UserProfile = function(neemo) {
       if (data.points < 0){
           txt = data.points;
       }
-      var $point = $('<li style="display:none"><div class="point">'+txt+'</div> <p>'+data.title+'</p></li>');
+      var $point = $('<li style="display:none"><div class="point">'+txt+'</div><p>'+data.title+'</p></li>');
       this._display.getActivity().prepend($point);
-      $point.slideDown(150, "easeInOutExpo");
+      $point.delay(300).slideDown(150, "easeInOutExpo");
 
       var lis = this._display.getActivity().find('li');
       if (lis.length == 6){

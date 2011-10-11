@@ -872,6 +872,7 @@ nav ul {
 .info ul li { margin-bottom:10px; clear:both; overflow:hidden; font-size:13px; }
 .info ul li p { float:left; width:190px; margin:0; }
 
+.info ul li { opacity:0; }
 .info ul li:nth-child(1) { opacity:1; }
 .info ul li:nth-child(2) { opacity:.6; }
 .info ul li:nth-child(3) { opacity:.4; }
