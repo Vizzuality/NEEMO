@@ -78,7 +78,6 @@ module.exports = function(){
                     res.send({error: err});
                   } else {
                     if (status) {
-                        var key = "superSecretKey";
                         var data = {
                             username: username,
                             key: neemo.secret,
