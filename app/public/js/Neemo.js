@@ -48,8 +48,8 @@ Neemo.modules.app = function(neemo) {
       this.datalayer.start();
       this.slideshow = new neemo.ui.Slideshow.Engine(this._bus, this._api, config.region);
       this.slideshow.start();
+//      this.help = new neemo.help.Engine();
       this.socket = new neemo.socket.Engine(this._bus);
-
     },
 
     run: function() {
@@ -118,9 +118,10 @@ Neemo.modules.socket = function(neemo) {
          //data.region = window.tracks[1].indexOf(data.region);
          data.region = that.intRegion;
          that._bus.fireEvent(new Neemo.env.events.RegionOverview(data));
-         if (data.new_user){
-             that._bus.fireEvent(new Neemo.env.events.NewUser());
-         }
+
+        // if (data.new_user){
+             //that._bus.fireEvent(new Neemo.env.events.NewUser());
+         //}
       });
       this.socket.on('region-new-data', function (data) {
         if(data.region == that.region){
@@ -167,6 +168,13 @@ Neemo.modules.socket = function(neemo) {
           that.socket.emit('join', {region: that.region, track: that.track, username: that._username, progress: progress, auth: that.auth} );
         }
       );
+
+      bus.addHandler(
+        'NewUser',
+        function(data){
+        }
+      );
+
       /*
       * Handle up/down votes
       */
@@ -402,3 +410,20 @@ Neemo.modules.exceptions = function(neemo) {
   );
 };
 
+
+
+
+Neemo.modules.help = function(neemo) {
+  neemo.help = {};
+  neemo.help.Engine = Class.extend(
+    {
+    init: function() {
+    },
+    open: function(){
+      alert('test');
+    },
+    start: function(url){
+    }
+  }
+  );
+};
