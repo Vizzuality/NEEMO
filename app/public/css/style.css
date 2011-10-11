@@ -637,8 +637,7 @@ nav ul {
 
 #slideshow {
   width:9999px;
-  margin-left:-290px;
-  left:50%;
+  margin-left:400px;
   height:610px;
   position:absolute;
   top:50%;
