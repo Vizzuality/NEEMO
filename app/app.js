@@ -6,7 +6,7 @@ if (ENV != 'development' && ENV != 'production') {
   console.error("\n./app [environment]");
   console.error("environments: [development, production]");
   console.error("default environment set to: [production]");
-  ENV = 'development';
+  ENV = 'production';
   //process.exit(1);
 }
 
