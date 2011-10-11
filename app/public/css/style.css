@@ -31,6 +31,7 @@ Base
  */
 
 html { font-size: 100%; }
+html { font-size: 100%; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; }
 
 body { margin: 0; font-size: 13px; line-height: 1.231; }
 
@@ -638,6 +639,7 @@ nav ul {
 #slideshow {
   width:9999px;
   margin-left:400px;
+  _left:50%;
   height:610px;
   position:absolute;
   top:50%;
@@ -685,7 +687,6 @@ nav ul {
   bottom:25px;
   color:rgba(255,255,255, .6);
   font-size:10px;
-
 }
 
 #slideshow div.selected .depth-line .depth1 {
@@ -1219,7 +1220,7 @@ body.ranking .info {
   position:absolute;
   top:0; left:0;
   width:100%;
-  height:609px;
+  height:612px;
   z-index:-2;
 }
 
@@ -1293,6 +1294,7 @@ a.button {
   line-height:25px;
   letter-spacing:1px;
 }
+
 #content .bottom p.margin {
   margin-bottom:81px;
 }
