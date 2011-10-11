@@ -299,15 +299,14 @@ body.home nav {
 nav {
   position:absolute;
   top:27px;
-  left:50%;
+  margin-left:281px;
   width:680px;
-  margin: 0 0 0 -415px;
   padding:10px 0;
   z-index:2000;
 }
 
 body.ranking nav {
-  margin: 0 0 0 -300px;
+  margin: 0 0 0 355px;
 }
 
 nav a {
@@ -362,6 +361,7 @@ nav ul {
   color:#000;
   opacity:.45;
   -webkit-transition: all .3s ease-in-out;
+  -moz-transition: all .3s ease-in-out;
 }
 
 /* RANKING ---------------------------------------------- */
@@ -765,6 +765,12 @@ nav ul {
   text-align:center;
   background: url(/images/border.png) repeat-x left bottom;
   cursor:pointer;
+  -webkit-transition: all .5s ease-in-out;
+  -moz-transition: all .5s ease-in-out;
+}
+
+#slideshow .image aside ul li:hover {
+  text-shadow: 0px 0px 20px #fff;
 }
 
 #slideshow .image aside ul li .count {
@@ -772,8 +778,9 @@ nav ul {
   display:block;
 }
 #slideshow .image aside ul li .count.highlight{
-  color: red;
+  text-shadow: 0px 0px 20px #fff;
 }
+
 #slideshow .image aside .next {
   display:block;
   background: url(/images/border.png) repeat-x left top;
@@ -827,15 +834,9 @@ nav ul {
 
 /* INFO PANEL ---------------------------------------------- */
 
-body.ranking .info {
-  top:114px;
-  left:60px;
-  margin:0;
-}
-
 .info {
   position:absolute;
-  left:40px;
+  left:60px;
   width:230px;
   color:#fff;
   z-index:2000;
@@ -1115,7 +1116,7 @@ body.ranking .info {
   width:73px;
   height:40px;
   background:url(/images/sprite.png) no-repeat -117px 0;
-  z-index:2000px;
+  z-index:2000;
   cursor:pointer;
 }
 

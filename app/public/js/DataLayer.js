@@ -132,13 +132,11 @@ Neemo.modules.DataLayer = function(neemo) {
       var that = this;
       this._display = display;
       display.setEngine(this);
-      //$('#' + this._canvasid).click(function(e){that._canvasClick(e)});
     },
     _bindNav: function(nav) {
       var that = this;
       this._nav = nav;
       nav.setEngine(this);
-      //$('#' + this._canvasid).click(function(e){that._canvasClick(e)});
     },
     start: function() {
       this._radial_selector = new neemo.ui.DataLayer.RadialSelector(this._bus);
@@ -261,6 +259,7 @@ Neemo.modules.DataLayer = function(neemo) {
       this.animate({ opacity: .1}, 250);
     },
     addSelectWindow: function(opt) {
+        console.log(opt);
       var selectedRegion = $(".image.selected");
       opt = $.extend(opt, {hideCategory:true});
       var selection = new neemo.ui.Annotation.Engine(this._bus, this._api, opt);
@@ -278,28 +277,29 @@ Neemo.modules.DataLayer = function(neemo) {
     },
     /* This function should be called on changing the region */
     clearSelection: function() {
-    // TODO
+      // TODO
     },
     closeRadialSelector: function(e) {
         var that = this;
+
         if (e) {
-            e.preventDefault();
-            e.stopPropagation();
+          e.preventDefault();
+          e.stopPropagation();
         }
 
         this.$element.removeClass("open");
         this.$element.fadeOut(300, function() {
-            that.circle.animate({r:0}, 300, '<>');
+          that.circle.animate({r:0}, 300, '<>');
 
-            // We hide each of the sectors
-            for (i = 0; i <= that.sectorNum - 1; i++) {
-                that.sectors[i].sector.animate({ rotation: (0) + " " + that.centerX + " " + that.centerY }, 300, '<>');
-            }
+          // We hide each of the sectors
+          for (i = 0; i <= that.sectorNum - 1; i++) {
+            that.sectors[i].sector.animate({ rotation: (0) + " " + that.centerX + " " + that.centerY }, 300, '<>');
+          }
         });
     },
 
     moveRadialSelector: function(e) {
-        this.$element.animate({ left: e.clientX - this.$element.width() / 2, top: e.clientY - this.$element.height() / 2 }, 500, "easeOutExpo");
+      this.$element.animate({ left: e.clientX - this.$element.width() / 2, top: e.clientY - this.$element.height() / 2 }, 500, "easeOutExpo");
     },
     openAtMousePosition: function() {
       this.openRadialSelector(left, top);
@@ -321,7 +321,7 @@ Neemo.modules.DataLayer = function(neemo) {
 
         for (i = 0; i <= this.sectorNum - 1; i++) {
 
-          $(this.sectors[i].option.node).delay(1000).animate( {opacity: 1 });
+          $(this.sectors[i].option.node).delay(100).animate( {opacity: 1 });
 
           this.sectors[i].hover.animate({
             rotation: (360 - 45 * i) + " " + this.centerX + " " + this.centerY
