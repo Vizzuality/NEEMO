@@ -48,7 +48,6 @@ Neemo.modules.app = function(neemo) {
       this.datalayer.start();
       this.slideshow = new neemo.ui.Slideshow.Engine(this._bus, this._api, config.region);
       this.slideshow.start();
-//      this.help = new neemo.help.Engine();
       this.socket = new neemo.socket.Engine(this._bus);
     },
 
@@ -411,20 +410,3 @@ Neemo.modules.exceptions = function(neemo) {
   );
 };
 
-
-
-
-Neemo.modules.help = function(neemo) {
-  neemo.help = {};
-  neemo.help.Engine = Class.extend(
-    {
-    init: function() {
-    },
-    open: function(){
-      alert('test');
-    },
-    start: function(url){
-    }
-  }
-  );
-};
