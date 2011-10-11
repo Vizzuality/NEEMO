@@ -1255,6 +1255,12 @@ a.button {
   padding:12px 14px 7px 14px;
 }
 
+#content .top a.join:hover h1 {
+  text-shadow: 0px 0px 16px rgba(255,255,255, .9);
+  -webkit-transition: all .5s ease-in-out;
+  -moz-transition: all .5s ease-in-out;
+}
+
 #content .top a.join h1 {
   padding:0; margin:0;
   font-size:35px;
@@ -1268,7 +1274,7 @@ a.button {
 #content .bottom {
   clear:both;
   overflow:hidden;
-  padding:20px 0 32px 79px;
+  padding:20px 0 64px 79px;
 }
 
 #content .bottom h2 {
@@ -1295,8 +1301,8 @@ a.button {
   letter-spacing:1px;
 }
 
-#content .bottom p.margin {
-  margin-bottom:81px;
+#content .bottom p.extra-margin {
+  margin-bottom:50px;
 }
 
 .breadcrumb {
