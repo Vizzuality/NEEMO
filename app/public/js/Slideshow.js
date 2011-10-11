@@ -154,14 +154,16 @@ Neemo.modules.Slideshow = function(neemo) {
       this._bindKeyboard();
     },
     _repositionPanels: function() {
-      var left  = $("#slideshow .selected").offset().left - ($(".info").width() + 20 );
+      if ($("#slideshow .selected").length > 0) {
+        var left  = $("#slideshow .selected").offset().left - ($(".info").width() + 20 );
 
-      var depthLeft = $("#slideshow div.selected").offset().left + ($("#slideshow .selected").width() + 20 );
-      var depthTop = $("#slideshow div.selected").offset().top + 20 ;
-      $(".depth").css({top:depthTop, left:depthLeft });
+        var depthLeft = $("#slideshow div.selected").offset().left + ($("#slideshow .selected").width() + 20 );
+        var depthTop = $("#slideshow div.selected").offset().top + 20 ;
+        $(".depth").css({top:depthTop, left:depthLeft });
 
-      if (left > 0) $(".info").stop().animate({left:left }, 500);
-      $(".depth").stop().animate({opacity:1}, 500);
+        if (left > 0) $(".info").stop().animate({left:left }, 500);
+        $(".depth").stop().animate({opacity:1}, 500);
+      }
     },
     addRegion: function(url, id, prepend){
       var that = this;
