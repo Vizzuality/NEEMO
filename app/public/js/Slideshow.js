@@ -228,7 +228,7 @@ Neemo.modules.Slideshow = function(neemo) {
        * n -> x-v would then be displayed
        */
        var i = id - 1;
-       if (i > 0){
+       if (i >= 0){
            this.addRegion(url, i, true);
        }
     },
