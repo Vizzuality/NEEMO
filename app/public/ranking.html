@@ -15,7 +15,7 @@
     <title>Ranking</title>
     <link rel="stylesheet" href="/css/style.css" />
 
-    <script src="http://www.google.com/jsapi"></script>
+    <script src="https://www.google.com/jsapi"></script>
     <script>google.load("jquery", "1.6.2");</script>
     <script>google.load("jqueryui", "1.8.16");</script>
 
@@ -32,6 +32,9 @@
     <script src="/js/helpers.js"></script>
 
     <script type="text/javascript">
+		if (window.location.protocol != 'https:'){
+			window.location = 'https://' + window.location.hostname + window.location.pathname;
+		}
       $(function() {
           browserReady();
 
