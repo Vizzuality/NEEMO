@@ -32,8 +32,10 @@
     <script src="/js/UserProfile.js"></script>
     <script src="/js/helpers.js"></script>
     <script type="text/javascript">
+	  if (window.location.protocol != 'https:'){
+		window.location = 'https://' + window.location.hostname;
+	  }
       $(function() {
-
           browserReady();
 
 	      var cookie = document.cookie.split('; ');
