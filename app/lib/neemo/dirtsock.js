@@ -46,7 +46,6 @@ exports.start = function(io, cartodb, store) {
                     var default_region = 0,
                         default_track = Math.floor(Math.random()*30);
                     result = JSON.parse(result);
-                    console.log(result);
                     if (result.total_rows == 0){
                         user_profile = {
                             user_id: data.username,
