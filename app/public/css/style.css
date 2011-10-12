@@ -217,10 +217,7 @@ body {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#081331', endColorstr='#3EA99F');
 }
 
-body.home {
-  background:#071230 url(/images/home_bkg.jpg) no-repeat;
-}
-
+body.home { background:#071230 url(/images/home_bkg.jpg) no-repeat; filter:none; }
 body.old { background:#071230 url(/images/old_home_bkg.jpg) no-repeat 50% 0%; }
 
 @font-face { font-family: 'EurostileLTStd'; src: url("/fonts/EurostileLTStd.eot"); src: local("☺"), url("/fonts/EurostileLTStd.woff") format("woff"), url("/fonts/EurostileLTStd.ttf") format("truetype"), url("/fonts/EurostileLTStd.svg") format("svg"); font-weight: normal; font-style: normal; }
@@ -1233,14 +1230,16 @@ nav ul {
   z-index:100;
 }
 
+.ie9 .shade {height:605px;}
 .shade {
   background:rgba(0,0,0, .35);
   position:absolute;
   top:0; left:0;
   width:100%;
   height:612px;
-  z-index:-2;
+  z-index:0;
 }
+
 
 #content .top {
   clear:both;
@@ -1252,7 +1251,11 @@ nav ul {
   margin: 0 0 26px 0;
 }
 
-a.button, #content .top a.join {
+.ie9 #content .top a.join {
+  padding:7px 14px 7px 14px;
+}
+
+#content .top a.join {
   float:left;
   margin-bottom:50px;
   padding:17px 14px 7px 14px;
@@ -1262,22 +1265,12 @@ a.button, #content .top a.join {
   border-radius: 2px;
 }
 
-a.button {
-  color:#fff;
-  font-size:17px;
-  text-transform:uppercase;
-  font-family: 'EurostileLTStd-Demi';
-  letter-spacing:1px;
-  text-shadow: 0px 0px 6px rgba(255,255,255, .9);
-  background:rgba(0,0,0,.2);
-  padding:12px 14px 7px 14px;
-}
-
 #content .top a.join:hover h1 {
   text-shadow: 0px 0px 16px rgba(255,255,255, .9);
   -webkit-transition: all .5s ease-in-out;
   -moz-transition: all .5s ease-in-out;
 }
+
 
 #content .top a.join h1 {
   padding:0; margin:0;
@@ -1388,8 +1381,11 @@ a.button {
 .breadcrumb ul li .icon.trophee { background-position: -148px -799px; }
 
 footer {
+  position:absolute;
+  clear:both; overflow:hidden;
   background:#fff;
   width:100%;
+  z-index:2000;
 }
 
 footer .inner {
