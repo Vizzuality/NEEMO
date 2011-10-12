@@ -56,7 +56,8 @@ exports.start = function(io, cartodb, store) {
                     //console.log('\n== CartoDB result for NEEMO get "' + query + '" ==');
                     //console.log(result + '\n');
                     var default_region = 0,
-                        default_track = Math.floor(Math.random()*30);
+                        //default_track = Math.floor(Math.random()*30);
+                        default_track = 4;
                     result = JSON.parse(result);
                     if (result.total_rows == 0){
                         user_profile = {
