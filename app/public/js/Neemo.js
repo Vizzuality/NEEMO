@@ -72,7 +72,7 @@ Neemo.modules.socket = function(neemo) {
       this.intRegion=-1;
       this.track = -1;
       this._bus = bus;
-      this.socket = io.connect(window.location.origin, {
+      this.socket = io.connect('https://neemoelb.zooniverse.org', {
                       'secure': true,
                       'reconnect': true,
                       'reconnection delay': 5,
