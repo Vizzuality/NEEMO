@@ -1104,7 +1104,7 @@ nav ul {
   width:23px;
   height:19px;
   background:url(/images/sprite.png) no-repeat -448px 0;
-  z-index:2100;
+  z-index:2000;
   cursor:pointer;
 }
 

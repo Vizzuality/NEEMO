@@ -81,7 +81,7 @@ function browserReady() {
     ua.safari = false;
   }
 
-  if (((ua.msie && ua.version<9) || (ua.mozilla && parseFloat(ua.version.slice(0,3)) < 2) || (ua.safari && parseFloat(ua.version.slice(0,3)) < 400) || (ua.opera && parseFloat(ua.version.slice(0,3)) < 11) || (!ua.safari && chrome_version<10))) {
+  if (((ua.msie && ua.version<9) || (ua.mozilla && parseFloat(ua.version.slice(0,3)) < 2) || (ua.safari && parseFloat(ua.version.slice(0,3)) < 400) || ua.opera  || (!ua.safari && chrome_version<10))) {
     window.location.href = '/old.html';
   }
 };
@@ -186,8 +186,6 @@ var BeginnersHelp = function(e, opt){
   }
 
   function _show(x, y) {
-    //GOD.subscribe("_close." + id);
-    //GOD.broadcast("_close." + id);
     $el.css({display:"block", opacity:0, left:x - $el.width(), top:y - 50});
     $el.animate({opacity:1, left:x - $el.width() - 50}, speed);
   }
@@ -263,13 +261,23 @@ var BeginnersHelp = function(e, opt){
       _move($li.offset().left, $li.offset().top);
     } else {
       $el.addClass("open");
+
+      GOD.subscribe("_close." + id);
+      GOD.broadcast("_close." + id);
+
+      $("aside li").unbind("click");
+      $("aside li").click(function(e) {
+        e.stopPropagation();
+        _open(e);
+      });
+
       _show($li.offset().left, $li.offset().top);
     }
     _select($li);
   }
 
   function _close() {
-    //GOD.unsubscribe("_close." + id);
+    GOD.unsubscribe("_close." + id);
     $(".help").removeClass("open");
     _hide();
   }
