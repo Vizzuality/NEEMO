@@ -33,7 +33,7 @@ exports.start = function(io, cartodb, store) {
     });
     */
     io.configure(function () {
-      io.set('transports', ['websocket', 'xhr-polling']);
+      io.set('transports', ['flashsocket', 'xhr-polling']);
     });
     io.sockets.on('connection', function (socket) {
         var session_id = socket.id;
