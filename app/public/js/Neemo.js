@@ -72,7 +72,7 @@ Neemo.modules.socket = function(neemo) {
       this.intRegion=-1;
       this.track = -1;
       this._bus = bus;
-      this.socket = io.connect('', {
+      this.socket = io.connect(window.location.origin, {
                       'reconnect': true,
                       'reconnection delay': 5,
                       'max reconnection attempts': 10
