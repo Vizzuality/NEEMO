@@ -104,16 +104,16 @@ Neemo.modules.DataLayer = function(neemo) {
       bus.addHandler(
         'AddPoints',
         function(data){
-            data = data.getData();
-            if (data.region == that._region){
-                var activeRegion = $("#region_" + data.region);
-                var annotation = new neemo.ui.Annotation.Engine(that._bus, that._api, data);
-                annotation.start(activeRegion, true);
-                if (!data.mine){
-                   annotation.enableVote();
-                }
-                that._annotations.push(annotation);
+          data = data.getData();
+          if (data.region == that._region){
+            var activeRegion = $("#region_" + data.region);
+            var annotation = new neemo.ui.Annotation.Engine(that._bus, that._api, data);
+            annotation.start(activeRegion, true);
+            if (!data.mine){
+              annotation.enableVote();
             }
+            that._annotations.push(annotation);
+          }
         }
       );
     },
@@ -270,8 +270,6 @@ Neemo.modules.DataLayer = function(neemo) {
       var selection = new neemo.ui.Annotation.Engine(this._bus, this._api, opt);
       selection.start(selectedRegion);
       selection.enableSubmit();
-
-      // If there are other annotations, let's submit them
 
       this._annotations.push(selection);
       this.closeRadialSelector();

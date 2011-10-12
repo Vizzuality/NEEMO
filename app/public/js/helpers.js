@@ -186,6 +186,8 @@ var BeginnersHelp = function(e, opt){
   }
 
   function _show(x, y) {
+    GOD.subscribe("_close." + id);
+    GOD.broadcast("_close." + id);
     $el.css({display:"block", opacity:0, left:x - $el.width(), top:y - 50});
     $el.animate({opacity:1, left:x - $el.width() - 50}, speed);
   }
@@ -206,10 +208,7 @@ var BeginnersHelp = function(e, opt){
 
   function _start() {
 
-    $(window).bind('_close.' + id, function() {
-      _close();
-    });
-
+    $(window).bind('_close.' + id, _close);
     $el.find(".close").click(_close);
 
     $el.find(".nav").click(function() {
@@ -220,12 +219,6 @@ var BeginnersHelp = function(e, opt){
         $species = $(this).parents("li").prev("li");
         direction = "-=";
       }
-//       else {
-//         if ($(this).parent().find(".slideshow_inner .photos").offset().left - distance < 0){
-//           $(this).hide();
-//         }
-//       }
-//
       $(this).parent().find(".slideshow_inner").scrollTo(direction + distance, speed, {easing:easingMethod} );
 
     });
@@ -268,6 +261,7 @@ var BeginnersHelp = function(e, opt){
   }
 
   function _close() {
+    GOD.unsubscribe("_close." + id);
     $(".help").removeClass("open");
     _hide();
   }

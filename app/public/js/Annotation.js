@@ -35,7 +35,7 @@ Neemo.modules.Annotation = function(neemo) {
 
       this.$el.find('.submit').click(function(){
         that._bus.fireEvent(new Neemo.env.events.SubmitData({category: that.category, x: that.x, y: that.y, width: that.$el.width(), height: that.$el.height()}));
-        that.remove();   
+        that.remove();
       });
 
       this.$el.find('.close').click(function() { that.remove(); });
@@ -101,12 +101,11 @@ Neemo.modules.Annotation = function(neemo) {
         this.$el.draggable({ handle:"controls", containment: 'parent', stop: function(e) { that.onDragEnd(); } });
         this.$el.resizable({ containment: 'parent', minWidth: 80, minHeight: 18, handles: 'nw, se', stop: function(e) { that.onDragEnd(); } });
       }
-      
-      this.setZindex();           
-      
+
+      this.setZindex();
+
     },
     clear: function($region){
-      alert('a');
       this.$el.fadeOut(this.transitionSpeed, function() {
         $(this).clear();
       });
