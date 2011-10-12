@@ -119,6 +119,7 @@ module.exports = function(){
     app.use('/images', express.static(global.settings.app_root + '/public/images'));
     app.use('/css', express.static(global.settings.app_root + '/public/css'));
     app.use('/fonts', express.static(global.settings.app_root + '/public/fonts'));
+    app.use('/srcimages', express.static(global.settings.app_root + '/public/srcimages'));
     app.use(cas_middleware);
     app.use('/regions', express.static(global.settings.app_root + '/public/regions'));
     app.use(express.static(global.settings.app_root + '/public'));
