@@ -54,15 +54,6 @@ module.exports = function(){
         } else if (route == '/login' ){
             res.redirect(csa.login + '?service=' + csa.service);
         } else if (req.session && req.session.loggedin){
-            if (ticket) {
-              cas.validate(ticket, function(err, status, username) {
-                  if (err) {
-                     res.redirect('/');
-                  } else{
-                     res.redirect('/mission.html');
-                  }
-              });
-            }
             next();
         } else {
             if (ticket) {
