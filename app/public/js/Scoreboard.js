@@ -129,7 +129,7 @@ Scoreboard.modules.socket = function(scoreboard) {
     {
     init: function(bus) {
       this._bus = bus;
-      this.socket = io.connect(window.location.origin + '/scoreboard', {secure: true});
+      this.socket = io.connect(window.location.origin + '/scoreboard');
       //this._bindEvents();
       this._setupSockets();
       this._cookie = document.cookie.split('; ');
