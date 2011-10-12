@@ -214,9 +214,10 @@ body {
   background: -webkit-radial-gradient(circle, #3EA99F, #29526E, #081331);
   background: -moz-radial-gradient(circle, #3EA99F, #29526E, #081331);
   background: -o-linear-gradient(#29526E, #3EA99F, #081331);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#081331', endColorstr='#3EA99F');
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#214957', endColorstr='#3EA99F');
 }
 
+.ie9 body.ranking {background:#3EA99F; }
 body.home { background:#071230 url(/images/home_bkg.jpg) no-repeat; filter:none; }
 body.old { background:#071230 url(/images/old_home_bkg.jpg) no-repeat 50% 0%; }
 
@@ -363,12 +364,15 @@ nav ul {
 
 #ranking ul li.selected  {
   background:rgba(0,0,0,.3);
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
   -webkit-border-top-right-radius: 4px;
   -webkit-border-bottom-right-radius: 4px;
   -moz-border-radius-topright: 4px;
   -moz-border-radius-bottomright: 4px;
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
 }
 
 #ranking ul li.selected .icon-container  {
@@ -377,16 +381,16 @@ nav ul {
   top:0;
   width:58px;
   height:41px;
-
   padding:16px 0 14px 0;
+
   background:rgba(0,0,0,.3);
 
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
   -webkit-border-top-left-radius: 4px;
   -webkit-border-bottom-left-radius: 4px;
   -moz-border-radius-topleft: 4px;
   -moz-border-radius-bottomleft: 4px;
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
 }
 
 #ranking ul li.selected .icon-container .icon  {
