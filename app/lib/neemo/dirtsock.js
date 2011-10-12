@@ -23,6 +23,18 @@ exports.start = function(io, cartodb, store) {
     }
     /* Setup main App socket connections and functions
      */
+    /*
+    io.configure(function (){
+      io.set('authorization', function (handshakeData, callback) {
+        console.log('hiiiiiii');
+        console.log(handshakeData);
+        callback(null, true); // error first callback style 
+      });
+    });
+    */
+    io.configure(function () {
+      io.set('transports', [ 'flashsocket', 'xhr-polling']);
+    });
     io.sockets.on('connection', function (socket) {
         var session_id = socket.id;
         /* TODO
