@@ -41,7 +41,7 @@ Neemo.modules.Slideshow = function(neemo) {
             that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that._region - 1}));
             that._bus.fireEvent(new Neemo.env.events.HideSelector());
           }
-        }
+        } else if (e.keyCode == 67) {}
       });
     },
     _bindEvents: function(){

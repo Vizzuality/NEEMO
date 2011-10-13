@@ -62,8 +62,9 @@ module.exports = function(){
                      res.redirect('/mission.html');
                   }
               });
+            } else {
+                next();
             }
-            next();
         } else {
             if (ticket) {
                 cas.validate(ticket, function(err, status, username) {
