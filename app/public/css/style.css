@@ -668,6 +668,14 @@ nav ul {
   font-size:10px;
 }
 
+#slideshow .depth-line div {
+  opacity:0;
+}
+
+#slideshow div.selected .depth-line div {
+  opacity:1;
+}
+
 #slideshow div.selected .depth-line .depth1 {
   position:absolute;
   top:10px;
