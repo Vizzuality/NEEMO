@@ -90,7 +90,7 @@ Neemo.modules.UserProfile = function(neemo) {
     },
     _html: function() {
       return  '<div class="line-through">'+
-              '  <h2 class="user-name">Loading/a</h2>'+
+              '  <h2 class="user-name">Loading</h2>'+
               '  <div class="line"></div>'+
               '</div>'+
               '<div class="progress-bar">'+
