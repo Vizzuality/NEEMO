@@ -248,8 +248,8 @@ Neemo.modules.DataLayer = function(neemo) {
     },
     handleClick: function(e) {
         // Coordinates of the user's click event
-        this.coordinates.x = e.offsetX;
-        this.coordinates.y = e.offsetY;
+        this.coordinates.x = e.layerX;
+        this.coordinates.y = e.layerY;
 
         if (this.$element.hasClass("open")) {
           this.moveRadialSelector(e);
@@ -275,11 +275,11 @@ Neemo.modules.DataLayer = function(neemo) {
       this.closeRadialSelector();
     },
     selectOption: function(e, category) {
-        e.preventDefault();
-        e.stopPropagation();
+      e.preventDefault();
+      e.stopPropagation();
 
-        this.selectedOption = category;
-        this.addSelectWindow({x: this.coordinates.x, y: this.coordinates.y, category:category});
+      this.selectedOption = category;
+      this.addSelectWindow({x: this.coordinates.x, y: this.coordinates.y, category:category});
     },
     /* This function should be called on changing the region */
     clearSelection: function() {
