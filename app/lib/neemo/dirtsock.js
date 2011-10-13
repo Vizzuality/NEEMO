@@ -37,19 +37,16 @@ exports.start = function(io, cartodb, store) {
     });
     io.sockets.on('connection', function (socket) {
         var session_id = socket.id;
-        /* TODO
-         * SETUP socket.once
-         * that recieves the username/auth string
-         * if valid, stores it with the socket.id
-         */
         socket.once('message', function(data){
             data = JSON.parse(data);
             if (validateSession(data.auth, data.username)){
                 //perform a create or get here!
                 var protected_request = cartodb.api_url,
-                    query = "SELECT neemo_ranks.user_rank, "+global.settings.user_table+".user_id, "+global.settings.user_table+".user_lvl, "+global.settings.user_table+".user_score, "+global.settings.user_table+".user_progress, "+global.settings.user_table+".track, "+global.settings.user_table+".region FROM " + 
+                    query = "SELECT neemo_ranks.user_rank, "+global.settings.user_table+".user_id, "+global.settings.user_table+".user_lvl, "+global.settings.user_table+".user_score, "+global.settings.user_table+".user_progress, "+global.settings.user_table+".track, "+global.settings.user_table+".region, activity.activity FROM " + 
+                            "(SELECT (SELECT ARRAY(SELECT action||':'||category||':'||points FROM "+global.settings.activity_table+" WHERE user_id = '"+data.username+"' ORDER BY created_at DESC LIMIT 5)) as activity FROM "+global.settings.main_table+") AS activity, " +
                             "(SELECT row_number() OVER(ORDER BY user_score DESC) AS user_rank, user_score FROM "+global.settings.user_table+" GROUP BY user_score) " +
                             "AS neemo_ranks, "+global.settings.user_table+" WHERE "+global.settings.user_table+".user_score = neemo_ranks.user_score and user_id = '"+data.username+"' LIMIT 1;";
+                console.log(query);
                 //var query = "SELECT user_id, user_lvl, user_rank, user_score, user_progress, track, region FROM neemo_users WHERE user_id = '"+data.username+"' LIMIT 1;";
                 var body = {q: query}
                 cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function (error, result, response) {
@@ -78,6 +75,29 @@ exports.start = function(io, cartodb, store) {
                         var b2 = {q: q2};
                         cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, b2, null);
                     } else {
+                        var latest = [];
+                        var t = result.rows[0].activity.length;
+                        while (t > 0){
+                            t--;
+                            var a = result.rows[0].activity[t].split(':');
+                            var an = {};
+                            if (a[0]=='annotation'){
+                                an = {points: a[2], title: "you have found a new "+a[1]+" occurrence"};
+                            } else if (a[0]=='vote'){
+                                if (a[2] < 0){
+                                    an = {points: a[2], title: "you gave an annotation a downvote."};
+                                } else {
+                                    an = {points: a[2], title: "you gave an annotation an upvote!"};
+                                }
+                            } else if (a[0]=='confirm'){
+                                an = {points: a[2], title: "your annotation recieved an upvote!"};
+                            } else if (a[0]=='disputed'){
+                                an = {points: a[2], title: "your annotation recieved a downvote."};
+                            }
+                            latest.push(an)
+                            
+                        }
+                        //{points: 0, title: "welcome back to neemo!"}
                         user_profile = {
                             user_id: result.rows[0].user_id,
                             user_rank: result.rows[0].user_rank,
@@ -86,9 +106,7 @@ exports.start = function(io, cartodb, store) {
                             user_progress: result.rows[0].user_progress,
                             track: result.rows[0].track,
                             region: result.rows[0].region,
-                            user_latest: [
-                                {points: 0, title: "welcome back to neemo!"}
-                            ]
+                            user_latest: latest
                         }
                         socket.emit('user-metadata', user_profile);
                     }
@@ -157,6 +175,7 @@ exports.start = function(io, cartodb, store) {
                     var query = "UPDATE "+global.settings.main_table+" SET upvotes = upvotes + 1 WHERE key = '"+data.key+"' and user_id != '"+data.username+"'; " +
                                   "UPDATE "+global.settings.user_table+" SET user_score = user_score + 1 WHERE user_id = '"+data.username+"'; " +
                                   "UPDATE "+global.settings.user_table+" SET user_score = user_score + 2 WHERE user_id = '"+data.creator+"'; " +
+                                  "INSERT INTO "+global.settings.activity_table+" (user_id, action, title, points, target_key) VALUES ('"+data.creator+"', 'confirm', 'valid', 1, '"+data.key+"'); " +
                                   "INSERT INTO "+global.settings.activity_table+" (user_id, action, title, points, target_key) VALUES ('"+data.username+"', 'vote', 'upvote', 1, '"+data.key+"'); " ;
                 } else if (data.type == 'downvote'){
                     var query = "UPDATE "+global.settings.main_table+" SET downvotes = downvotes + 1 WHERE key = '"+data.key+"' and user_id != '"+data.username+"'; " +

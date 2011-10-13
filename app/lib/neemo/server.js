@@ -16,13 +16,6 @@ module.exports = function(){
     
     require(global.settings.app_root + '/settings');
     
-    var privateKey, certificate, ca;
-    // initialize express server
-    //privateKey = fs.readFileSync(global.settings.app_root + '/../key.key').toString();
-    //certificate = fs.readFileSync(global.settings.app_root + '/../cert.crt').toString();
-    //ca = fs.readFileSync(global.settings.app_root + '/../gd.crt').toString();
-    
-    //{key:privateKey,cert:certificate,ca:ca},
     var app = express.createServer(
             express.cookieParser(),
             express.session({ 
