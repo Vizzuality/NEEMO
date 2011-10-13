@@ -248,8 +248,8 @@ Neemo.modules.DataLayer = function(neemo) {
     },
     handleClick: function(e) {
         // Coordinates of the user's click event
-        this.coordinates.x = e.offsetX;
-        this.coordinates.y = e.offsetY;
+        this.coordinates.x = e.layerX;
+        this.coordinates.y = e.layerY;
 
         if (this.$element.hasClass("open")) {
           this.moveRadialSelector(e);
