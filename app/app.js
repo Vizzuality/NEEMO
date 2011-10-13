@@ -6,7 +6,7 @@ if (ENV != 'development' && ENV != 'production') {
   console.error("\n./app [environment]");
   console.error("environments: [development, production]");
   console.error("default environment set to: [production]");
-  ENV = 'production';
+  ENV = 'development';
 }
 
 // set Node.js app settings and boot

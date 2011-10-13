@@ -175,9 +175,9 @@ Scoreboard.modules.socket = function(scoreboard) {
         }
       );
 
-/*
-* Change the socket 'room' we are listening to when the region changes
-*/
+    /*
+    * Change the socket 'room' we are listening to when the region changes
+    */
       bus.addHandler(
         'ChangeRegion',
         function(event){
