@@ -1,8 +1,8 @@
 var   sys         = require('sys')
     , CAS         = require('cas')
     , Base64      = require('./Base64')
-    , crypto         = require('crypto')
-    , cas  = new CAS({base_url: 'https://login.zooniverse.org', service: global.settings.route_url});
+    , crypto      = require('crypto')
+    , cas         = new CAS({base_url: 'https://login.zooniverse.org', service: global.settings.route_url});
 
 exports.start = function(store){
             
@@ -10,8 +10,6 @@ exports.start = function(store){
     var cas_middleware = function(req, res, next){
         var ticket = req.param('ticket'),
             route  = req.url;
-            
-                console.log('hiiiiiiii')
         if (route.split('.ht').length > 1 || route == '/'){
             if (req.session){
                 res.cookie('socketAuth', req.session.sid, { expires: new Date(Date.now() + 900000), httpOnly: false });
