@@ -399,6 +399,11 @@ nav ul {
   margin:0 0 0 15px;
 }
 
+@-moz-keyframes pulsate {
+  0% {opacity: .2;}
+  50% {opacity: 1.0;}
+  100% {opacity: .2;}
+}
 @-webkit-keyframes pulsate {
   0% {opacity: .2;}
   50% {opacity: 1.0;}
@@ -409,6 +414,8 @@ nav ul {
   background:url(/images/trophee.png) no-repeat;
   -webkit-animation: pulsate 4s ease-out;
   -webkit-animation-iteration-count: infinite;
+  -moz-animation: pulsate 4s ease-out;
+  -moz-animation-iteration-count: infinite;
 }
 
 #ranking ul li h2 {
@@ -1114,6 +1121,10 @@ nav ul {
   background:url(/images/sprite.png) no-repeat -448px 0;
   z-index:2000;
   cursor:pointer;
+  -webkit-animation: pulsate 2s ease-out;
+  -webkit-animation-iteration-count: 10;
+  -moz-animation: pulsate 2s ease-out;
+  -moz-animation-iteration-count: 10;
 }
 
 .beginners_diagram {
@@ -1140,6 +1151,7 @@ nav ul {
   z-index:2000;
   cursor:pointer;
 }
+
 
 .keyboard:hover {
   background-position:-193px 0;
