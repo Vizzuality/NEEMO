@@ -43,10 +43,10 @@ exports.start = function(io, cartodb, store) {
                 //perform a create or get here!
                 var protected_request = cartodb.api_url,
                     query = "SELECT neemo_ranks.user_rank, "+global.settings.user_table+".user_id, "+global.settings.user_table+".user_lvl, "+global.settings.user_table+".user_score, "+global.settings.user_table+".user_progress, "+global.settings.user_table+".track, "+global.settings.user_table+".region, activity.activity FROM " + 
-                            "(SELECT (SELECT ARRAY(SELECT action||':'||category||':'||points FROM "+global.settings.activity_table+" WHERE user_id = '"+data.username+"' ORDER BY created_at DESC LIMIT 5)) as activity FROM "+global.settings.main_table+") AS activity, " +
+                            "(SELECT (SELECT ARRAY(SELECT action||':'||category||':'||points FROM "+global.settings.activity_table+" WHERE user_id = '"+data.username+"' ORDER BY updated_at ASC LIMIT 5)) as activity FROM "+global.settings.main_table+") AS activity, " +
                             "(SELECT row_number() OVER(ORDER BY user_score DESC) AS user_rank, user_score FROM "+global.settings.user_table+" GROUP BY user_score) " +
                             "AS neemo_ranks, "+global.settings.user_table+" WHERE "+global.settings.user_table+".user_score = neemo_ranks.user_score and user_id = '"+data.username+"' LIMIT 1;";
-                console.log(query);
+                //console.log(query);
                 //var query = "SELECT user_id, user_lvl, user_rank, user_score, user_progress, track, region FROM neemo_users WHERE user_id = '"+data.username+"' LIMIT 1;";
                 var body = {q: query}
                 cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function (error, result, response) {
