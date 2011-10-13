@@ -275,11 +275,11 @@ Neemo.modules.DataLayer = function(neemo) {
       this.closeRadialSelector();
     },
     selectOption: function(e, category) {
-        e.preventDefault();
-        e.stopPropagation();
+      e.preventDefault();
+      e.stopPropagation();
 
-        this.selectedOption = category;
-        this.addSelectWindow({x: this.coordinates.x, y: this.coordinates.y, category:category});
+      this.selectedOption = category;
+      this.addSelectWindow({x: this.coordinates.x, y: this.coordinates.y, category:category});
     },
     /* This function should be called on changing the region */
     clearSelection: function() {

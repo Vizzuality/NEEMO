@@ -84,9 +84,9 @@ Neemo.modules.Slideshow = function(neemo) {
 
             $('.depth h2').text(t);
 
-            $("#slideshow div.selected .depth-line").append('<div class="depth3">'+t1+'</div>');
-            $("#slideshow div.selected .depth-line").append('<div class="depth2">'+t2+'</div>');
-            $("#slideshow div.selected .depth-line").append('<div class="depth1">'+t3+'</div>');
+            $("#slideshow div.selected .depth-line .depth3").html(t1);
+            $("#slideshow div.selected .depth-line .depth2").html(t2);
+            $("#slideshow div.selected .depth-line .depth1").html(t3);
 
               //update use region_key to increment the url in the tracks track object
             if (that._regions[data.region]){
@@ -347,7 +347,11 @@ Neemo.modules.Slideshow = function(neemo) {
     _html: function() {
       return  '<div class="image">' +
                 '<div class="photo"></div>' +
-                '<div class="depth-line"></div>' +
+                '<div class="depth-line">'+
+                   '<div class="depth3"></div>'+
+                   '<div class="depth2"></div>'+
+                   '<div class="depth1"></div>'+
+                '</div>' +
                 '<aside> '+
                     '<ul> '+
                     '  <li class="coral"><span class="count">0</span>coral</li> '+
@@ -477,7 +481,6 @@ Neemo.modules.slideshowUtil = function(neemo) {
 
     neemo.slideshowUtil.hideDepthLine = function(callback) {
       if ($("#slideshow div.selected .depth-line").length > 0){
-      $("#slideshow div.selected .depth-line div").remove();
         $("#slideshow div.selected .depth-line").animate({opacity:0}, 200, callback);
       }   else {
         callback();
