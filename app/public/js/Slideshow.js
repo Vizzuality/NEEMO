@@ -77,18 +77,18 @@ Neemo.modules.Slideshow = function(neemo) {
             var t2 = '' + (t - 2);
             var t3 = '' + (t - 3);
 
-            while (t.length < 5) t = '0'+t;
+            while (t.length < 5)   t = '0'+t;
             while (t1.length < 5) t1 = '0'+t1;
             while (t2.length < 5) t2 = '0'+t2;
             while (t3.length < 5) t3 = '0'+t3;
 
             $('.depth h2').text(t);
 
-            $("#slideshow div.selected .depth-line .depth3").html(t1);
-            $("#slideshow div.selected .depth-line .depth2").html(t2);
-            $("#slideshow div.selected .depth-line .depth1").html(t3);
+            $("#slideshow .image#region_" + data.region + " .depth-line .depth3").html(t1);
+            $("#slideshow .image#region_" + data.region + " .depth-line .depth2").html(t2);
+            $("#slideshow .image#region_" + data.region + " .depth-line .depth1").html(t3);
 
-              //update use region_key to increment the url in the tracks track object
+            //update use region_key to increment the url in the tracks track object
             if (that._regions[data.region]){
                 var Region = that._regions[data.region];
                 //Region.resetCounts();
