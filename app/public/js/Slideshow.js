@@ -16,7 +16,7 @@ Neemo.modules.Slideshow = function(neemo) {
       this._track = -1;
       this._region = -1;
       this._regions = {};
-      this._forwardBuffer = 3;
+      this._forwardBuffer = 8;
       this._min = 0;
       this._max = 10;
       this._previousButton = 1; //used to enable (1) and disable (0) the nav buttons
@@ -209,6 +209,25 @@ Neemo.modules.Slideshow = function(neemo) {
 
           Region.start();
           this._regions[id] = Region;
+          /*
+          if (!prepend){
+              var getKey = function(data) {
+                  for (var prop in data)
+                    return prop;
+                };
+              var len = 0;
+              for (key in this._regions) len++;
+              console.log(len);
+              while (len > (2*this._forwardBuffer)){
+                  console.log('remove');
+                 var k = getKey(this._regions);
+                 var r = this._regions[k];
+                 $(r.getElement()).remove();
+                 delete this._regions[k];
+                 len--;
+              }
+          }
+          */
       }
     },
     _toggleButtons: function(id){
