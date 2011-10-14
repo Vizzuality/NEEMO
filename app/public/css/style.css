@@ -1315,6 +1315,7 @@ nav ul {
 }
 
 #content .bottom {
+  width:970px;
   clear:both;
   overflow:hidden;
   padding:20px 0 64px 79px;
@@ -1357,6 +1358,7 @@ nav ul {
   background:url(/images/breadcrumb.png) repeat-x 100px;
 }
 .breadcrumb ul {
+  width:950px;
   margin: 30px 0 0 79px; padding:0;
   list-style:none;
 }
