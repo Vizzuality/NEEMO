@@ -141,7 +141,7 @@ Scoreboard.modules.socket = function(scoreboard) {
               this._username = tmp[1];
           }
       }
-      
+
     },
     _setupSockets: function(){
       var that = this;
@@ -219,7 +219,7 @@ Scoreboard.modules.UserRank = function(scoreboard) {
             strString = '0' + strString;
           }
           that._display.getRank().text('#' + strString);
-          that._display.updateUserLink(data.user_id);
+          that._display.bindUserRankLink(data.user_id);
         }
       );
 
@@ -232,7 +232,7 @@ Scoreboard.modules.UserRank = function(scoreboard) {
   );
   /**
   * The userrank display.
-*/
+  */
   scoreboard.ui.UserRank.Display = scoreboard.ui.Display.extend(
     /* Provides the slideshow wrapper, append, prepend, and remove options */
     {
@@ -242,8 +242,10 @@ Scoreboard.modules.UserRank = function(scoreboard) {
         $('#rank-box').append(this.getElement());
         this._rank = null;
       },
-      updateUserLink:function(user_id) {
-        $("#rank-box .footer a").attr("href", "#" + user_id);
+      bindUserRankLink:function(user_id) {
+        $("#rank-box .footer a").click(function() {
+          $("html, body").animate({scrollTop:$("#"+user_id).offset().top}, 500);
+        });
       },
       getRank: function(){
         if (! this._rank){
@@ -289,7 +291,7 @@ Scoreboard.modules.RankingList = function(scoreboard) {
         'UpdateRankingList',
         function(input){
           var data = input.getData()
-              username = input.getUser();
+          username = input.getUser();
           $(that._display.getElement()).empty();
 
           for (i in data.rows){
