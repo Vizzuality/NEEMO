@@ -797,6 +797,15 @@ nav ul {
 
 #slideshow .image.selected aside {margin-top:-200px; height:400px; }
 
+.beta {
+  background:url(/images/sprite.png) no-repeat -772px -443px;
+  width:128px;
+  height:128px;
+  position:absolute;
+  right:-17px;
+  top:-17px;
+  z-index:2000;
+}
 .rays {position:absolute; left:0px; top:0px; background:url('/images/rays.png') no-repeat; width:386px; height:570px;}
 .diagrams {position:absolute; left:-5px; top:-115px; background:url('/images/diagrams.png') no-repeat; width:795px; height:795px; z-index:-1}
 .old .diagrams {position:absolute; left:50%; margin-left:-270px; top:50%; margin-top:-270px; background:url('/images/old_diagrams.png') no-repeat; width:540px; height:540px; z-index:-1}
