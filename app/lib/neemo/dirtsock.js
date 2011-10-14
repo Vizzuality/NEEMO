@@ -160,7 +160,7 @@ exports.start = function(io, cartodb, store) {
                         socket.emit('region-new-data', out);
                     }
                 });
-                var q = "UPDATE "+global.settings.user_table+" SET user_progress="+data.progress+", region = '"+data.region+"' WHERE user_id = '"+data.username+"'";
+                var q = "UPDATE "+global.settings.user_table+" SET user_progress="+data.progress+", track="+data.track+", region = '"+data.region+"' WHERE user_id = '"+data.username+"'";
                 var b = {q: q}
                 cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, b, null, function(a,b,d){console.log(b)});
             

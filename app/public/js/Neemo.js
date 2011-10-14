@@ -163,6 +163,21 @@ Neemo.modules.socket = function(neemo) {
           }));
         }
       );
+      /* change tracks */
+      bus.addHandler(
+        'ChangeTrack',
+        function(){
+            that.track = that.track+1;
+            if (that.track === window.tracks.length){
+                that.track = 0;
+            }
+            that.intRegion = 0;
+            that.region = window.tracks[that.track][0];
+            neemo.log.info('changing to track ' + that.track);
+            that.socket.emit('join', {region: that.region, track: that.track, username: that._username, progress: progress, auth: that.auth});
+            setTimeout(function(){ location.reload(true) }, 500);
+        }
+      );
 
       /*
       * Change the socket 'room' we are listening to when the region changes

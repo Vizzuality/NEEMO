@@ -125,6 +125,19 @@ Neemo.modules.events = function(neemo) {
   );
   neemo.events.NewUser.TYPE = 'new_user';
 
+  /**
+     * Start new track.
+  */
+  neemo.events.ChangeTrack = neemo.events.Event.extend(
+    {
+    init: function(data, action) {
+      this._super('ChangeTrack', action);
+      this._data = data;
+    }
+  }
+  );
+  neemo.events.ChangeTrack.TYPE = 'change_track';
+
 
   neemo.events.RegionOverview = neemo.events.Event.extend(
     {
