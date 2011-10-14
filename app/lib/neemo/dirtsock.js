@@ -53,8 +53,8 @@ exports.start = function(io, cartodb, store) {
                     //console.log('\n== CartoDB result for NEEMO get "' + query + '" ==');
                     //console.log(result + '\n');
                     var default_region = 0,
-                        //default_track = Math.floor(Math.random()*30);
-                        default_track = 7;
+                        default_track = Math.floor(Math.random()*26);
+                        //default_track = 7;
                     result = JSON.parse(result);
                     if (result.total_rows == 0){
                         user_profile = {
@@ -71,7 +71,7 @@ exports.start = function(io, cartodb, store) {
                             new_user: true
                         };
                         socket.emit('user-metadata', user_profile);
-                        var q2 = "INSERT INTO "+global.settings.user_table+" (user_id, user_lvl, user_score, user_progress, track, region) VALUES ('"+data.username+"', 1, 0, 1, "+default_track+", '"+default_region+"')";
+                        var q2 = "INSERT INTO "+global.settings.user_table+" (user_id, user_lvl, user_score, user_progress, track, region, start_track) VALUES ('"+data.username+"', 1, 0, 1, "+default_track+", '"+default_region+"', "+default_track+")";
                         var b2 = {q: q2};
                         cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, b2, null);
                     } else {
@@ -135,7 +135,7 @@ exports.start = function(io, cartodb, store) {
                     }
                     socket.emit('region-metadata', {
                         region: data.region,
-                        meters: (400 - (4*data.region)),
+                        //meters: (400 - (4*data.region)),
                         annotations: annot
                     });
                 });
@@ -160,9 +160,16 @@ exports.start = function(io, cartodb, store) {
                         socket.emit('region-new-data', out);
                     }
                 });
-                var q = "UPDATE "+global.settings.user_table+" SET user_progress="+data.progress+", track="+data.track+", region = '"+data.region+"' WHERE user_id = '"+data.username+"'";
+                var q = "SELECT user_score as top_score FROM "+global.settings.user_table+" ORDER BY user_score DESC LIMIT 1; ";
                 var b = {q: q}
-                cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, b, null, function(a,b,d){console.log(b)});
+                cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, b, null, function(a,data,d){
+                    data = JSON.parse(data);
+                    socket.emit('top-score', data.rows[0].top_score);
+                });
+                
+                var q = "UPDATE "+global.settings.user_table+" SET track="+data.track+", region = '"+data.region+"' WHERE user_id = '"+data.username+"'";
+                var b = {q: q}
+                cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, b, null);
             
 	    });
         socket.on('leave', function (data) {

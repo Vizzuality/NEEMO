@@ -124,6 +124,22 @@ Neemo.modules.events = function(neemo) {
   }
   );
   neemo.events.NewUser.TYPE = 'new_user';
+  /**
+     * Update user progress.
+  */
+  neemo.events.UpdateProgress = neemo.events.Event.extend(
+    {
+    init: function(data, action) {
+      this._super('UpdateProgress', action);
+      this._data = data;
+      this._top_score = data.top_score;
+    },
+    getTop: function(){
+        return this._top_score;
+    }
+  }
+  );
+  neemo.events.UpdateProgress.TYPE = 'update_progress';
 
   /**
      * Start new track.

@@ -143,6 +143,9 @@ Neemo.modules.socket = function(neemo) {
         }
         //neemo.log.info('socket update received');
        });
+      this.socket.on('top-score', function (data) {
+        that._bus.fireEvent(new neemo.events.UpdateProgress({top_score: data}));
+       });
     },
     _bindEvents: function(){
       var that = this,
@@ -174,7 +177,7 @@ Neemo.modules.socket = function(neemo) {
             that.intRegion = 0;
             that.region = window.tracks[that.track][0];
             neemo.log.info('changing to track ' + that.track);
-            that.socket.emit('join', {region: that.region, track: that.track, username: that._username, progress: progress, auth: that.auth});
+            that.socket.emit('join', {region: that.region, track: that.track, username: that._username, auth: that.auth});
             setTimeout(function(){ location.reload(true) }, 500);
         }
       );
@@ -189,8 +192,7 @@ Neemo.modules.socket = function(neemo) {
           that.socket.emit('leave', {region: that.region});
           that.intRegion = event.getRegion();
           that.region = window.tracks[that.track][that.intRegion];
-          progress = 100.0 * (that.intRegion + 1.0) / window.tracks[that.track].length;
-          that.socket.emit('join', {region: that.region, track: that.track, username: that._username, progress: progress, auth: that.auth} );
+          that.socket.emit('join', {region: that.region, track: that.track, username: that._username, auth: that.auth} );
         }
       );
 

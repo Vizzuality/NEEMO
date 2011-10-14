@@ -40,6 +40,7 @@ module.exports = function(){
     cartodb.start(function(){
         require('./dirtsock').start(io.listen(app), this, store);
     });
+    
     return app;
 };
 

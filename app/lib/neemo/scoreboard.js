@@ -60,11 +60,13 @@ exports.start = function(io, cartodb, store) {
             var pageSize = 500,
                 protected_request = cartodb.api_url,
                 offset = pageSize * (data.page - 1),
-                query = "SELECT neemo_ranks.user_rank, "+global.settings.user_table+".user_id, "+global.settings.user_table+".user_lvl, "+global.settings.user_table+".user_score, "+global.settings.user_table+".user_progress FROM " + 
+                query = "SELECT neemo_ranks.user_rank, "+global.settings.user_table+".user_id, "+global.settings.user_table+".user_lvl, "+global.settings.user_table+".user_score, (100*"+global.settings.user_table+".user_score / top.top_score) as user_progress FROM " + 
+                         "(SELECT user_score as top_score FROM "+global.settings.user_table+" ORDER BY user_score DESC LIMIT 1) as top, " + 
                          "(SELECT row_number() OVER(ORDER BY user_score DESC) AS user_rank, user_score FROM "+global.settings.user_table+" GROUP BY user_score) " +
                          "as neemo_ranks, "+global.settings.user_table+" WHERE "+global.settings.user_table+".user_score = neemo_ranks.user_score " +
                          "ORDER BY neemo_ranks.user_rank ASC LIMIT "+pageSize+" OFFSET "+offset+";",
                 body = {q: query};
+               console.log(query);
             
             socket.join("scoreboard-"+data.page);
             
@@ -74,6 +76,12 @@ exports.start = function(io, cartodb, store) {
                 socket.emit('scoreboard-update', data);
             });
             
+            var q = "SELECT user_score as top_score FROM "+global.settings.user_table+" ORDER BY user_score DESC LIMIT 1; ";
+            var b = {q: q}
+            cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, b, null, function(a,data,d){
+                data = JSON.parse(data);
+                socket.emit('top-score', data.rows[0].top_score);
+            });
             
         });
         socket.on('leave', function (data) {

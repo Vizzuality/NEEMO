@@ -12,6 +12,7 @@ Neemo.modules.UserProfile = function(neemo) {
       this._bus = bus;
       this._api = api;
       this._profile = {};
+      this.points = 0;
     },
 
     _bindEvents: function(){
@@ -21,10 +22,10 @@ Neemo.modules.UserProfile = function(neemo) {
         'UpdateUserProfile',
         function(event){
           neemo.log.info('User update recieved');
-          data = event.getData();
+          var data = event.getData();
           that._profile = data;
           that._display.getName().text(data.user_id.toUpperCase());
-          that._display.getLevel().text(" Lvl. "+data.user_lvl);
+          //that._display.getLevel().text(" Lvl. "+data.user_lvl);
           var s = ''+data.user_rank;
           while (s.length < 4) s = '0'+s;
           that._display.getRank().text("#"+s);
@@ -34,9 +35,18 @@ Neemo.modules.UserProfile = function(neemo) {
         }
       );
       bus.addHandler(
+        'UpdateProgress',
+        function(event){
+          neemo.log.info('Top score recieved');
+          var top = event.getTop();
+          var progress = Math.floor(100 * that._profile.user_pts / top);
+          $(that._display.getProgress()).width(progress + "%");
+        }
+      );
+      bus.addHandler(
         'PointNotice',
         function(event){
-          data = event.getData();
+          var data = event.getData();
           that.newPointNotice(data);
         }
       );
@@ -79,14 +89,14 @@ Neemo.modules.UserProfile = function(neemo) {
     getName: function(){
       return $(this.getElement()).find('.user-name');
     },
-    getLevel: function(){
-      return $(this.getElement()).find('.level');
-    },
     getActivity: function(){
       return $(this.getElement()).find('ul');
     },
     getRank: function(){
       return $(this.getElement()).find('.score');
+    },
+    getProgress: function(){
+      return $(this.getElement()).find('.progress');
     },
     _html: function() {
       return  '<div class="line-through">'+
@@ -96,7 +106,6 @@ Neemo.modules.UserProfile = function(neemo) {
               '<div class="progress-bar">'+
               '  <div class="progress"></div>'+
               '</div>'+
-              '<span class="level"></span>'+
               '<ul>'+
               '</ul>'+
               '<a href="/ranking.html">'+

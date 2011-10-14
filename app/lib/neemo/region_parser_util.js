@@ -3,7 +3,7 @@ var sys   = require('sys')
     , fs  = require("fs");
     
 exports.start = function(callback){
-        eval(fs.readFileSync('./config/newtracks.js', encoding="ascii"));
+        eval(fs.readFileSync('./config/struct.js', encoding="ascii"));
         doc = {};
         var track = 1;
         var protected_request = this.api_url;
