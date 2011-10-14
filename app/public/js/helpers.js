@@ -51,6 +51,14 @@ var GOD = (function() {
   };
 })();
 
+function removeLockScreen(callback) {
+  var $lock_screen = $("#lock_screen");
+
+  if ($lock_screen.length) {
+    $lock_screen.fadeOut(150, function() { $(this).remove(); });
+  }
+}
+
 function toggleLockScreen(callback) {
   var $lock_screen = $("#lock_screen");
 
@@ -133,6 +141,11 @@ var BeginnersHelp = function(e, opt){
   easingMethod = (opt && opt.easingMethod) || "easeOutExpo";
 
   $(window).bind('NewUser', _open);
+
+  $(document).keyup(function(e) {
+    e.keyCode == 27 && _close($el);
+  });
+
   $(".close_help").click(function() {
     _close($el);
   });
@@ -151,7 +164,7 @@ var BeginnersHelp = function(e, opt){
   function _close($el) {
     $el.fadeOut(speed);
     $(".beginners_diagram").fadeOut(speed, function() {
-      toggleLockScreen();
+      removeLockScreen();
     });
   }
 
