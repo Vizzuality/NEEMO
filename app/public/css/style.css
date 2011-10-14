@@ -1121,7 +1121,7 @@ nav ul {
   position:absolute;
   top:20px;
   right:30px;
-  width:23px;
+  width:51px;
   height:19px;
   background:url(/images/sprite.png) no-repeat -448px 0;
   z-index:2000;
@@ -1160,16 +1160,15 @@ nav ul {
   position:absolute;
   bottom:30px;
   right:30px;
-  width:73px;
-  height:40px;
+  width:49px;
+  height:19px;
   background:url(/images/sprite.png) no-repeat -117px 0;
   z-index:2000;
   cursor:pointer;
 }
 
-
 .keyboard:hover {
-  background-position:-193px 0;
+  background-position:-172px 0;
 }
 
 .shortcuts {
@@ -1323,6 +1322,25 @@ nav ul {
   clear:both;
   overflow:hidden;
   padding:20px 0 64px 79px;
+}
+
+a.button, a.button:active, a.button:visited {
+  display:block;
+  float:left;
+  margin: 10px 0 0 0;
+  background:rgba(0,0,0,.5);
+  text-shadow: 0px 0px 10px #fff;
+  color:#fff;
+  font-size:17px;
+  font-family: 'EurostileLTStd-Demi';
+  text-transform:uppercase;
+  padding: 12px 12px 9px 12px;
+  -webkit-transition: all .2s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+}
+.button:hover {
+  text-shadow: 0px 0px 30px #fff;
+  color:#fff;
 }
 
 #content .bottom h2 {
