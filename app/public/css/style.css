@@ -802,8 +802,8 @@ nav ul {
   width:128px;
   height:128px;
   position:absolute;
-  right:-17px;
-  top:-17px;
+  right:0px;
+  top:0px;
   z-index:2000;
 }
 .rays {position:absolute; left:0px; top:0px; background:url('/images/rays.png') no-repeat; width:386px; height:570px;}
