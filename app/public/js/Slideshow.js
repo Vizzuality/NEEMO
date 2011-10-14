@@ -27,9 +27,11 @@ Neemo.modules.Slideshow = function(neemo) {
       var that = this;
 
       $(document).keydown(function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
+        if (e.keyCode == 40 || e.keyCode == 39 || e.keyCode == 37){
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
+        }
       });
 
       $(document).keyup(function(e) {
@@ -47,7 +49,7 @@ Neemo.modules.Slideshow = function(neemo) {
             that._bus.fireEvent(new Neemo.env.events.ChangeRegion({region: that._region - 1}));
             that._bus.fireEvent(new Neemo.env.events.HideSelector());
           }
-        } else if (e.keyCode == 67) {}
+        }
       });
     },
     _bindEvents: function(){
