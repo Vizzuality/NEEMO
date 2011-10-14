@@ -183,9 +183,6 @@ Neemo.modules.Slideshow = function(neemo) {
        that._bus.fireEvent(new Neemo.env.events.RepositionPanels());
       });
 
-      setTimeout(function() {
-       that._bus.fireEvent(new Neemo.env.events.RepositionPanels());
-      }, 3000);
     },
     addRegion: function(url, id, prepend){
       var that = this;
@@ -295,6 +292,10 @@ Neemo.modules.Slideshow = function(neemo) {
 
       this._categories = {};
       this._bus.fireEvent(new Neemo.env.events.RepositionPanels());
+
+      setTimeout(function() {
+       that._bus.fireEvent(new Neemo.env.events.RepositionPanels());
+      }, 5000);
     },
     getImage: function(){
       //cache here
