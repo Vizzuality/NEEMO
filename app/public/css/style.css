@@ -1148,6 +1148,16 @@ nav ul {
   z-index:2300;
 }
 
+.close_help {
+  position: absolute;
+  top: 277px;
+  left: 387px;
+  width: 133px;
+  height: 20px;
+  z-index: 2301;
+  cursor:pointer;
+}
+
 /* SHORTCUTS ---------------------------------------------- */
 
 .keyboard {
@@ -1254,7 +1264,7 @@ nav ul {
   margin-right:74px;
 }
 
-#lock_screen { position: absolute; top: 0; left: 0; display: none; width: 100%; height: 100%; opacity: .5; background: #000; z-index: 2000; }
+#lock_screen { position: absolute; top: 0; left: 0; display: none; width: 100%; height: 100%!Important; opacity: .5; background: #000; z-index: 2000; }
 
 #content {
   position:relative;
@@ -1302,7 +1312,6 @@ nav ul {
   -webkit-transition: all .5s ease-in-out;
   -moz-transition: all .5s ease-in-out;
 }
-
 
 #content .top a.join h1 {
   padding:0; margin:0;

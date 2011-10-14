@@ -132,11 +132,10 @@ var BeginnersHelp = function(e, opt){
   speed  = (opt && opt.speed) || 200,
   easingMethod = (opt && opt.easingMethod) || "easeOutExpo";
 
-  $(window).bind('_close.' + id, function() {
+  $(window).bind('NewUser', _open);
+  $(".close_help").click(function() {
     _close($el);
   });
-
-  $(window).bind('NewUser', _open);
 
   function _open(e) {
     if (e) {
@@ -144,15 +143,12 @@ var BeginnersHelp = function(e, opt){
       e.stopPropagation();
     }
 
-    GOD.subscribe("_close." + id);
-    GOD.broadcast("_close." + id);
     toggleLockScreen(function() {
       $(".beginners_diagram").fadeIn(speed);
     });
   }
 
   function _close($el) {
-    GOD.unsubscribe("_close." + id);
     $el.fadeOut(speed);
     $(".beginners_diagram").fadeOut(speed, function() {
       toggleLockScreen();
