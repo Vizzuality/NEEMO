@@ -209,8 +209,8 @@ exports.start = function(io, cartodb, store) {
                 data.key = key;
                 io.sockets.in(data.region).emit('region-new-data', data);
                 
-                var query = "INSERT INTO "+global.settings.activity_table+" (user_id, action, title, points, target_key) VALUES " +
-                                "('"+data.username+"','annotation','"+data.category+"',3, '"+key+"'); "+
+                var query = "INSERT INTO "+global.settings.activity_table+" (user_id, action, title, points, target_key, create_time) VALUES " +
+                                "('"+data.username+"','annotation','"+data.category+"',3, '"+key+"', timestamp 'now'); "+
                             "UPDATE "+global.settings.user_table+" SET user_score = user_score + 3 WHERE user_id = '"+data.username+"'; ";
                 var body = {q: query}
                 cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null);
