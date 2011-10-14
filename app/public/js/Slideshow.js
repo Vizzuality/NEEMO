@@ -99,6 +99,21 @@ Neemo.modules.Slideshow = function(neemo) {
         }
       );
       bus.addHandler(
+        'RepositionPanels',
+        function(data){
+          if ($("#slideshow .selected").length > 0) {
+            var left  = $("#slideshow .selected").offset().left - ($(".info").width() + 20 );
+
+            var depthLeft = $("#slideshow div.selected").offset().left + ($("#slideshow .selected").width() + 20 );
+            var depthTop = $("#slideshow div.selected").offset().top + 20 ;
+            $(".depth").css({top:depthTop, left:depthLeft });
+
+            if (left > 0) $(".info").stop().animate({left:left }, 500);
+            $(".depth").stop().animate({opacity:1}, 500);
+          }
+        }
+      );
+      bus.addHandler(
         'AddPoints',
         function(data){
             data = data.getData();
@@ -135,8 +150,6 @@ Neemo.modules.Slideshow = function(neemo) {
         }
       );
 
-      setTimeout(this._repositionPanels, 2000);
-      $(window).resize(this._repositionPanels);;
 
     },
     _bindDisplay: function(display, text) {
@@ -163,18 +176,16 @@ Neemo.modules.Slideshow = function(neemo) {
       this._bindNav(new neemo.ui.Slideshow.Nav());
       this._bindEvents();
       this._bindKeyboard();
-    },
-    _repositionPanels: function() {
-      if ($("#slideshow .selected").length > 0) {
-        var left  = $("#slideshow .selected").offset().left - ($(".info").width() + 20 );
 
-        var depthLeft = $("#slideshow div.selected").offset().left + ($("#slideshow .selected").width() + 20 );
-        var depthTop = $("#slideshow div.selected").offset().top + 20 ;
-        $(".depth").css({top:depthTop, left:depthLeft });
+      var that = this;
 
-        if (left > 0) $(".info").stop().animate({left:left }, 500);
-        $(".depth").stop().animate({opacity:1}, 500);
-      }
+      $(window).resize(function() {
+       that._bus.fireEvent(new Neemo.env.events.RepositionPanels());
+      });
+
+      setTimeout(function() {
+       that._bus.fireEvent(new Neemo.env.events.RepositionPanels());
+      }, 3000);
     },
     addRegion: function(url, id, prepend){
       var that = this;
@@ -283,6 +294,7 @@ Neemo.modules.Slideshow = function(neemo) {
       $el.attr("id", "region_" + this.id);
 
       this._categories = {};
+      this._bus.fireEvent(new Neemo.env.events.RepositionPanels());
     },
     getImage: function(){
       //cache here

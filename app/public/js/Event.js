@@ -110,7 +110,7 @@ Neemo.modules.events = function(neemo) {
     }
   }
   );
-  
+
   neemo.events.UpdateUserProfile.TYPE = 'update_user_profile';
   /**
      * Update user profile.
@@ -140,6 +140,19 @@ Neemo.modules.events = function(neemo) {
   );
   neemo.events.RegionOverview.TYPE = 'region_overview';
 
+  neemo.events.RepositionPanels = neemo.events.Event.extend(
+    {
+    init: function(data, action) {
+      this._super('RepositionPanels', action);
+      this._data = data;
+    },
+    getData: function() {
+      return this._data;
+    },
+  }
+  );
+  neemo.events.RepositionPanels.TYPE = 'reposition_panels';
+
   neemo.events.HideSelector = neemo.events.Event.extend(
     {
     init: function(data, action) {
@@ -167,7 +180,7 @@ Neemo.modules.events = function(neemo) {
   }
   );
   neemo.events.AddPoints.TYPE = 'add_points';
-  
+
   neemo.events.Vote = neemo.events.Event.extend(
     {
     init: function(data, action) {
@@ -180,7 +193,7 @@ Neemo.modules.events = function(neemo) {
   }
   );
   neemo.events.Vote.TYPE = 'vote';
-  
+
   /**
   * New data submission event.
   */
