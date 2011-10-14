@@ -42,12 +42,12 @@ Neemo.modules.Annotation = function(neemo) {
 
       this.$el.find('.agree').click(function(){
         that._bus.fireEvent(new Neemo.env.events.Vote({type: 'upvote', key: that.key, creator: that.username}));
-        that._hideVoting();
+        that._hideDisagree();
       });
 
       this.$el.find('.disagree').click(function(){
         that._bus.fireEvent(new Neemo.env.events.Vote({type: 'downvote', key: that.key, creator: that.username}));
-        that._hideVoting();
+        that._hideAgree();
       });
     },
     remove: function(){
@@ -63,6 +63,20 @@ Neemo.modules.Annotation = function(neemo) {
       var that = this;
       this._display = display;
       display.setEngine(this);
+    },
+    _hideAgree: function(){
+      this.$el.find('.agree').hide();
+      this.$el.find('.disagree').unbind();
+      this.$el.find('.disagree').click(function(e){
+          e.preventDefault();
+      });
+    },
+    _hideDisagree: function(){
+      this.$el.find('.disagree').hide();
+      this.$el.find('.agree').unbind();
+      this.$el.find('.agree').click(function(e){
+          e.preventDefault();
+      });
     },
     _hideVoting: function(){
       this.$el.find('.agree').hide();
