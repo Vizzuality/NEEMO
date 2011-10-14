@@ -230,7 +230,7 @@ body.old { background:#071230 url(/images/old_home_bkg.jpg) no-repeat 50% 0%; }
 
 a { text-decoration:none; }
 
-#container { position:absolute; width:100%; height:100%; clear:both; overflow:hidden; }
+#container { position:absolute; width:1404px; height:100%; clear:both; overflow:hidden; }
 
 h1 {
   font-family:"EurostileLTStd";
@@ -1329,7 +1329,7 @@ a.button, a.button:active, a.button:visited {
   float:left;
   margin: 10px 0 0 0;
   background:rgba(0,0,0,.5);
-  text-shadow: 0px 0px 10px #fff;
+  text-shadow: 0px 0px 7px #fff;
   color:#fff;
   font-size:17px;
   font-family: 'EurostileLTStd-Demi';
@@ -1339,7 +1339,7 @@ a.button, a.button:active, a.button:visited {
   -moz-transition: all .2s ease-in-out;
 }
 .button:hover {
-  text-shadow: 0px 0px 30px #fff;
+  text-shadow: 0px 0px 20px #fff;
   color:#fff;
 }
 

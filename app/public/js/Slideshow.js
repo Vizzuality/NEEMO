@@ -26,6 +26,12 @@ Neemo.modules.Slideshow = function(neemo) {
     _bindKeyboard: function() {
       var that = this;
 
+      $(document).keydown(function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      });
+
       $(document).keyup(function(e) {
         if (e.keyCode == 40) { // down arrow
            window.location = "ranking.html";
