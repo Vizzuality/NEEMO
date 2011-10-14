@@ -76,12 +76,12 @@ Neemo.modules.Slideshow = function(neemo) {
             var t1 = '' + (t - 1);
             var t2 = '' + (t - 2);
             var t3 = '' + (t - 3);
-
+            if (t < 0) t = '00000';
             while (t.length < 5)   t = '0'+t;
             while (t1.length < 5) t1 = '0'+t1;
             while (t2.length < 5) t2 = '0'+t2;
             while (t3.length < 5) t3 = '0'+t3;
-
+            
             $('.depth h2').text(t);
 
             $("#slideshow .image#region_" + data.region + " .depth-line .depth3").html(t1);
