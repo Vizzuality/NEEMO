@@ -43,7 +43,7 @@ exports.start = function(io, cartodb, store) {
                 //perform a create or get here!
                 var protected_request = cartodb.api_url,
                     query = "SELECT neemo_ranks.user_rank, "+global.settings.user_table+".user_id, "+global.settings.user_table+".user_lvl, "+global.settings.user_table+".user_score, "+global.settings.user_table+".user_progress, "+global.settings.user_table+".track, "+global.settings.user_table+".region, activity.activity FROM " + 
-                            "(SELECT (SELECT ARRAY(SELECT action||':'||category||':'||points FROM "+global.settings.activity_table+" WHERE user_id = '"+data.username+"' ORDER BY created_at DESC LIMIT 5)) as activity FROM "+global.settings.main_table+") AS activity, " +
+                            "(SELECT (SELECT ARRAY(SELECT action||':'||category||':'||points FROM "+global.settings.activity_table+" WHERE user_id = '"+data.username+"' ORDER BY create_time DESC LIMIT 5)) as activity FROM "+global.settings.main_table+") AS activity, " +
                             "(SELECT row_number() OVER(ORDER BY user_score DESC) AS user_rank, user_score FROM "+global.settings.user_table+" GROUP BY user_score) " +
                             "AS neemo_ranks, "+global.settings.user_table+" WHERE "+global.settings.user_table+".user_score = neemo_ranks.user_score and user_id = '"+data.username+"' LIMIT 1;";
                 //console.log(query);
@@ -178,18 +178,18 @@ exports.start = function(io, cartodb, store) {
 	    socket.on('submit-vote', function (data) {
             if (validateSession(data.auth, data.username)){
                 var protected_request = cartodb.api_url;
-                if (data.type == 'upvote'){
+                if (data.type == 'upvote'){  //update neemo_activity set create_time= timestamp 'now';
                     var query = "UPDATE "+global.settings.main_table+" SET upvotes = upvotes + 1 WHERE key = '"+data.key+"' and user_id != '"+data.username+"'; " +
                                   "UPDATE "+global.settings.user_table+" SET user_score = user_score + 1 WHERE user_id = '"+data.username+"'; " +
                                   "UPDATE "+global.settings.user_table+" SET user_score = user_score + 2 WHERE user_id = '"+data.creator+"'; " +
-                                  "INSERT INTO "+global.settings.activity_table+" (user_id, action, title, points, target_key) VALUES ('"+data.creator+"', 'confirm', 'valid', 1, '"+data.key+"'); " +
-                                  "INSERT INTO "+global.settings.activity_table+" (user_id, action, title, points, target_key) VALUES ('"+data.username+"', 'vote', 'upvote', 1, '"+data.key+"'); " ;
+                                  "INSERT INTO "+global.settings.activity_table+" (user_id, action, title, points, target_key, create_time) VALUES ('"+data.creator+"', 'confirm', 'valid', 1, '"+data.key+"', timestamp 'now'); " +
+                                  "INSERT INTO "+global.settings.activity_table+" (user_id, action, title, points, target_key, create_time) VALUES ('"+data.username+"', 'vote', 'upvote', 1, '"+data.key+"', timestamp 'now'); " ;
                 } else if (data.type == 'downvote'){
                     var query = "UPDATE "+global.settings.main_table+" SET downvotes = downvotes + 1 WHERE key = '"+data.key+"' and user_id != '"+data.username+"'; " +
                                   "UPDATE "+global.settings.user_table+" SET user_score = user_score - 4 WHERE user_id = '"+data.username+"'; " +
                                   "UPDATE "+global.settings.user_table+" SET user_score = user_score - 6 WHERE user_id = '"+data.creator+"'; " +
-                                  "INSERT INTO "+global.settings.activity_table+" (user_id, action, title, points, target_key) VALUES ('"+data.username+"', 'vote', 'downvote', -4, '"+data.key+"'); " +
-                                  "INSERT INTO "+global.settings.activity_table+" (user_id, action, title, points, target_key) VALUES ('"+data.creator+"',  'dispute', 'invalid', -6, '"+data.key+"'); " ;
+                                  "INSERT INTO "+global.settings.activity_table+" (user_id, action, title, points, target_key, create_time) VALUES ('"+data.username+"', 'vote', 'downvote', -4, '"+data.key+"', timestamp 'now'); " +
+                                  "INSERT INTO "+global.settings.activity_table+" (user_id, action, title, points, target_key, create_time) VALUES ('"+data.creator+"',  'dispute', 'invalid', -6, '"+data.key+"', timestamp 'now'); " ;
                 }
                 var body = {q: query}
                 cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function(a,b,c){console.log(b)});
