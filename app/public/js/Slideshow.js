@@ -218,7 +218,7 @@ Neemo.modules.Slideshow = function(neemo) {
               var len = 0;
               for (key in this._regions) len++;
               console.log(len);
-              while (len > (2*this._forwardBuffer)){
+              while (len > (4*this._forwardBuffer)){
                   console.log('remove');
                  var k = getKey(this._regions);
                  var r = this._regions[k];

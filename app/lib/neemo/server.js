@@ -15,7 +15,6 @@ var   express        = require('express')
 module.exports = function(){
     
     require(global.settings.app_root + '/settings');
-    
     var app = express.createServer(
             express.cookieParser(),
             express.session({ 
