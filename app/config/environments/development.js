@@ -8,5 +8,5 @@ module.exports.app_root = path.join(__dirname, '../..');
 module.exports.user_table     = 'neemo_users_dev';
 module.exports.activity_table = 'neemo_activity_dev';
 module.exports.main_table     = 'neemo_dev';
-module.exports.route_url      = 'http://10.52.252.154:4000';
+module.exports.route_url      = 'http://10.52.252.154:4000/';
 module.exports.neemo_port   = 4000;

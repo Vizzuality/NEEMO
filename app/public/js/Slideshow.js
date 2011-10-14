@@ -84,12 +84,12 @@ Neemo.modules.Slideshow = function(neemo) {
             var t1 = '' + (t - 1);
             var t2 = '' + (t - 2);
             var t3 = '' + (t - 3);
-
+            if (t < 0) t = '00000';
             while (t.length < 5)   t = '0'+t;
             while (t1.length < 5) t1 = '0'+t1;
             while (t2.length < 5) t2 = '0'+t2;
             while (t3.length < 5) t3 = '0'+t3;
-
+            
             $('.depth h2').text(t);
 
             $("#slideshow .image#region_" + data.region + " .depth-line .depth3").html(t1);
@@ -192,25 +192,50 @@ Neemo.modules.Slideshow = function(neemo) {
       });
 
     },
-    addRegion: function(url, id, prepend){
+    addRegion: function(url, id, prepend, end){
       var that = this;
       if (!(id in this._regions)) {
-          var Region = new neemo.ui.Slideshow.Region(url, id, this._bus, this._track);
+          var Region = new neemo.ui.Slideshow.Region(url, id, this._bus, this._track, end);
 
           this._display.addRegion(Region.getElement(), prepend);
 
               //update use region_key to increment the url in the tracks track object
           if (id < this._max){
               Region.enableNextButton();
+              $(Region.getImage()).click(function(e) {
+                that._bus.fireEvent(new Neemo.env.events.ImageClick(e));
+                //}
+              });
+          } else if (id == this._max){
+              Region.endTrack();
+              $(Region.getImage()).click(function(e) {
+                $(Region.getImage()).fadeOut('slow');
+                that._bus.fireEvent(new Neemo.env.events.ChangeTrack());
+                //}
+              });
           }
 
-          $(Region.getImage()).click(function(e) {
-            //if($(this).parent().parent('.selected').length > 0){
-            that._bus.fireEvent(new Neemo.env.events.ImageClick(e));
-            //}
-          });
           Region.start();
           this._regions[id] = Region;
+          /*
+          if (!prepend){
+              var getKey = function(data) {
+                  for (var prop in data)
+                    return prop;
+                };
+              var len = 0;
+              for (key in this._regions) len++;
+              console.log(len);
+              while (len > (4*this._forwardBuffer)){
+                  console.log('remove');
+                 var k = getKey(this._regions);
+                 var r = this._regions[k];
+                 $(r.getElement()).remove();
+                 delete this._regions[k];
+                 len--;
+              }
+          }
+          */
       }
     },
     _toggleButtons: function(id){
@@ -243,7 +268,11 @@ Neemo.modules.Slideshow = function(neemo) {
        */
        var i = id + 1;
        while (i < id + this._forwardBuffer && i <= this._max){
-           this.addRegion(url, i);
+           if (i == this._max){
+               this.addRegion(url,i, false, true);
+           } else {
+               this.addRegion(url, i);
+           }
            i++;
        }
     },
@@ -282,15 +311,21 @@ Neemo.modules.Slideshow = function(neemo) {
 
   neemo.ui.Slideshow.Region = neemo.ui.Display.extend(
     {
-    init: function(url, id, bus, track) {
+    init: function(url, id, bus, track, end) {
       this.id = id;
       this._bus = bus;
       this._image = new Image();
       this._track = track;
+      this._end = end;
       //this._image.src = [url, id, '.jpg'].join('');
 
       //update use region_key to increment the url in the tracks track object
-      this._image.src = [url, window.tracks[this._track][id]].join('');
+      if (end){
+          this._image.src = '/images/end_of_track.png';
+      } else {
+          this._image.src = [url, window.tracks[this._track][id]].join('');
+      }
+      
       this._super(this._html());
 
       // Adds region_id to the element
@@ -365,6 +400,11 @@ Neemo.modules.Slideshow = function(neemo) {
         $("#slideshow div.queued").removeClass("queued");
         $(this.getElement()).addClass('queued');
     },
+    endTrack: function() {
+        var t = $(this.getElement());
+        t.find('aside').remove();
+        t.find('.depth-line').remove();
+    },
     _html: function() {
       return  '<div class="image">' +
                 '<div class="photo"></div>' +
@@ -411,7 +451,6 @@ Neemo.modules.Slideshow = function(neemo) {
         return this._previous;
     },
     disable: function(id){
-          console.log('disabled');
         $(this.getElement()).find('.'+id).attr("disabled", "disabled");
     },
     enable: function(id){

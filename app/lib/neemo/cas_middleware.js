@@ -5,7 +5,7 @@ var   sys         = require('sys')
     , cas         = new CAS({base_url: 'https://login.zooniverse.org', service: global.settings.route_url});
 
 exports.start = function(store){
-            
+    var exceptions = {'/index.html': 0, '/': 0, '/about.html': 0, '/favicon.ico': 0, '/ranking.html': 0};
     /* forces CSA signin to do anything fun */
     var cas_middleware = function(req, res, next){
         var ticket = req.param('ticket'),
@@ -20,7 +20,7 @@ exports.start = function(store){
             }
         }
         
-        if (route == '/index.html' || route == '/' || route == '/about.html' || route == '/favicon.ico') {
+        if (route in exceptions) {
             //TODO get session.id into the client Cookie, need to include it with Socket requests
             next();
         } else if (route == '/logout' ){
