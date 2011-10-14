@@ -185,7 +185,11 @@ var BeginnersHelp = function(e, opt){
 
   function _updateHeader($species) {
     var name = $species.attr("class");
-    $el.find("h3").html("What is a " + name + "?");
+    if (name == "other") {
+      $el.find("h3").html("Other");
+    } else {
+      $el.find("h3").html("What is a " + name + "?");
+    }
   }
 
   function _hide() {
