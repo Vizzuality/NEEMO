@@ -92,9 +92,9 @@ Neemo.modules.Slideshow = function(neemo) {
             
             $('.depth h2').text(t);
 
-            $("#slideshow .image#region_" + data.region + " .depth-line .depth3").html(t1);
+            $("#slideshow .image#region_" + data.region + " .depth-line .depth3").html(t3);
             $("#slideshow .image#region_" + data.region + " .depth-line .depth2").html(t2);
-            $("#slideshow .image#region_" + data.region + " .depth-line .depth1").html(t3);
+            $("#slideshow .image#region_" + data.region + " .depth-line .depth1").html(t1);
 
             //update use region_key to increment the url in the tracks track object
             if (that._regions[data.region]){
