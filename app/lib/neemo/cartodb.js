@@ -71,7 +71,6 @@ exports.start = function(callback){
                     cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function (error, data, response) {
                         if(error) {
                             sys.puts(require('sys').inspect(error));
-                            throw new Error("...XAuth failed. Please check your password and username.");
                         } else {
                             sys.puts('\n== CartoDB result for POST "' + cartodb.private_query + '" ==');
                             sys.puts(data + '\n');
