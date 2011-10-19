@@ -46,7 +46,7 @@
                 browserReady()
 
                 Neemo(function(env) {
-                  Neemo.app = new env.app.Instance({logging: true, region: 1});
+                  Neemo.app = new env.app.Instance({logging: false, region: 1});
                   Neemo.app.run();
                   Neemo.env = env;
                   });
