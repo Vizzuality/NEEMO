@@ -142,6 +142,7 @@ Scoreboard.modules.socket = function(scoreboard) {
           }
       }
       this._first = true;
+      this.userpage = 0;
     },
     _setupSockets: function(){
       var that = this;
@@ -160,6 +161,16 @@ Scoreboard.modules.socket = function(scoreboard) {
         //{"time":0.002,"total_rows":4,"rows":[{"user_id":"unknooooown","user_rank":4,"user_lvl":1},{"user_id":"anon","user_rank":3,"user_lvl":2},{"user_id":"capndave","user_rank":2,"user_lvl":4},{"user_id":"andrewxhill","user_rank":1,"user_lvl":11}]}
         scoreboard.log.info('new rankings!');
         that._bus.fireEvent(new scoreboard.events.UpdateRankingList(data, that._username));
+      });
+      this.socket.on('user-page',function(data){
+        that.userpage = data;
+        console.log(data);
+        $('#rank-box .footer a').unbind();
+        $('#rank-box .footer a').click(function(){
+            console.log('unbind');
+            console.log(that.userpage);
+            that.socket.emit('join', {page: that.userpage} );
+        })
       });
       this.socket.emit('join', {page: 1} );
     },
@@ -242,7 +253,7 @@ Scoreboard.modules.UserRank = function(scoreboard) {
                     '</div>' +
                       '</div>' +
                         '<div class="footer">' +
-                          '  <a href="#">VIEW YOUR POSITION</a>' +
+                          '  <a href="#" class=".view-position">VIEW YOUR POSITION</a>' +
                             '</div>';
       }
     }

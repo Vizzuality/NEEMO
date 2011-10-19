@@ -7,7 +7,8 @@ var   Step        = require('step')
 exports.start = function(io, cartodb, store) {
     /* Setup Scoreboard connections and functions
      */
-
+    var pageSize = 50;
+                
     function handleRankings() {
         var protected_request = cartodb.api_url;
         var offset = pageSize * (page - 1)
@@ -63,6 +64,22 @@ exports.start = function(io, cartodb, store) {
                             user_rank: data.rows[0].user_rank,
                             user_lvl: data.rows[0].user_lvl
                         });
+                        q = "SELECT count(*) as count FROM (SELECT row_number() OVER(ORDER BY user_score DESC) " +
+                            "AS user_rank, user_score FROM "+global.settings.user_table+" GROUP BY user_score) " +
+                            "as neemo_ranks, "+global.settings.user_table+" " +
+                            "WHERE "+global.settings.user_table+".user_score = neemo_ranks.user_score " +
+                            "AND neemo_ranks.user_rank < 4";
+                        b = {q: q};
+                        cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, b, null, function (e, d, r) {
+                            if (e){
+                                //error
+                            }else{
+                                d = JSON.parse(d);
+                                if (d.rows[0].count + 1 > pageSize){
+                                    socket.emit('user-page', Math.floor(d.rows[0].count/pageSize) + 1 );
+                                }
+                            }
+                        });
                     } else {
                     
                         socket.emit('user-ranking', {
@@ -75,8 +92,7 @@ exports.start = function(io, cartodb, store) {
             });
         });
         socket.on('join', function (data) {
-            var pageSize = 2500,
-                protected_request = cartodb.api_url,
+            var protected_request = cartodb.api_url,
                 offset = pageSize * (data.page - 1),
                 query = "SELECT neemo_ranks.user_rank, "+global.settings.user_table+".user_id, "+global.settings.user_table+".user_lvl, "+global.settings.user_table+".user_score, (100*"+global.settings.user_table+".user_score / top.top_score) as user_progress FROM " + 
                          "(SELECT user_score as top_score FROM "+global.settings.user_table+" ORDER BY user_score DESC LIMIT 1) as top, " + 
@@ -89,8 +105,12 @@ exports.start = function(io, cartodb, store) {
             
             
             cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function (error, data, response) {
-                data = JSON.parse(data);
-                socket.emit('scoreboard-update', data);
+                if (error){
+                    //error
+                } else {
+                    data = JSON.parse(data);
+                    socket.emit('scoreboard-update', data);
+                }
             });
             
             var q = "SELECT user_score as top_score FROM "+global.settings.user_table+" ORDER BY user_score DESC LIMIT 1; ";
