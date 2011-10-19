@@ -141,14 +141,16 @@ Scoreboard.modules.socket = function(scoreboard) {
               this._username = tmp[1];
           }
       }
-
+      this._first = true;
     },
     _setupSockets: function(){
       var that = this;
       this.socket.on('connect', function (client) {
-        that.socket.send(JSON.stringify({auth: that._socketAuth, username: that._username}));
+        if (this._first){
+            this._first = false;
+            that.socket.send(JSON.stringify({auth: that._socketAuth, username: that._username}));
+        }
         scoreboard.log.info('soccket connected!');
-        that.socket.emit('join', {page: 1} );
       });
       this.socket.on('user-ranking',function(data){
         scoreboard.log.info('user ranking data recieved!');
@@ -159,34 +161,11 @@ Scoreboard.modules.socket = function(scoreboard) {
         scoreboard.log.info('new rankings!');
         that._bus.fireEvent(new scoreboard.events.UpdateRankingList(data, that._username));
       });
+      this.socket.emit('join', {page: 1} );
     },
     _bindEvents: function(){
       var that = this,
       bus = this._bus;
-      /* send the new click data to server */
-      bus.addHandler(
-        'FormSubmit',
-        function(event){
-          scoreboard.log.info('form recieved');
-          var data = event.getData();
-          data.id = that._id;
-          data.region = that.region;
-          that.socket.emit('poi', data);
-        }
-      );
-
-    /*
-    * Change the socket 'room' we are listening to when the region changes
-    */
-      bus.addHandler(
-        'ChangeRegion',
-        function(event){
-          scoreboard.log.info('region changed from '+that.region+' to '+event.getRegion());
-          that.socket.emit('leave', {region: that.region});
-          that.region = event.getRegion();
-          that.socket.emit('join', {region: that.region} );
-        }
-      );
     }
   }
   );

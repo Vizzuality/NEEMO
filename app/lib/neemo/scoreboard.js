@@ -108,6 +108,7 @@ exports.start = function(io, cartodb, store) {
     });
     
     /* send live ranking updates to scoreboard viewers based on page */
+    /*
     usub.stream.addListener('connect', function(){
         usub.subscribeTo("scoreboard-update", 
             function (channel, data) {
@@ -116,4 +117,5 @@ exports.start = function(io, cartodb, store) {
             }
         );
     });
+    */
 }
