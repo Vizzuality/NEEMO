@@ -30,7 +30,7 @@
           browserReady();
 
           Scoreboard(function(env) {
-            Scoreboard.app = new env.app.Instance({logging: true});
+            Scoreboard.app = new env.app.Instance({logging: false});
             Scoreboard.app.run();
             Scoreboard.env = env;
             });
