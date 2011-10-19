@@ -34,6 +34,7 @@ exports.start = function(io, cartodb, store) {
     */
     io.configure(function () {
       io.set('transports', ['xhr-polling']);
+      //io.set('log level', 1);
     });
     io.sockets.on('connection', function (socket) {
         var session_id = socket.id;

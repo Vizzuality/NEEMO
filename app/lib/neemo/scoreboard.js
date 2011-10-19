@@ -48,20 +48,29 @@ exports.start = function(io, cartodb, store) {
                 body = {q: query};
                 
             cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function (error, data, response) {
-                data = JSON.parse(data);
-                if (data.rows.length > 0){
-                    socket.emit('user-ranking', {
-                        user_id: data.rows[0].user_id,
-                        user_rank: data.rows[0].user_rank,
-                        user_lvl: data.rows[0].user_lvl
-                    });
-                } else {
-                    
+                if (error){
                     socket.emit('user-ranking', {
                         user_id: null,
                         user_rank: null,
                         user_lvl: null
                     });
+                    
+                }else{
+                    data = JSON.parse(data);
+                    if (data.rows.length > 0){
+                        socket.emit('user-ranking', {
+                            user_id: data.rows[0].user_id,
+                            user_rank: data.rows[0].user_rank,
+                            user_lvl: data.rows[0].user_lvl
+                        });
+                    } else {
+                    
+                        socket.emit('user-ranking', {
+                            user_id: null,
+                            user_rank: null,
+                            user_lvl: null
+                        });
+                    }
                 }
             });
         });
