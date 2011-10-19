@@ -14,7 +14,6 @@ exports.start = function(io, cartodb, store) {
                         },
             s = JSON.stringify(shouldbe);
         var newhash = crypto.createHmac('sha1', neemo.secret).update(s).digest('hex', encoding="base64");
-        console.log(username);
         if (newhash==hash){
             return true;
         }else{
@@ -34,7 +33,10 @@ exports.start = function(io, cartodb, store) {
     */
     io.configure(function () {
       io.set('transports', ['xhr-polling']);
-      //io.set('log level', 1);
+      io.set('heartbeat timeout', 2);
+      io.set('heartbeat interval', 1);
+      io.set('close timeout',2);
+      io.set('log level', 1);
     });
     io.sockets.on('connection', function (socket) {
         var session_id = socket.id;
