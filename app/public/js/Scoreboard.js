@@ -146,8 +146,8 @@ Scoreboard.modules.socket = function(scoreboard) {
     _setupSockets: function(){
       var that = this;
       this.socket.on('connect', function (client) {
-        if (this._first){
-            this._first = false;
+        if (that._first){
+            that._first = false;
             that.socket.send(JSON.stringify({auth: that._socketAuth, username: that._username}));
         }
         scoreboard.log.info('soccket connected!');
