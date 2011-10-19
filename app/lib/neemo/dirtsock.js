@@ -198,7 +198,7 @@ exports.start = function(io, cartodb, store) {
                                   "INSERT INTO "+global.settings.activity_table+" (user_id, action, title, points, target_key, create_time) VALUES ('"+data.creator+"',  'dispute', 'invalid', -6, '"+data.key+"', timestamp 'now'); " ;
                 }
                 var body = {q: query}
-                cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function(a,b,c){console.log(b)});
+                cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null);
             }
         });
 	    socket.on('submit-data', function (data) {
