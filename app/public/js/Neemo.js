@@ -75,13 +75,13 @@ Neemo.modules.socket = function(neemo) {
       this.socket = io.connect('', {
                       //'secure': true,
                       'reconnect': true,
-                      'reconnection delay': 5,
+                      'reconnection delay': 15,
                       'max reconnection attempts': 10
                     });
       this._bindEvents();
       this._setupSockets();
       this._cookie = document.cookie.split('; ');
-
+      this._active = false; //sets a user to active, meaning to change from blindly accepting new points to filtering out ones that are coming from the user (avoid duplicates)
       for (i in this._cookie){
           var tmp = this._cookie[i].split('=');
           if (tmp[0]=='socketAuth'){
@@ -139,7 +139,11 @@ Neemo.modules.socket = function(neemo) {
                 data.mine = true;
             }
             data.region = that.intRegion;
-            that._bus.fireEvent(new Neemo.env.events.AddPoints(data));
+            if (data.mine && that._active) {
+                neemo.log.info('filtered users own record');
+            } else {
+                that._bus.fireEvent(new Neemo.env.events.AddPoints(data));
+            }
         }
         //neemo.log.info('socket update received');
        });
@@ -155,15 +159,19 @@ Neemo.modules.socket = function(neemo) {
         'SubmitData',
         function(event){
           neemo.log.info('data recieved');
+          that._active = true;
           var data = event.getData();
           data.region = that.region;
           data.username = that._username;
           data.auth = that._socketAuth;
           that.socket.emit('submit-data', data);
+          data.region = that.intRegion;
+          that._bus.fireEvent(new Neemo.env.events.AddPoints(data));
           that._bus.fireEvent(new Neemo.env.events.PointNotice({
               title: "you have found a new "+data.category+" occurence",
               points: 3
           }));
+          data.mine = true;
         }
       );
       /* change tracks */

@@ -52,7 +52,7 @@ exports.start = function(store){
                     if (status) {
                         var data = {
                             username: username,
-                            key: neemo.secret,
+                            key: neemo.secret
                         }
                         var s = JSON.stringify(data);
                         

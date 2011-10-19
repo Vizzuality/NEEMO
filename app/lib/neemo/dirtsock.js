@@ -52,63 +52,67 @@ exports.start = function(io, cartodb, store) {
                 cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function (error, result, response) {
                     //console.log('\n== CartoDB result for NEEMO get "' + query + '" ==');
                     //console.log(result + '\n');
-                    var default_region = 0,
-                        default_track = Math.floor(Math.random()*26);
-                        //default_track = 7;
-                    result = JSON.parse(result);
-                    if (result.total_rows == 0){
-                        user_profile = {
-                            user_id: data.username,
-                            user_rank: 0,
-                            user_lvl: 1,
-                            user_pts: 1,
-                            user_progress: 1,
-                            track: default_track,
-                            region: default_region,
-                            user_latest: [
-                                {points: 1, title: "welcome to neemo!"}
-                            ],
-                            new_user: true
-                        };
-                        socket.emit('user-metadata', user_profile);
-                        var q2 = "INSERT INTO "+global.settings.user_table+" (user_id, user_lvl, user_score, user_progress, track, region, start_track) VALUES ('"+data.username+"', 1, 0, 1, "+default_track+", '"+default_region+"', "+default_track+")";
-                        var b2 = {q: q2};
-                        cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, b2, null);
+                    if (error){
+                        socket.emit('disconnect');
                     } else {
-                        var latest = [];
-                        var t = result.rows[0].activity.length;
-                        while (t > 0){
-                            t--;
-                            var a = result.rows[0].activity[t].split(':');
-                            var an = {};
-                            if (a[0]=='annotation'){
-                                an = {points: a[2], title: "you have found a new "+a[1]+" occurrence"};
-                            } else if (a[0]=='vote'){
-                                if (a[2] < 0){
-                                    an = {points: a[2], title: "you gave an annotation a downvote."};
-                                } else {
-                                    an = {points: a[2], title: "you gave an annotation an upvote!"};
+                        var default_region = 0,
+                            default_track = Math.floor(Math.random()*26);
+                            //default_track = 7;
+                        result = JSON.parse(result);
+                        if (result.total_rows == 0){
+                            user_profile = {
+                                user_id: data.username,
+                                user_rank: 0,
+                                user_lvl: 1,
+                                user_pts: 1,
+                                user_progress: 1,
+                                track: default_track,
+                                region: default_region,
+                                user_latest: [
+                                    {points: 1, title: "welcome to neemo!"}
+                                ],
+                                new_user: true
+                            };
+                            socket.emit('user-metadata', user_profile);
+                            var q2 = "INSERT INTO "+global.settings.user_table+" (user_id, user_lvl, user_score, user_progress, track, region, start_track) VALUES ('"+data.username+"', 1, 0, 1, "+default_track+", '"+default_region+"', "+default_track+")";
+                            var b2 = {q: q2};
+                            cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, b2, null);
+                        } else {
+                            var latest = [];
+                            var t = result.rows[0].activity.length;
+                            while (t > 0){
+                                t--;
+                                var a = result.rows[0].activity[t].split(':');
+                                var an = {};
+                                if (a[0]=='annotation'){
+                                    an = {points: a[2], title: "you have found a new "+a[1]+" occurrence"};
+                                } else if (a[0]=='vote'){
+                                    if (a[2] < 0){
+                                        an = {points: a[2], title: "you gave an annotation a downvote."};
+                                    } else {
+                                        an = {points: a[2], title: "you gave an annotation an upvote!"};
+                                    }
+                                } else if (a[0]=='confirm'){
+                                    an = {points: a[2], title: "your annotation recieved an upvote!"};
+                                } else if (a[0]=='disputed'){
+                                    an = {points: a[2], title: "your annotation recieved a downvote."};
                                 }
-                            } else if (a[0]=='confirm'){
-                                an = {points: a[2], title: "your annotation recieved an upvote!"};
-                            } else if (a[0]=='disputed'){
-                                an = {points: a[2], title: "your annotation recieved a downvote."};
-                            }
-                            latest.push(an)
+                                latest.push(an)
                             
+                            }
+                            //{points: 0, title: "welcome back to neemo!"}
+                            user_profile = {
+                                user_id: result.rows[0].user_id,
+                                user_rank: result.rows[0].user_rank,
+                                user_lvl: result.rows[0].user_lvl,
+                                user_pts: result.rows[0].user_score,
+                                user_progress: result.rows[0].user_progress,
+                                track: result.rows[0].track,
+                                region: result.rows[0].region,
+                                user_latest: latest
+                            }
+                            socket.emit('user-metadata', user_profile);
                         }
-                        //{points: 0, title: "welcome back to neemo!"}
-                        user_profile = {
-                            user_id: result.rows[0].user_id,
-                            user_rank: result.rows[0].user_rank,
-                            user_lvl: result.rows[0].user_lvl,
-                            user_pts: result.rows[0].user_score,
-                            user_progress: result.rows[0].user_progress,
-                            track: result.rows[0].track,
-                            region: result.rows[0].region,
-                            user_latest: latest
-                        }
-                        socket.emit('user-metadata', user_profile);
                     }
                 });
             }
