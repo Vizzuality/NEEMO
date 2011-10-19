@@ -57,7 +57,7 @@ Neemo.modules.app = function(neemo) {
 
     getBus: function() {
       return this._control.getBus();
-    },
+    }
   }
   );
 };
@@ -115,7 +115,7 @@ Neemo.modules.socket = function(neemo) {
             } else {
                 that.intRegion = window.tracks[that.track].indexOf(data.region);
             }
-            
+
             if(!(that.intRegion !== 0 && that.intRegion > 0)){
               that.intRegion = 0;
               neemo.slideshowUtil.adjustMargin();
@@ -227,7 +227,7 @@ Neemo.modules.socket = function(neemo) {
           }
         }
       );
-    },
+    }
   }
   );
 };
@@ -248,7 +248,7 @@ Neemo.modules.ui = function(neemo) {
     */
     start: function(container) {
       throw neemo.exceptions.NotImplementedError;
-    },
+    }
   }
   );
   /**
@@ -272,7 +272,7 @@ Neemo.modules.ui = function(neemo) {
 
     getElement: function() {
       return this._element;
-    },
+    }
   }
   );
   /**

@@ -177,7 +177,7 @@ Neemo.modules.events = function(neemo) {
     },
     getData: function() {
       return this._data;
-    },
+    }
   }
   );
   neemo.events.RepositionPanels.TYPE = 'reposition_panels';
@@ -190,7 +190,7 @@ Neemo.modules.events = function(neemo) {
     },
     getData: function() {
       return this._data;
-    },
+    }
   }
   );
   neemo.events.HideSelector.TYPE = 'hide_selector';
@@ -205,7 +205,7 @@ Neemo.modules.events = function(neemo) {
     },
     getData: function() {
       return this._data;
-    },
+    }
   }
   );
   neemo.events.AddPoints.TYPE = 'add_points';
@@ -218,7 +218,7 @@ Neemo.modules.events = function(neemo) {
     },
     getData: function() {
       return this._data;
-    },
+    }
   }
   );
   neemo.events.Vote.TYPE = 'vote';
@@ -235,7 +235,7 @@ Neemo.modules.events = function(neemo) {
 
     getData: function() {
       return this._data;
-    },
+    }
   }
   );
   neemo.events.DataSubmit.TYPE = 'data_submit';
@@ -252,7 +252,7 @@ Neemo.modules.events = function(neemo) {
 
     getEvent: function() {
       return this._event;
-    },
+    }
   }
   );
   neemo.events.ImageClick.TYPE = 'image_click';
@@ -269,7 +269,7 @@ Neemo.modules.events = function(neemo) {
 
     getData: function() {
       return this._data;
-    },
+    }
   }
   );
   neemo.events.SubmitData.TYPE = 'submit_data';
@@ -286,7 +286,7 @@ Neemo.modules.events = function(neemo) {
 
     getData: function() {
       return this._data;
-    },
+    }
   }
   );
   neemo.events.PointNotice.TYPE = 'point_notice';

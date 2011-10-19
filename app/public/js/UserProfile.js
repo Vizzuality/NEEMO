@@ -73,7 +73,7 @@ Neemo.modules.UserProfile = function(neemo) {
     start: function() {
       this._bindDisplay(new neemo.ui.UserProfile.Display());
       this._bindEvents();
-    },
+    }
   }
   );
   /**

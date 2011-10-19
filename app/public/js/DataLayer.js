@@ -143,7 +143,7 @@ Neemo.modules.DataLayer = function(neemo) {
       this._radial_selector.start();
       this._bindEvents();
       this._bindKeyboard();
-    },
+    }
   }
   );
 

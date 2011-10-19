@@ -51,7 +51,7 @@ Scoreboard.modules.app = function(scoreboard) {
 
     getBus: function() {
       return this._control.getBus();
-    },
+    }
   }
   );
 };
@@ -72,7 +72,7 @@ Scoreboard.modules.ui = function(scoreboard) {
 */
     start: function(container) {
       throw scoreboard.exceptions.NotImplementedError;
-    },
+    }
   }
   );
   /**
@@ -96,7 +96,7 @@ Scoreboard.modules.ui = function(scoreboard) {
 
     getElement: function() {
       return this._element;
-    },
+    }
   }
   );
   /**
@@ -187,7 +187,7 @@ Scoreboard.modules.socket = function(scoreboard) {
           that.socket.emit('join', {region: that.region} );
         }
       );
-    },
+    }
   }
   );
 };
@@ -227,7 +227,7 @@ Scoreboard.modules.UserRank = function(scoreboard) {
     start: function() {
       this._bindDisplay(new scoreboard.ui.UserRank.Display({ }));
       this._bindEvents();
-    },
+    }
   }
   );
   /**
@@ -326,7 +326,7 @@ Scoreboard.modules.RankingList = function(scoreboard) {
     start: function() {
       this._bindDisplay(new scoreboard.ui.RankingList.Display({ }));
       this._bindEvents();
-    },
+    }
   }
   );
   scoreboard.ui.RankingList.User = scoreboard.ui.Display.extend(
@@ -362,7 +362,7 @@ Scoreboard.modules.RankingList = function(scoreboard) {
       init: function(config) {
         this.config = config;
         this._super($("#ranking ul"));
-      },
+      }
     }
   );
 }
@@ -486,7 +486,7 @@ Scoreboard.modules.events = function(scoreboard) {
 
     getData: function() {
       return this._data;
-    },
+    }
   }
   );
   scoreboard.events.UpdateUserRank.TYPE = 'update_user_rank';
@@ -506,7 +506,7 @@ Scoreboard.modules.events = function(scoreboard) {
     },
     getUser: function() {
       return this._username;
-    },
+    }
   }
   );
   scoreboard.events.UpdateRankingList.TYPE = 'update_ranking_list';

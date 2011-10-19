@@ -70,7 +70,7 @@ Neemo.modules.Slideshow = function(neemo) {
           var url = that._base_image_url;
           if (old_region < that._region || old_region == -1){
               that.scrollForward(url, event.getRegion());
-          }else{
+          } else{
               that.scrollBack(url, event.getRegion());
           }
         }
@@ -89,7 +89,7 @@ Neemo.modules.Slideshow = function(neemo) {
             while (t1.length < 5) t1 = '0'+t1;
             while (t2.length < 5) t2 = '0'+t2;
             while (t3.length < 5) t3 = '0'+t3;
-            
+
             $('.depth h2').text(t);
 
             $("#slideshow .image#region_" + data.region + " .depth-line .depth3").html(t3);
@@ -179,7 +179,7 @@ Neemo.modules.Slideshow = function(neemo) {
             margin: this.margin,
             moving: this.moving,
             easingMethod: this.easingMethod,
-            numberOfRegions: this.numberOfRegions,
+            numberOfRegions: this.numberOfRegions
         }));
       this._bindNav(new neemo.ui.Slideshow.Nav());
       this._bindEvents();
@@ -305,7 +305,7 @@ Neemo.modules.Slideshow = function(neemo) {
           neemo.slideshowUtil.hideAside(neemo.slideshowUtil.backSlideEffect);
         });
         //this.bufferBack(url, id);
-    },
+    }
   }
   );
 
@@ -325,7 +325,7 @@ Neemo.modules.Slideshow = function(neemo) {
       } else {
           this._image.src = [url, window.tracks[this._track][id]].join('');
       }
-      
+
       this._super(this._html());
 
       // Adds region_id to the element
@@ -380,9 +380,7 @@ Neemo.modules.Slideshow = function(neemo) {
         /* Just a highlighting function I tossed in for now, will remove */
         //v = c.find('.count');
         $(c).addClass('highlight');
-        $(c).animate({
-            opacity: 0.95,
-        }, 2000, function() {
+        $(c).animate({ opacity: 0.95}, 2000, function() {
             $(this).removeClass('highlight');
         });
 
@@ -478,7 +476,7 @@ Neemo.modules.Slideshow = function(neemo) {
         } else {
             $(this.getElement()).append($(region));
         }
-    },
+    }
   }
   );
 }
