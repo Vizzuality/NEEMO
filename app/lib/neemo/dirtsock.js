@@ -33,9 +33,9 @@ exports.start = function(io, cartodb, store) {
     */
     io.configure(function () {
       io.set('transports', ['xhr-polling']);
-      io.set('heartbeat timeout', 2);
-      io.set('heartbeat interval', 1);
-      io.set('close timeout',2);
+      io.set('heartbeat timeout', 4);
+      io.set('heartbeat interval', 3);
+      //io.set('close timeout',2);
       io.set('log level', 1);
     });
     io.sockets.on('connection', function (socket) {

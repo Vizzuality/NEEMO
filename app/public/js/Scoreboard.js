@@ -167,8 +167,6 @@ Scoreboard.modules.socket = function(scoreboard) {
         console.log(data);
         $('#rank-box .footer a').unbind();
         $('#rank-box .footer a').click(function(){
-            console.log('unbind');
-            console.log(that.userpage);
             that.socket.emit('join', {page: that.userpage} );
         })
       });
