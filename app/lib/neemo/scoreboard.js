@@ -68,7 +68,7 @@ exports.start = function(io, cartodb, store) {
                             "AS user_rank, user_score FROM "+global.settings.user_table+" GROUP BY user_score) " +
                             "as neemo_ranks, "+global.settings.user_table+" " +
                             "WHERE "+global.settings.user_table+".user_score = neemo_ranks.user_score " +
-                            "AND neemo_ranks.user_rank < 4";
+                            "AND neemo_ranks.user_rank < " + data.rows[0].user_rank + "; ";
                         b = {q: q};
                         cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, b, null, function (e, d, r) {
                             if (e){
