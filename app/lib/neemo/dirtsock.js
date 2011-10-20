@@ -130,7 +130,7 @@ exports.start = function(io, cartodb, store) {
                     });
                 });
                 
-                query = "SELECT key, category, click_x, click_y, width, height, region, user_id, upvotes FROM "+global.settings.main_table+" WHERE downvotes < 1 and region = '"+data.region+"' ORDER BY created_at DESC LIMIT 25";
+                query = "SELECT key, category, click_x, click_y, width, height, region, user_id, upvotes FROM "+global.settings.main_table+" WHERE downvotes < 1 and region = '"+data.region+"' ORDER BY created_time DESC LIMIT 25";
                 var body = {q: query}
                 cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function(error, result, response) {
                     result = JSON.parse(result);
