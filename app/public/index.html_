@@ -1,0 +1,136 @@
+<!doctype html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]>    <html class="ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=1020,initial-scale=1">
+
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="/css/style.css" />
+
+    <script src="https://www.google.com/jsapi"></script>
+    <script>google.load("jquery", "1.6.2");</script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/all.js"></script>
+
+    <!--
+    <script src="/js/libs/raphael-min.js"></script>
+    <script src="/js/libs/underscore-min.js"></script>
+    <script src="/js/libs/backbone-min.js"></script>
+    <script src="/js/libs/class.js"></script>
+    <script src="/js/libs/plugins.js"></script>
+    <script src="/js/Neemo.js"></script>
+    <script src="/js/Event.js"></script>
+    <script src="/js/Slideshow.js"></script>
+    <script src="/js/DataLayer.js"></script>
+    <script src="/js/Annotation.js"></script>
+    <script src="/js/UserProfile.js"></script>
+    <script src="/js/helpers.js"></script>
+    -->
+    <script type="text/javascript">
+	  if (window.location.protocol != 'https:' && window.location.hostname == 'neemo.zooniverse.org' ){
+        window.location = 'https://' + window.location.hostname;
+      }
+    $(function() {
+        browserReady();
+
+        var cookie = document.cookie.split('; ');
+        for (i in cookie){
+        var tmp = cookie[i].split('=');
+        if (tmp[0]=='neemoUser' && tmp[1] != 'undefined'){
+        $('.mission a').text('GO TO MISSION');
+        $('.join h1').text('CONTINUE MISSION');
+        }
+        }
+        $("nav").navigationHover();
+
+        });
+</script>
+
+<script src="/js/libs/modernizr-2.0.6.min.js"></script>
+
+      </head>
+      <body class="home">
+
+        <nav>
+        <ul>
+          <li class="index selected"><a href="#">NEEMO PROJECT</a></li>
+          <li class="ranking"><a href="/ranking.html">RANKING</a></li>
+          <li class="mission"><a href="/mission.html">JOIN THE MISSION</a></li>
+        </ul>
+        <div class="bar"></div>
+        </nav>
+
+        <div id="content">
+          <div class="top">
+
+            <img src="/images/join.png" class="join" />
+            <a href="mission.html" class="join"><h1>JOIN THE MISSION</h1></a>
+          </div>
+
+          <div class="breadcrumb">
+            <ul>
+              <li class="login"><div class="icon turbine"></div> <div class="action"><a href="/login">Log in</a> or <a href="https://www.zooniverse.org/signup?source=neemo">create your account</a></div></li>
+              <li class="spot"><div class="icon radar"></div> <div class="action">Spot things on the images</div></li>
+              <li class="points"><div class="icon trophee"></div> <div class="action">Get points and become the best explorer</div></li>
+
+            </ul>
+          </div>
+
+          <div class="bottom">
+            <div class="column">
+              <h2>RESEARCHING MARINE LIFE</h2>
+              <p class="extra-margin">NASA astronauts, scientists and technicians will living in an underwater habitat called Aquarius for 13 days to research marine life and prepare explorers for missions to far-off planetary destinations in a project called NEEMO-15.</p>
+
+              <h2>MORE ABOUT THE PROJECT</h2>
+              <p>NEEMO is NASA Extreme Environment Mission Operations, and NEEMO-15 all about practicing exploration to an asteroid. In a real mission to a distant object in space, robotic missions will send back thousands of pictures before a crew arrives.  In May, a robotic submarine took thousands of pictures of the reef around the Aquarius habitat. With your help, we can prepare the crew, traverse planners, and mission directors quicker and better than they could ever do on their own!</p>
+              <p><a href="http://www.nasa.gov/mission_pages/NEEMO" class="button">Learn more</a></p>
+            </div>
+
+            <div class="column">
+              <h2>WE NEED PEOPLE LIKE YOU</h2>
+              <p>During these missions, NASA collects thousands of images of underwater life and features. We need your help to analyze those images and help us guide the scientists on their excursions around the habitat!</p>
+            </div>
+          </div>
+        </div>
+
+        <footer>
+        <div class="inner">
+          <h2>NEEMO-15 COLLABORATORS</h2>
+          <ul>
+            <li><a href="#" class="nasa">NASA</a></li>
+            <li><a href="#" class="delaware">University of Delaware</a></li>
+            <li><a href="#" class="google">Google</a></li>
+            <li><a href="#" class="noar">NOAR</a></li>
+            <li><a href="#" class="zooniverse">Zooniverse</a></li>
+            <li><a href="#" class="vizzuality">Vizzuality</a></li>
+          </ul>
+        </div>
+
+        </footer>
+        <div class="beta"></div>
+        <div class="shade"></div>
+        <div class="rays"></div>
+        <div class="diagrams"></div>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-26433527-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+      </body>
+    </html>
