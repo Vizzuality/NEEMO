@@ -97,7 +97,10 @@ Neemo.modules.socket = function(neemo) {
       var that = this;
       this.socket.on('connect', function () {
         neemo.log.info('soccket connected!');
-        that.socket.send(JSON.stringify({auth: that._socketAuth, username: that._username}));
+        if(that._first){
+            that.socket.send(JSON.stringify({auth: that._socketAuth, username: that._username}));
+        }
+        
       });
       this.socket.on('user-metadata',function(data){
         neemo.log.info('recieved user profile for: ' + data.user_id);
