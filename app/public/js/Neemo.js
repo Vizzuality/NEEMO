@@ -166,6 +166,7 @@ Neemo.modules.socket = function(neemo) {
           data.auth = that._socketAuth;
           that.socket.emit('submit-data', data);
           data.region = that.intRegion;
+          data.mine = true;
           that._bus.fireEvent(new Neemo.env.events.AddPoints(data));
           that._bus.fireEvent(new Neemo.env.events.PointNotice({
               title: "you have found a new "+data.category+" occurence",
