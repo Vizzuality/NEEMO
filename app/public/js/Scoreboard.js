@@ -202,12 +202,18 @@ Scoreboard.modules.UserRank = function(scoreboard) {
         'UpdateUserRank',
         function(data){
           data = data.getData();
-          var strString = '' + data.user_rank;
-          while(strString.length<4){
-            strString = '0' + strString;
+          if (data.user_rank==null){
+              $('.score').click(function(){
+                  window.location.replace('/login');
+              });
+          } else {
+              var strString = '' + data.user_rank;
+              while(strString.length<4){
+                strString = '0' + strString;
+              }
+              that._display.getRank().text('#' + strString);
+              that._display.bindUserRankLink(data.user_id);
           }
-          that._display.getRank().text('#' + strString);
-          that._display.bindUserRankLink(data.user_id);
         }
       );
 
@@ -246,7 +252,7 @@ Scoreboard.modules.UserRank = function(scoreboard) {
           '<div class="icon trophee"></div>' +
             '<span class="title">Your rank</span>' +
               '<div class="line-through">' +
-                '  <div class="score">not avail.</div>' +
+                '  <div class="score">sign in</div>' +
                   '   <div class="line"></div>' +
                     '</div>' +
                       '</div>' +
