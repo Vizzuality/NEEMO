@@ -797,9 +797,10 @@ nav ul {
 #slideshow .image.selected aside {margin-top:-200px; height:400px; }
 
 .beta {
-  background:url(/images/sprite.png) no-repeat -772px -443px;
-  width:128px;
-  height:128px;
+  display:block;
+  background:url(/images/sprite.png) no-repeat -702px -411px;
+  width:180px;
+  height:200px;
   position:absolute;
   right:0px;
   top:0px;
