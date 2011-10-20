@@ -1438,6 +1438,50 @@ a.button, a.button:active, a.button:visited {
 .breadcrumb ul li .icon.radar   { background-position: -74px -799px; }
 .breadcrumb ul li .icon.trophee { background-position: -148px -799px; }
 
+.social {
+  margin:0; padding:0;
+  list-style:none;
+  clear:both;
+  overflow:hidden;
+  width:450px;
+}
+
+.social li {
+  background:rgba(0,0,0,.3);
+  float:left;
+  padding:12px 12px 10px 12px;
+  margin: 0 5px 5px 0;
+  border-radius:3px;
+}
+.social li.facebook  {width: 196px;}
+.social li.twitter   {width: 196px;}
+.social li.youtube   {width: 196px;}
+.social li.flickr    {width: 176px;}
+.social li.blog      {width: 146px;}
+
+.social li .icon {
+  width:16px;
+  height:16px;
+  float:left;
+  margin-right:8px;
+  background:url(/images/sprite.png) no-repeat;
+}
+.social li.facebook .icon { background-position: 0 -984px; }
+.social li.twitter  .icon { background-position: -21px -984px; }
+.social li.youtube  .icon { background-position: -40px -984px; }
+.social li.flickr   .icon { background-position: -61px -984px; }
+.social li.blog     .icon { background-position: -80px -984px; }
+
+.social li a:hover {
+  text-shadow: 0px 0px 20px #fff;
+}
+
+.social li a {
+  font-family: 'EurostileLTStd-Demi';
+  font-size:13px;
+  color:#fff;
+}
+
 footer {
   position:absolute;
   clear:both; overflow:hidden;
