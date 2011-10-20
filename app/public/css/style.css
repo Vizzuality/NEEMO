@@ -433,6 +433,7 @@ nav ul {
   color:rgba(0,0,0, .3);
   font-size:17px;
   letter-spacing:1px;
+  text-decoration: none;
 }
 
 #ranking ul li .progress-bar {
