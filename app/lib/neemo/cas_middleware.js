@@ -5,7 +5,7 @@ var   sys         = require('sys')
     , cas         = new CAS({base_url: 'https://login.zooniverse.org', service: global.settings.route_url});
 
 exports.start = function(store){
-    var exceptions = {'/index.html': 0, '/': 0, '/about.html': 0, '/favicon.ico': 0, '/ranking.html': 0};
+    var exceptions = {'/index.html': 0, '/': 0, '/about.html': 0, '/favicon.ico': 0, '/ranking.html': 0, '/map.html': 0};
     /* forces CSA signin to do anything fun */
     var cas_middleware = function(req, res, next){
         var ticket = req.param('ticket'),
