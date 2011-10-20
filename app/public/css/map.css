@@ -1,0 +1,65 @@
+
+#legend { position: absolute; 
+  z-index: 999; 
+  top:50px;
+  height:356px;
+  width:59px;
+  right:0px;
+  float:right;
+  background:#0D1E29;
+  text-align:center;
+  font-family:"EurostileLTStd";
+  letter-spacing:1px;
+}
+
+
+#legend ul {
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+
+#legend ul li {
+  margin: 10px 0 10px 0px;
+  padding: 5px 0 13px 0;
+  font-size:9px;
+  color:rgba(255,255,255, .5);
+  text-transform:uppercase;
+  text-align:center;
+  background: url(/images/border.png) repeat-x left bottom;
+  -webkit-transition: all .5s ease-in-out;
+  -moz-transition: all .5s ease-in-out;
+}
+
+#legend ul li:hover {
+  text-shadow: 0px 0px 20px #fff;
+}
+
+#legend ul li .icon {
+  font-size:15px;
+  display:block;
+}
+#legend ul li .icon.highlight{
+  text-shadow: 0px 0px 20px #fff;
+}
+
+#legend ul li.coral span{
+    background: #99FF00;
+}
+#legend ul li.other span{
+    background: #9900FF;
+}
+#legend ul li.gorgonian span{
+    background: #FFaa00;
+}
+#legend ul li.barrel span{
+    background: #99FFFF;
+}
+#legend ul li span{
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+}
