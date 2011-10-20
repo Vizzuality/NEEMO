@@ -1489,6 +1489,7 @@ footer {
   clear:both; overflow:hidden;
   background:#fff;
   width:100%;
+  min-width:1100px;
   z-index:2000;
 }
 
