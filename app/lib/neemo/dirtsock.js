@@ -20,22 +20,10 @@ exports.start = function(io, cartodb, store) {
             return false;
         }
     }
-    /* Setup main App socket connections and functions
-     */
-    /*
-    io.configure(function (){
-      io.set('authorization', function (handshakeData, callback) {
-        console.log('hiiiiiii');
-        console.log(handshakeData);
-        callback(null, true); // error first callback style 
-      });
-    });
-    */
     io.configure(function () {
       io.set('transports', ['xhr-polling']);
-      io.set('heartbeat timeout', 4);
+      io.set('heartbeat timeout', 5);
       io.set('heartbeat interval', 3);
-      //io.set('close timeout',2);
       io.set('log level', 1);
     });
     io.sockets.on('connection', function (socket) {
@@ -49,12 +37,8 @@ exports.start = function(io, cartodb, store) {
                             "(SELECT (SELECT ARRAY(SELECT action||':'||category||':'||points FROM "+global.settings.activity_table+" WHERE user_id = '"+data.username+"' ORDER BY create_time DESC LIMIT 5)) as activity FROM "+global.settings.main_table+") AS activity, " +
                             "(SELECT row_number() OVER(ORDER BY user_score DESC) AS user_rank, user_score FROM "+global.settings.user_table+" GROUP BY user_score) " +
                             "AS neemo_ranks, "+global.settings.user_table+" WHERE "+global.settings.user_table+".user_score = neemo_ranks.user_score and user_id = '"+data.username+"' LIMIT 1;";
-                //console.log(query);
-                //var query = "SELECT user_id, user_lvl, user_rank, user_score, user_progress, track, region FROM neemo_users WHERE user_id = '"+data.username+"' LIMIT 1;";
                 var body = {q: query}
                 cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, body, null, function (error, result, response) {
-                    //console.log('\n== CartoDB result for NEEMO get "' + query + '" ==');
-                    //console.log(result + '\n');
                     if (error){
                         socket.emit('disconnect');
                     } else {
@@ -76,7 +60,7 @@ exports.start = function(io, cartodb, store) {
                                 new_user: true
                             };
                             socket.emit('user-metadata', user_profile);
-                            var q2 = "INSERT INTO "+global.settings.user_table+" (user_id, user_lvl, user_score, user_progress, track, region, start_track) VALUES ('"+data.username+"', 1, 0, 1, "+default_track+", '"+default_region+"', "+default_track+")";
+                            var q2 = "INSERT INTO "+global.settings.user_table+" (user_id, user_lvl, user_score, user_progress, track, region, start_track) VALUES ('"+data.username+"', 1, 0, 1, "+default_track+", '"+default_region+"', "+default_track+"); ";
                             var b2 = {q: q2};
                             cartodb.oa.post(protected_request, cartodb.access_key, cartodb.access_secret, b2, null);
                         } else {

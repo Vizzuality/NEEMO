@@ -97,7 +97,7 @@ exports.start = function(io, cartodb, store) {
                 query = "SELECT neemo_ranks.user_rank, "+global.settings.user_table+".user_id, "+global.settings.user_table+".user_lvl, "+global.settings.user_table+".user_score, (100*"+global.settings.user_table+".user_score / top.top_score) as user_progress FROM " + 
                          "(SELECT user_score as top_score FROM "+global.settings.user_table+" ORDER BY user_score DESC LIMIT 1) as top, " + 
                          "(SELECT row_number() OVER(ORDER BY user_score DESC) AS user_rank, user_score FROM "+global.settings.user_table+" GROUP BY user_score) " +
-                         "as neemo_ranks, "+global.settings.user_table+" WHERE "+global.settings.user_table+".user_score = neemo_ranks.user_score " +
+                         "as neemo_ranks, "+global.settings.user_table+" WHERE "+global.settings.user_table+".user_score = neemo_ranks.user_score and neemo_ranks.user_score > 0 " +
                          "ORDER BY neemo_ranks.user_rank ASC LIMIT "+pageSize+" OFFSET "+offset+";",
                 body = {q: query};
             
