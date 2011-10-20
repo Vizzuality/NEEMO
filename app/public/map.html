@@ -4,35 +4,60 @@
     <meta charset="utf-8">
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 <link rel="stylesheet" href="/css/style.css" />
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script src="https://www.google.com/jsapi"></script>
+    <script>google.load("jquery", "1.6.2");</script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/js/libs/underscore-min.js"></script>
-    <script src="/js/libs/backbone-min.js"></script>
-    <script src="/js/libs/class.js"></script>
-    <script src="/js/Neemo.js"></script>
-    <script src="/js/Event.js"></script>
-    <script src="/js/Slideshow.js"></script>
-    <script src="/js/Form.js"></script>
+          <script src="/js/libs/jquery-ui-1.8.16.custom.min.js"></script>
+          <script src="/js/libs/raphael-min.js"></script>
+          <script src="/js/libs/underscore-min.js"></script>
+          <script src="/js/libs/backbone-min.js"></script>
+          <script src="/js/libs/class.js"></script>
+          <script src="/js/libs/plugins.js"></script>
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 </script>
 <script type="text/javascript">
     var map;
-
+    var getNormalizedCoord = function(coord, zoom) {
+                var y = coord.y,
+                    x = coord.x,
+                    tileRange = 1 << zoom;
+                // don't repeat across y-axis (vertically)
+                if (y < 0 || y >= tileRange) {
+                    return null;
+                }
+                // repeat across x-axis
+                if (x < 0 || x >= tileRange) {
+                    x = (x % tileRange + tileRange) % tileRange;
+                }
+                return {
+                    x: x,
+                    y: y
+                };
+            };
     $(document).ready(function() {
-        var latlng = new google.maps.LatLng(40.714353, -74.005973);
-        var myOptions = {
+        var latlng = new google.maps.LatLng(24.9469983333, -80.4559166667);
+
+        var mapOptions = {
           zoom: 16,
           center: latlng,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
+		  //position: google.maps.ControlPosition.BOTTOM_LEFT,
+          mapTypeId: google.maps.MapTypeId.SATELLITE
         };
-        Neemo(function(env) {
-            Neemo.app = new env.app.Instance({logging: true,
-                                              container: "map_canvas",
-                                              mapOptions: myOptions,
-                                              region: 1});
-            Neemo.app.run();
-            Neemo.env = env;
-        });
+        map = new google.maps.Map($('#map_canvas')[0], mapOptions);
+
+		var barrels  = new google.maps.ImageMapType(
+                    {
+                        getTileUrl: function(coord, zoom) {
+                            var normalizedCoord = getNormalizedCoord(coord, zoom),
+                                bound = Math.pow(2, zoom),
+								tileurl = "https://andrew.cartodb.com/tiles/neemo_regions/"+zoom+"/"+coord.x+"/"+coord.y+".png?cache_buster=8&map_key=6147435ec8bfdbf9ad547d041e460b23167e956a&sql=SELECT neemo_regions.the_geom_webmercator, neemo_regions.region, neemo.category, count(*) FROM neemo_regions, neemo WHERE neemo_regions.region = neemo.region GROUP BY neemo.category, neemo_regions.region, neemo_regions.the_geom_webmercator";
+                            return tileurl;
+                        },
+                        tileSize: new google.maps.Size(256, 256),
+                        isPng: true, 
+						name: 'barrels'
+                    });
+        map.overlayMapTypes.push(barrels);
     });
 
 </script>
