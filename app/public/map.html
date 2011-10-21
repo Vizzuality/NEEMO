@@ -19,13 +19,18 @@
 <script type="text/javascript">
     var map;
 	var infoOpen = false;
+	var openId = null;
     $(document).ready(function() {
         var latlng = new google.maps.LatLng(24.9469983333, -80.4559166667);
 
         var mapOptions = {
           zoom: 16,
           center: latlng,
-          mapTypeId: google.maps.MapTypeId.SATELLITE
+          mapTypeId: google.maps.MapTypeId.SATELLITE,
+		  panControl: false,
+		  streetViewControl: false,
+		  scaleControl: true,
+		  mapTypeControl: false
         };
         map = new google.maps.Map($('.map_window')[0], mapOptions);
 		$('.help').css({'z-index':999});
@@ -44,20 +49,21 @@
         map.overlayMapTypes.push(barrels);
 
 		var closeInfo = function(){
-			if (infoOpen){
-				var el = $('.help.open');
-				el.removeClass('open');
-				el.animate({opacity:0, left:el.position().left - 50}, 'fast', function() {
-					el.css({display:"none"});
-				});
-				infoOpen = false;
-			}
+			var el = $('.help.open');
+			el.removeClass('open');
+			el.animate({opacity:0, left:el.position().left - 50}, 'fast', function() {
+				el.css({display:"none"});
+			});
+			infoOpen = false;
 		}
 		$('.help .header .close').click(function(){
 			closeInfo();
 		});
 		$('#legend ul li').click(function(e){
-			closeInfo();
+			if (infoOpen && openId != $(this).attr('class')){
+				closeInfo();
+				openId = $(this).attr('class');
+			}
       		e.stopPropagation();
 			var el = $('.help.'+$(this).attr('class'));
 			el.addClass('open');
