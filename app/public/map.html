@@ -18,39 +18,21 @@
 </script>
 <script type="text/javascript">
     var map;
-    var getNormalizedCoord = function(coord, zoom) {
-                var y = coord.y,
-                    x = coord.x,
-                    tileRange = 1 << zoom;
-                // don't repeat across y-axis (vertically)
-                if (y < 0 || y >= tileRange) {
-                    return null;
-                }
-                // repeat across x-axis
-                if (x < 0 || x >= tileRange) {
-                    x = (x % tileRange + tileRange) % tileRange;
-                }
-                return {
-                    x: x,
-                    y: y
-                };
-            };
+	var infoOpen = false;
     $(document).ready(function() {
         var latlng = new google.maps.LatLng(24.9469983333, -80.4559166667);
 
         var mapOptions = {
           zoom: 16,
           center: latlng,
-		  //position: google.maps.ControlPosition.BOTTOM_LEFT,
           mapTypeId: google.maps.MapTypeId.SATELLITE
         };
         map = new google.maps.Map($('.map_window')[0], mapOptions);
-
+		$('.help').css({'z-index':999});
 		var barrels  = new google.maps.ImageMapType(
                     {
                         getTileUrl: function(coord, zoom) {
-                            var normalizedCoord = getNormalizedCoord(coord, zoom),
-                                bound = Math.pow(2, zoom),
+                            var bound = Math.pow(2, zoom),
 								tileurl = "https://andrew.cartodb.com/tiles/neemo_regions/"+zoom+"/"+coord.x+"/"+coord.y+".png?map_key=6147435ec8bfdbf9ad547d041e460b23167e956a&sql=SELECT neemo_regions.the_geom_webmercator, neemo_regions.region, neemo.category, count(*) FROM neemo_regions, neemo WHERE neemo_regions.region = neemo.region GROUP BY neemo.category, neemo_regions.region, neemo_regions.the_geom_webmercator";
                             return tileurl;
                         },
@@ -59,6 +41,29 @@
 						name: 'barrels'
                     });
         map.overlayMapTypes.push(barrels);
+
+		var closeInfo = function(){
+			if (infoOpen){
+				var el = $('.help.open');
+				el.removeClass('open');
+				el.animate({opacity:0, left:el.position().left - 50}, 'fast', function() {
+					el.css({display:"none"});
+				});
+				infoOpen = false;
+			}
+		}
+		$('.help .header .close').click(function(){
+			closeInfo();
+		});
+		$('#legend ul li').click(function(e){
+			closeInfo();
+      		e.stopPropagation();
+			var el = $('.help.'+$(this).attr('class'));
+			el.addClass('open');
+		    el.css({display:"block", opacity:0, left:e.clientX - el.width(), top:e.clientY - 50});
+		    el.animate({opacity:1, left:e.clientX - el.width() - 70}, 'fast');
+			infoOpen = true;
+		});
     });
 
 </script>
@@ -73,6 +78,107 @@
 		<li class="other"><span class="icon"></span>other</li>
 	</ul>
   </div>
+
+        <div class="help gorgonian">
+          <div class="header">
+            <div class="line-through">
+              <h3 class="more-info">What is a gorgonian?</h3>
+              <div class="line"></div>
+            </div>
+            <div class="close"></div>
+          </div>
+          <div class="inner">
+            <ul class="species">
+              <li class="gorgonian">
+              <div class="slideshow">
+                <div class="slideshow_inner">
+                  <div class="photos"> <img src="/images/examples/gorgonian1.png" /> <img src="/images/examples/gorgonian2.png" /></div>
+                </div>
+              </div>
+
+              <div class="explanation">
+                <p>Gorgonians are a type of coral as well, however they look more plant or tree like than the other coral colonies. They have flexible skeletons and grow in branchlike formations. Common examples include - sea whip, sea fan, and sea rod.</p>
+                <p><a href="http://en.wikipedia.org/wiki/Gorgonian" target="_blank">Learn more about it </a></p>
+              </div>
+              </li>
+
+          </div>
+        </div>
+
+        <div class="help coral">
+          <div class="header">
+            <div class="line-through">
+              <h3 class="more-info">What is a coral?</h3>
+              <div class="line"></div>
+            </div>
+            <div class="close"></div>
+          </div>
+          <div class="inner">
+              <li class="coral">
+              <div class="slideshow">
+                <div class="slideshow_inner">
+                  <div class="photos"> <img src="/images/examples/coral1.png" /></div>
+                </div>
+              </div>
+
+              <div class="explanation">
+                <p>Scleractinian corals, or stony corals, are made up of skeletons secreted by the coral polyp, a small sea animal. Coral heads are made up of colonies of the coral polyps. They increase the coral's size by laying down annual layers of calcium carbonate (creating the skeleton).  Corals in the photographs may look like boulders or antlers. </p>
+                <p><a href="http://en.wikipedia.org/wiki/Coral" target="_blank">Learn more about it </a></p>
+              </div>
+              </li>
+
+          </div>
+        </div>
+
+        <div class="help barrel">
+          <div class="header">
+            <div class="line-through">
+              <h3 class="more-info">What is a barrel sponge?</h3>
+              <div class="line"></div>
+            </div>
+            <div class="close"></div>
+          </div>
+          <div class="inner">
+              <li class="barrel">
+              <div class="slideshow">
+                <div class="slideshow_inner">
+                  <div class="photos"> <img src="/images/examples/barrel1.png" /> <img src="/images/examples/barrel2.png" /></div>
+                </div>
+              </div>
+
+              <div class="explanation">
+                <p>Sponges are some of the oldest multi-cellular animals on the planet. Sponges have no nervous system and depend on the flow of fluid through their porous bodies to supply nutrients to their cells.  The shapes of their bodies helps induce flow much like a chimney. The barrel sponges we are primarily looking for are giant barrel sponges (Xestospongia muta). </p>
+                <p><a href="http://en.wikipedia.org/wiki/Giant_barrel_sponge" target="_blank">Learn more about it </a></p>
+              </div>
+              </li>
+
+          </div>
+        </div>
+
+        <div class="help other">
+          <div class="header">
+            <div class="line-through">
+              <h3 class="more-info">What is other?</h3>
+              <div class="line"></div>
+            </div>
+            <div class="close"></div>
+          </div>
+          <div class="inner">
+              <li class="other">
+              <div class="slideshow">
+                <div class="slideshow_inner">
+                  <div class="photos"> <img src="/images/examples/other.png" /></div>
+                </div>
+              </div>
+
+              <div class="explanation">
+                <p>When you discover something that you think is interesting, but might not be on the list or even completely identifiable, please let us know!  In fact, you might even notice some impacts of humans living underwater in the area...!</p>
+              </div>
+              </li>
+            </ul>
+
+          </div>
+        </div>
 
 <script type="text/javascript">
   var _gauges = _gauges || [];
