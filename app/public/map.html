@@ -29,6 +29,7 @@
         };
         map = new google.maps.Map($('.map_window')[0], mapOptions);
 		$('.help').css({'z-index':999});
+		$('#legend ul .icon').css({'cursor':'pointer'});
 		var barrels  = new google.maps.ImageMapType(
                     {
                         getTileUrl: function(coord, zoom) {

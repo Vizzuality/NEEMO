@@ -206,6 +206,7 @@ Scoreboard.modules.UserRank = function(scoreboard) {
               $('.score').click(function(){
                   window.location.replace('/login');
               });
+		      $('.score').css({'cursor':'pointer'});
           } else {
               var strString = '' + data.user_rank;
               while(strString.length<4){
