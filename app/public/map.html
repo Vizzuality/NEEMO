@@ -35,7 +35,7 @@
 	var findings, categories;
 	
 	function buildLayer(cats){
-		findings  = new google.maps.ImageMapType(
+		var layer  = new google.maps.ImageMapType(
                     {
                         getTileUrl: function(coord, zoom) {
                             var bound = Math.pow(2, zoom),
@@ -47,6 +47,7 @@
                         isPng: true, 
 						name: 'findings'
                     });
+		return layer;
 	}
 	function updateCategories(){
 		categories = [];
@@ -61,10 +62,7 @@
 					'SELECT category, count(*) FROM neemo WHERE downvotes < 1 GROUP BY category' +
 					'&callback=?';
 		$.getJSON(url, function(res){
-			console.log('hihihi');
-			console.log(res);
 			for (i in res.rows){
-				console.log(res.rows[i]);
 				$('#legend ul li.'+res.rows[i].category+' .count').text(res.rows[i].count);
 			}
 		})
@@ -84,7 +82,7 @@
         map = new google.maps.Map($('#map_canvas')[0], mapOptions);
 		
 		categories = ['coral', 'gorgonian', 'barrel', 'other'];
-		buildLayer(categories);
+		findings = buildLayer(categories);
         map.overlayMapTypes.push(findings);
 
 		getTotals();
@@ -126,9 +124,8 @@
 				t = 'Remove from map';
 			}
 			updateCategories();
-        	map.overlayMapTypes.pop(findings);
-			buildLayer(categories);
-        	map.overlayMapTypes.push(findings);
+			findings = buildLayer(categories);
+			map.overlayMapTypes.setAt("0",findings);
 			$(this).text(t);
 			closeInfo();
 		})
