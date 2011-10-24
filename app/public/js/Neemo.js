@@ -183,7 +183,7 @@ Neemo.modules.socket = function(neemo) {
         'ChangeTrack',
         function(){
             that.track = that.track+1;
-            if (that.track === window.tracks.length){
+            if (that.track + 1 === window.tracks.length){
                 that.track = 0;
             }
             that.intRegion = 0;
