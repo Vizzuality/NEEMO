@@ -3,27 +3,72 @@
   <head>
     <meta charset="utf-8">
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-<link rel="stylesheet" href="/css/style.css" />
-<link rel="stylesheet" href="/css/map.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/map.css" />
   <link rel="stylesheet" href="http://vizzuality.github.com/cartodb-gmapsv3/cartodb.css">
-    <script src="https://www.google.com/jsapi"></script>
-    <script>google.load("jquery", "1.6.2");</script>
-    <script src="/socket.io/socket.io.js"></script>
-          <script src="/js/libs/jquery-ui-1.8.16.custom.min.js"></script>
-          <script src="/js/libs/raphael-min.js"></script>
-          <script src="/js/libs/underscore-min.js"></script>
-          <script src="/js/libs/backbone-min.js"></script>
-          <script src="/js/libs/class.js"></script>
-          <script src="/js/libs/plugins.js"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-  <script type="text/javascript" src="http://vizzuality.github.com/cartodb-gmapsv3/wax.g.js"></script>
-  <script type="text/javascript" src="http://vizzuality.github.com/cartodb-gmapsv3/cartodb-gmapsv3.js"></script>
+	<script src="https://www.google.com/jsapi"></script>
+	<script>google.load("jquery", "1.6.2");</script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="/js/libs/jquery-ui-1.8.16.custom.min.js"></script>
+	<script src="/js/libs/raphael-min.js"></script>
+	<script src="/js/libs/underscore-min.js"></script>
+	<script src="/js/libs/backbone-min.js"></script>
+	<script src="/js/libs/class.js"></script>
+	<script src="/js/libs/plugins.js"></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+	<script type="text/javascript" src="http://vizzuality.github.com/cartodb-gmapsv3/wax.g.js"></script>
+	<script type="text/javascript" src="http://vizzuality.github.com/cartodb-gmapsv3/cartodb-gmapsv3.js"></script>
+	<style type="text/css">
+		.help .header span {
+		    color: white;
+			float: right;
+			margin-right: 50px;
+			font-size: 1.4em;
+			cursor: pointer;
+		}
+	</style>
 </script>
 <script type="text/javascript">
     var map;
 	var infoOpen = false;
 	var openId = null;
-	var findings;
+	var findings, categories;
+	
+	function buildLayer(cats){
+		findings  = new google.maps.ImageMapType(
+                    {
+                        getTileUrl: function(coord, zoom) {
+                            var bound = Math.pow(2, zoom),
+								catstring = "('" + cats.join("','") + "')",
+								tileurl = "https://andrew.cartodb.com/tiles/neemo_regions/"+zoom+"/"+coord.x+"/"+coord.y+".png?map_key=6147435ec8bfdbf9ad547d041e460b23167e956a&sql=SELECT neemo_regions.the_geom_webmercator, neemo_regions.region, neemo.category, count(*) FROM neemo_regions, neemo WHERE neemo_regions.region = neemo.region AND neemo.category in "+catstring+" GROUP BY neemo.category, neemo_regions.region, neemo_regions.the_geom_webmercator";
+                            return tileurl;
+                        },
+                        tileSize: new google.maps.Size(256, 256),
+                        isPng: true, 
+						name: 'findings'
+                    });
+	}
+	function updateCategories(){
+		categories = [];
+		$('.help .header span').each(function(){
+			if ($(this).hasClass('selected')){
+				categories.push($(this).attr('id'));
+			}
+		})
+	}
+	function getTotals(){
+		var url = 'https://andrew.cartodb.com/api/v1/sql/?q=' +
+					'SELECT category, count(*) FROM neemo WHERE downvotes < 1 GROUP BY category' +
+					'&callback=?';
+		$.getJSON(url, function(res){
+			console.log('hihihi');
+			console.log(res);
+			for (i in res.rows){
+				console.log(res.rows[i]);
+				$('#legend ul li.'+res.rows[i].category+' .count').text(res.rows[i].count);
+			}
+		})
+	}
     $(document).ready(function() {
         var latlng = new google.maps.LatLng(24.9469983333, -80.4559166667);
 
@@ -37,36 +82,13 @@
 		  mapTypeControl: false
         };
         map = new google.maps.Map($('#map_canvas')[0], mapOptions);
-
-		findings  = new google.maps.ImageMapType(
-                    {
-                        getTileUrl: function(coord, zoom) {
-                            var bound = Math.pow(2, zoom),
-								tileurl = "https://andrew.cartodb.com/tiles/neemo_regions/"+zoom+"/"+coord.x+"/"+coord.y+".png?map_key=6147435ec8bfdbf9ad547d041e460b23167e956a&sql=SELECT neemo_regions.the_geom_webmercator, neemo_regions.region, neemo.category, count(*) FROM neemo_regions, neemo WHERE neemo_regions.region = neemo.region GROUP BY neemo.category, neemo_regions.region, neemo_regions.the_geom_webmercator";
-                            return tileurl;
-                        },
-                        tileSize: new google.maps.Size(256, 256),
-                        isPng: true, 
-						name: 'barrels'
-                    });
+		
+		categories = ['coral', 'gorgonian', 'barrel', 'other'];
+		buildLayer(categories);
         map.overlayMapTypes.push(findings);
 
-		/*
-	    var cartodb_gmapsv3 = new google.maps.CartoDBLayer({
-	      map_canvas: 'map_canvas',
-	      map: map,
-	      user_name:'andrew',
-	      table_name: 'neemo_regions',
-	      query: "SELECT cartodb_id, neemo_regions.the_geom_webmercator FROM neemo_regions WHERE region in (SELECT region FROM neemo DISTINCT ON region)",
-	      map_style: true,
-	      infowindow: true,
-	      auto_bound: false,
-	    });
+		getTotals();
 		
-		*/
-
-
-
 		$('.help').css({'z-index':999});
 		$('#legend ul .icon').css({'cursor':'pointer'});
 
@@ -94,9 +116,22 @@
 		    el.animate({opacity:1, left:e.clientX - el.width() - 70}, 'fast');
 			infoOpen = true;
 		});
-		$('#legend ul li').click(function(e){
-			console.log('li'); 
-		});
+		$('.help .header span').click(function(){
+			var t;
+			if ($(this).hasClass('selected')){
+				$(this).removeClass('selected');
+				t = 'Add to map';
+			} else {
+				$(this).addClass('selected');
+				t = 'Remove from map';
+			}
+			updateCategories();
+        	map.overlayMapTypes.pop(findings);
+			buildLayer(categories);
+        	map.overlayMapTypes.push(findings);
+			$(this).text(t);
+			closeInfo();
+		})
     });
 
 </script>
@@ -105,10 +140,10 @@
   <div id="map_canvas" style="width:100%; height:100%"></div>
   <div id="legend">
 	<ul> 
-		<li class="coral"><span class="icon"></span>coral</li>
-	    <li class="barrel"><span class="icon"></span>barrel</li> 
-		<li class="gorgonian"><span class="icon"></span>gorg.</li> 
-		<li class="other"><span class="icon"></span>other</li>
+		<li class="coral"><span class="icon"></span><span class="count">0</span>coral</li>
+	    <li class="barrel"><span class="icon"></span><span class="count">0</span>barrel</li> 
+		<li class="gorgonian"><span class="icon"></span><span class="count">0</span>gorg.</li> 
+		<li class="other"><span class="icon"></span><span class="count">0</span>other</li>
 	</ul>
   </div>
 
@@ -119,6 +154,7 @@
               <div class="line"></div>
             </div>
             <div class="close"></div>
+			<span id="gorgonian" class="selected">Remove from map</span>
           </div>
           <div class="inner">
             <ul class="species">
@@ -141,10 +177,12 @@
         <div class="help coral">
           <div class="header">
             <div class="line-through">
-              <h3 class="more-info">What is a coral?</h3>
+              <h3 class="more-info">What is a coral? </h3> 
+			  
               <div class="line"></div>
             </div>
             <div class="close"></div>
+			<span id="coral" class="selected">Remove from map</span>
           </div>
           <div class="inner">
               <li class="coral">
@@ -170,6 +208,7 @@
               <div class="line"></div>
             </div>
             <div class="close"></div>
+			<span id="barrel" class="selected">Remove from map</span>
           </div>
           <div class="inner">
               <li class="barrel">
@@ -195,6 +234,7 @@
               <div class="line"></div>
             </div>
             <div class="close"></div>
+			<span id="other" class="selected">Remove from map</span>
           </div>
           <div class="inner">
               <li class="other">

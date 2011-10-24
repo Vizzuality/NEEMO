@@ -2,7 +2,7 @@
 #legend { position: absolute; 
   z-index: 999; 
   top:30px;
-  height:356px;
+  height:410px;
   width:59px;
   right:0px;
   float:right;
@@ -20,6 +20,7 @@
 }
 
 #legend ul li {
+  position: relative;
   margin: 10px 0 10px 0px;
   padding: 5px 0 13px 0;
   font-size:9px;
@@ -39,23 +40,30 @@
   font-size:15px;
   display:block;
 }
+#legend ul li .count {
+  font-size:10px;
+  font-weight: bold;
+  width: 100%;
+  text-align: center;
+  float: left;
+}
 #legend ul li .icon.highlight{
   text-shadow: 0px 0px 20px #fff;
 }
 
-#legend ul li.coral span{
+#legend ul li.coral .icon{
     background: #99FF00;
 }
-#legend ul li.other span{
+#legend ul li.other .icon{
     background: #9900FF;
 }
-#legend ul li.gorgonian span{
+#legend ul li.gorgonian .icon{
     background: #FFaa00;
 }
-#legend ul li.barrel span{
+#legend ul li.barrel .icon{
     background: #99FFFF;
 }
-#legend ul li span{
+#legend ul li .icon{
     width: 40px;
     height: 40px;
     margin-left: 10px;
