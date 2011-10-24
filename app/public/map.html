@@ -68,10 +68,10 @@
 		})
 	}
     $(document).ready(function() {
-        var latlng = new google.maps.LatLng(24.9469983333, -80.4559166667);
+        var latlng = new google.maps.LatLng(24.9515, -80.452);
 
         var mapOptions = {
-          zoom: 16,
+          zoom: 18,
           center: latlng,
           mapTypeId: google.maps.MapTypeId.SATELLITE,
 		  panControl: false,
@@ -81,7 +81,7 @@
         };
         map = new google.maps.Map($('#map_canvas')[0], mapOptions);
 		
-		categories = ['coral', 'gorgonian', 'barrel', 'other'];
+		categories = [ 'other', 'coral', 'gorgonian', 'barrel'];
 		findings = buildLayer(categories);
         map.overlayMapTypes.push(findings);
 
